@@ -6,62 +6,460 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0"
     />
-    <title>Apple Silicon 3D Snake Arena</title>
+    <meta
+      name="description"
+      content="PROjuice is a fruit-protein beverage concept built for students, athletes and busy young professionals."
+    />
+    <title>PROjuice | Real Fruit Energy. Serious Protein.</title>
+    <link rel="stylesheet" href="./src/styles.css" />
   </head>
   <body>
-    <div id="app">
-      <div class="hud">
+    <div class="page-shell">
+      <header class="site-header">
+        <a class="brand-lockup" href="#top" aria-label="PROjuice home">
+          <span class="brand-mark">PJ</span>
+          <span class="brand-wording">
+            <strong>PROjuice</strong>
+            <span>Fruit Protein Drinks</span>
+          </span>
+        </a>
+        <button
+          class="nav-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="site-nav"
+        >
+          Menu
+        </button>
+        <nav
+          id="site-nav"
+          class="site-nav"
+        >
+          <a href="#about">About</a>
+          <a href="#products">Products</a>
+          <a href="#insights">Insights</a>
+          <a href="#strategy">Strategy</a>
+          <a href="#downloads">Downloads</a>
+          <a href="#faq">FAQ</a>
+        </nav>
+      </header>
+
+      <main id="top">
+        <section class="hero reveal">
+          <div class="hero-copy">
+            <p class="eyebrow">Fruit-protein beverage concept</p>
+            <h1>Real fruit energy. Serious protein.</h1>
+            <p class="hero-text">
+              PROjuice blends real fruit flavour with 20g of protein, giving
+              students, athletes and young professionals a grab-and-go drink
+              that feels fresh, colourful and functional.
+            </p>
+            <div class="hero-actions">
+              <a
+                class="button button-primary"
+                href="#products"
+              >
+                Explore The Range
+              </a>
+              <a
+                class="button button-secondary"
+                href="./deliverables/PROjuice-Marketing-Report.pdf"
+              >
+                Open Marketing Report
+              </a>
+            </div>
+            <div class="hero-metrics">
+              <article>
+                <span>20g</span>
+                <p>protein in every bottle</p>
+              </article>
+              <article>
+                <span>330ml</span>
+                <p>chilled grab-and-go format</p>
+              </article>
+              <article>
+                <span>3</span>
+                <p>launch flavours ready to pitch</p>
+              </article>
+            </div>
+          </div>
+
+          <div class="hero-visual">
+            <div class="visual-badge badge-left">Fresh like juice</div>
+            <div class="visual-badge badge-right">Built for recovery</div>
+            <div class="protein-bottle">
+              <div class="bottle-cap"></div>
+              <div class="bottle-label">
+                <p>PROjuice</p>
+                <span>Mango Charge</span>
+              </div>
+            </div>
+            <div class="fruit-orb orb-mango"></div>
+            <div class="fruit-orb orb-berry"></div>
+            <div class="fruit-orb orb-lime"></div>
+          </div>
+        </section>
+
+        <section class="trust-band reveal">
+          <div>
+            <p class="band-kicker">What makes it different</p>
+            <h2>PROjuice sits between juice bars and protein shakes.</h2>
+          </div>
+          <div class="trust-points">
+            <p>Real fruit puree, not a fake flavour profile.</p>
+            <p>Protein-forward nutrition without a chalky finish.</p>
+            <p>Bright branding designed for fridges, feeds and pop-ups.</p>
+          </div>
+        </section>
+
+        <section
+          id="about"
+          class="section-grid reveal"
+        >
+          <div class="section-copy">
+            <p class="eyebrow">About the brand</p>
+            <h2>A fruit-first protein drink with a cleaner, bolder identity.</h2>
+            <p>
+              PROjuice is designed as a premium but approachable beverage for
+              people who want breakfast, recovery or an afternoon lift without
+              buying a heavy milkshake-style protein drink. The concept focuses
+              on simple ingredients, recyclable packaging and a lower-waste
+              sourcing story built around surplus or cosmetically imperfect
+              fruit whenever possible.
+            </p>
+            <p>
+              The brand tone is energetic, optimistic and modern. It is built to
+              feel at home in a gym fridge, a campus canteen, a local cafe or a
+              weekend market stall.
+            </p>
+          </div>
+          <div class="section-card cluster-card">
+            <p class="card-label">Brand pillars</p>
+            <ul class="pillars">
+              <li>Freshness first</li>
+              <li>Real performance</li>
+              <li>Responsible sourcing</li>
+              <li>Bold visual storytelling</li>
+            </ul>
+            <div class="mini-grid">
+              <article>
+                <span>NZD 6.50</span>
+                <p>recommended retail price</p>
+              </article>
+              <article>
+                <span>5</span>
+                <p>target repeat stockists by June</p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section
+          id="products"
+          class="products-section reveal"
+        >
+          <div class="section-header">
+            <p class="eyebrow">Launch range</p>
+            <h2>Three flavours, one unmistakable point of difference.</h2>
+          </div>
+          <div class="product-grid">
+            <article class="product-card mango">
+              <p class="product-tag">Tropical energy</p>
+              <h3>Mango Charge</h3>
+              <p>
+                Mango and passionfruit give this bottle a bright, sunny profile
+                that feels closer to juice than a shake.
+              </p>
+              <ul>
+                <li>20g protein</li>
+                <li>Best for morning fuel</li>
+                <li>Launch hero flavour</li>
+              </ul>
+            </article>
+            <article class="product-card berry">
+              <p class="product-tag">Recovery favourite</p>
+              <h3>Berry Lift</h3>
+              <p>
+                Strawberry, blueberry and apple create a smoother, richer
+                flavour profile ideal for post-workout recovery.
+              </p>
+              <ul>
+                <li>High social appeal</li>
+                <li>Balanced sweet-tart taste</li>
+                <li>Great for bundle packs</li>
+              </ul>
+            </article>
+            <article class="product-card lime">
+              <p class="product-tag">Clean and crisp</p>
+              <h3>Apple Lime Pulse</h3>
+              <p>
+                Crisp apple, lime and mint offer a lighter, sharper option for
+                active customers who want something refreshing.
+              </p>
+              <ul>
+                <li>Low-heavy-feel profile</li>
+                <li>Designed for lunchtime sales</li>
+                <li>Strong cafe potential</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <section
+          id="insights"
+          class="insights-section reveal"
+        >
+          <div class="section-header">
+            <p class="eyebrow">Pilot insight</p>
+            <h2>The concept is solving a real taste and convenience gap.</h2>
+          </div>
+          <div class="insight-grid">
+            <article class="insight-card">
+              <span>86%</span>
+              <p>said protein drinks often taste too chalky or artificial.</p>
+            </article>
+            <article class="insight-card">
+              <span>79%</span>
+              <p>wanted a faster breakfast or recovery option for busy days.</p>
+            </article>
+            <article class="insight-card">
+              <span>67%</span>
+              <p>would buy weekly if the price stayed under NZD 7.</p>
+            </article>
+            <article class="insight-card">
+              <span>42</span>
+              <p>local respondents shaped the value proposition and launch plan.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="split-panel reveal">
+          <div class="panel panel-dark">
+            <p class="eyebrow">Why it wins</p>
+            <h2>PROjuice is built for a wider market than the typical gym shake.</h2>
+            <ul class="check-list">
+              <li>Fresh, fruit-led taste profile with clearer visual appeal.</li>
+              <li>Portable enough for school bags, gym lockers and office fridges.</li>
+              <li>Branding designed for reels, stories and impulse fridge purchases.</li>
+              <li>Works across breakfast, snack and recovery occasions.</li>
+            </ul>
+          </div>
+          <div class="panel panel-light">
+            <p class="eyebrow">How it sells</p>
+            <h2>Launch channels that match real student and young adult routines.</h2>
+            <div class="channel-stack">
+              <article>
+                <h3>Campus and school pop-ups</h3>
+                <p>Strong for sampling, feedback and fast local awareness.</p>
+              </article>
+              <article>
+                <h3>Gym and sports club fridges</h3>
+                <p>Best fit for post-workout need states and repeat purchase.</p>
+              </article>
+              <article>
+                <h3>Independent cafes</h3>
+                <p>Great for premium positioning and visual merchandising.</p>
+              </article>
+              <article>
+                <h3>Website and Instagram pre-orders</h3>
+                <p>Useful for bundles, event drops and repeat-buyer packs.</p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section
+          id="strategy"
+          class="strategy-section reveal"
+        >
+          <div class="strategy-copy">
+            <p class="eyebrow">Strategy backbone</p>
+            <h2>The website, Lean Canvas and report all point to the same launch logic.</h2>
+            <p>
+              The full marketing report follows the 17-point structure from the
+              classroom handout: product description, vision and values, market
+              and customer analysis, competitor review, PESTEL, SWOT, Ansoff,
+              assumptions, objectives, 4Ps, sales forecast, contingency plans,
+              action plan, budget and monitoring.
+            </p>
+            <p>
+              The lean canvas then compresses the idea into one page so the
+              business model is easy to pitch quickly.
+            </p>
+          </div>
+          <div class="strategy-cards">
+            <article>
+              <h3>SMART launch target</h3>
+              <p>2,340 bottles sold by September 30, 2026.</p>
+            </article>
+            <article>
+              <h3>Repeat purchase goal</h3>
+              <p>Reach a 35% repeat rate through bundles and loyalty.</p>
+            </article>
+            <article>
+              <h3>Brand message</h3>
+              <p>Fresh like juice, functional like a protein drink.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="roadmap-section reveal">
+          <div class="section-header">
+            <p class="eyebrow">Action roadmap</p>
+            <h2>A staged launch from recipe sign-off to repeat stockist sales.</h2>
+          </div>
+          <div class="roadmap">
+            <article>
+              <span>March</span>
+              <p>Final recipe, design, pricing and first stockist outreach.</p>
+            </article>
+            <article>
+              <span>April</span>
+              <p>Launch week pop-ups, tasting content and first sales proof.</p>
+            </article>
+            <article>
+              <span>May</span>
+              <p>Gym fridge placement and 3-pack bundle push.</p>
+            </article>
+            <article>
+              <span>June</span>
+              <p>Cafe rollout, UGC testimonials and challenge campaign.</p>
+            </article>
+            <article>
+              <span>July-August</span>
+              <p>Second gym or club, loyalty offers and seasonal drop testing.</p>
+            </article>
+            <article>
+              <span>September</span>
+              <p>Review channel performance and prepare the next scale phase.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="sustainability-section reveal">
+          <div class="section-copy">
+            <p class="eyebrow">Responsible by design</p>
+            <h2>Performance and sustainability should work together.</h2>
+            <p>
+              PROjuice is positioned as a lower-waste beverage concept by
+              prioritising recyclable bottles, efficient chilled batching and
+              the use of surplus or cosmetically imperfect fruit where supply
+              allows. That story supports both the environmental case and the
+              emotional brand story.
+            </p>
+          </div>
+          <div class="sustainability-points">
+            <article>
+              <h3>Lower-waste sourcing</h3>
+              <p>Use fruit that might otherwise be rejected for appearance only.</p>
+            </article>
+            <article>
+              <h3>Recyclable packaging</h3>
+              <p>Modern, bright bottles designed for chilled display and responsible disposal.</p>
+            </article>
+            <article>
+              <h3>Smarter production</h3>
+              <p>Small-batch planning reduces overproduction and protects freshness.</p>
+            </article>
+          </div>
+        </section>
+
+        <section
+          id="downloads"
+          class="downloads-section reveal"
+        >
+          <div class="section-header">
+            <p class="eyebrow">Ready-to-use files</p>
+            <h2>Download the polished project documents.</h2>
+          </div>
+          <div class="download-grid">
+            <article class="download-card">
+              <p class="card-label">PDF deliverable</p>
+              <h3>PROjuice Lean Canvas</h3>
+              <p>
+                One-page business model summary formatted to match the YES Lean
+                Canvas template categories.
+              </p>
+              <a
+                class="button button-primary"
+                href="./deliverables/PROjuice-Lean-Canvas.pdf"
+              >
+                Download Lean Canvas
+              </a>
+            </article>
+            <article class="download-card">
+              <p class="card-label">PDF deliverable</p>
+              <h3>PROjuice Marketing Report</h3>
+              <p>
+                Full report aligned to the 17-point classroom structure shown in
+                the handout photo.
+              </p>
+              <a
+                class="button button-primary"
+                href="./deliverables/PROjuice-Marketing-Report.pdf"
+              >
+                Download Marketing Report
+              </a>
+            </article>
+          </div>
+        </section>
+
+        <section
+          id="faq"
+          class="faq-section reveal"
+        >
+          <div class="section-header">
+            <p class="eyebrow">FAQ</p>
+            <h2>Common questions about the concept.</h2>
+          </div>
+          <div class="faq-grid">
+            <article>
+              <h3>Who is PROjuice for?</h3>
+              <p>
+                Students, gym users and busy professionals who want a fast,
+                fresh-feeling protein drink.
+              </p>
+            </article>
+            <article>
+              <h3>What problem does it solve?</h3>
+              <p>
+                It closes the gap between refreshing juice and high-protein
+                functional drinks.
+              </p>
+            </article>
+            <article>
+              <h3>How would it be sold first?</h3>
+              <p>
+                Through campus pop-ups, local gym fridges, selected cafes,
+                markets and online pre-orders.
+              </p>
+            </article>
+            <article>
+              <h3>Why does the branding matter?</h3>
+              <p>
+                Because taste expectation, shelf stand-out and social sharing are
+                major drivers of trial in this category.
+              </p>
+            </article>
+          </div>
+        </section>
+      </main>
+
+      <footer class="site-footer">
         <div>
-          <p class="eyebrow">Apple Silicon Arena</p>
-          <h1>3D Snake Arena</h1>
+          <strong>PROjuice</strong>
+          <p>Fruit protein drinks for active routines.</p>
         </div>
-        <div class="hud-meta">
-          <div>
-            <span class="label">Score</span>
-            <strong id="score">0</strong>
-          </div>
-          <div>
-            <span class="label">Camera</span>
-            <strong id="camera-mode">TACTICAL</strong>
-          </div>
-          <div>
-            <span class="label">Status</span>
-            <strong id="status">Booting</strong>
-          </div>
-        </div>
-      </div>
-      <div class="stage-shell">
-        <canvas id="game-canvas" aria-label="3D Snake Arena"></canvas>
-        <aside class="panel">
-          <p id="message">
-            Initializing WebGL2 arena...
+        <div>
+          <p>Built as a complete class-ready business concept.</p>
+          <p>
+            <span id="year"></span>
+            Marketing website, Lean Canvas and report package.
           </p>
-          <div class="controls">
-            <button id="pause-button" type="button">Pause</button>
-            <button id="camera-button" type="button">Toggle Camera</button>
-            <button id="restart-button" type="button">Restart</button>
-          </div>
-          <dl class="legend">
-            <div>
-              <dt>Move</dt>
-              <dd><code>W/S</code> thrust, <code>A/D</code> yaw</dd>
-            </div>
-            <div>
-              <dt>Vertical</dt>
-              <dd><code>Q/E</code> up and down</dd>
-            </div>
-            <div>
-              <dt>Combat</dt>
-              <dd><code>Shift</code> boost ram</dd>
-            </div>
-            <div>
-              <dt>System</dt>
-              <dd><code>C</code> camera, <code>P</code> pause, <code>R</code> restart</dd>
-            </div>
-          </dl>
-        </aside>
-      </div>
+        </div>
+      </footer>
     </div>
-    <script type="module" src="/src/main.ts"></script>
+
+    <script src="./src/main.js"></script>
   </body>
 </html>
