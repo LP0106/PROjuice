@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Apple Silicon 3D Snake Arena</title>
+  </head>
+  <body>
+    <div id="app">
+      <div class="hud">
+        <div>
+          <p class="eyebrow">Apple Silicon Arena</p>
+          <h1>3D Snake Arena</h1>
+        </div>
+        <div class="hud-meta">
+          <div>
+            <span class="label">Score</span>
+            <strong id="score">0</strong>
+          </div>
+          <div>
+            <span class="label">Camera</span>
+            <strong id="camera-mode">TACTICAL</strong>
+          </div>
+          <div>
+            <span class="label">Status</span>
+            <strong id="status">Booting</strong>
+          </div>
+        </div>
+      </div>
+      <div class="stage-shell">
+        <canvas id="game-canvas" aria-label="3D Snake Arena"></canvas>
+        <aside class="panel">
+          <p id="message">
+            Initializing WebGL2 arena...
+          </p>
+          <div class="controls">
+            <button id="pause-button" type="button">Pause</button>
+            <button id="camera-button" type="button">Toggle Camera</button>
+            <button id="restart-button" type="button">Restart</button>
+          </div>
+          <dl class="legend">
+            <div>
+              <dt>Move</dt>
+              <dd><code>W/S</code> thrust, <code>A/D</code> yaw</dd>
+            </div>
+            <div>
+              <dt>Vertical</dt>
+              <dd><code>Q/E</code> up and down</dd>
+            </div>
+            <div>
+              <dt>Combat</dt>
+              <dd><code>Shift</code> boost ram</dd>
+            </div>
+            <div>
+              <dt>System</dt>
+              <dd><code>C</code> camera, <code>P</code> pause, <code>R</code> restart</dd>
+            </div>
+          </dl>
+        </aside>
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
