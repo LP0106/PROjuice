@@ -24,9 +24,15 @@ const sliderRoots = [...document.querySelectorAll("[data-slider-root]")];
 const faqItems = [...document.querySelectorAll(".faq-item")];
 const navLinks = [...document.querySelectorAll(".site-nav a")];
 const sectionNodes = [...document.querySelectorAll("main section[id]")];
+const sectionShellNodes = [...document.querySelectorAll(".section-shell")];
 const sliderStates = [];
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const supportsFinePointer = window.matchMedia("(pointer: fine)").matches;
+const sectionShellMeta = sectionShellNodes.map((node) => ({
+  node,
+  top: 0,
+  height: 0,
+}));
 
 const flavourData = {
   mango: {
@@ -283,6 +289,7 @@ sliderRoots.forEach((sliderRoot) => {
   }
 
   const sliderState = {
+    cards: [],
     pointerId: null,
     startX: 0,
     startScrollLeft: 0,
@@ -301,6 +308,32 @@ sliderRoots.forEach((sliderRoot) => {
       : Math.max(track.getBoundingClientRect().width * 0.82, 260);
   };
 
+  const syncCurrentCard = () => {
+    const cardSelector = track.dataset.sliderCardSelector || ".roadmap-card, .route-card";
+    sliderState.cards = [...track.querySelectorAll(cardSelector)];
+
+    if (!sliderState.cards.length) {
+      sliderRoot.style.setProperty("--slider-progress", "0");
+      return;
+    }
+
+    const step = resolveStep();
+    const currentIndex = Math.max(
+      0,
+      Math.min(Math.round(track.scrollLeft / Math.max(step, 1)), sliderState.cards.length - 1)
+    );
+
+    sliderState.cards.forEach((card, index) => {
+      card.classList.toggle("is-current", index === currentIndex);
+    });
+
+    const progress = sliderState.cards.length > 1
+      ? currentIndex / (sliderState.cards.length - 1)
+      : 1;
+
+    sliderRoot.style.setProperty("--slider-progress", progress.toFixed(4));
+  };
+
   const syncSliderState = () => {
     const maxScrollLeft = Math.max(track.scrollWidth - track.clientWidth - 4, 0);
     const canScroll = maxScrollLeft > 4;
@@ -308,6 +341,7 @@ sliderRoots.forEach((sliderRoot) => {
     sliderRoot.classList.toggle("is-scrollable", canScroll);
     prevButton.disabled = !canScroll || track.scrollLeft <= 4;
     nextButton.disabled = !canScroll || track.scrollLeft >= maxScrollLeft;
+    syncCurrentCard();
   };
 
   const scrollTrack = (direction) => {
@@ -552,6 +586,14 @@ const updateSceneParallaxLayout = () => {
   });
 };
 
+const updateSectionShellLayout = () => {
+  sectionShellMeta.forEach((meta) => {
+    const rect = meta.node.getBoundingClientRect();
+    meta.top = rect.top + window.scrollY;
+    meta.height = rect.height;
+  });
+};
+
 const syncScrollEffects = () => {
   const scrollTop = window.scrollY;
   const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
@@ -565,6 +607,12 @@ const syncScrollEffects = () => {
     header.classList.toggle("is-scrolled", scrollTop > 18);
   }
 
+  body.style.setProperty("--dynamic-hue", `${(Math.sin(progress * 0.09) * 8 + (progress * 0.22)).toFixed(2)}deg`);
+  body.style.setProperty("--aurora-x", `${(Math.sin(scrollTop * 0.0018) * 84).toFixed(2)}px`);
+  body.style.setProperty("--aurora-y", `${(Math.cos(scrollTop * 0.0011) * 70).toFixed(2)}px`);
+  body.style.setProperty("--aurora-x-soft", `${(Math.sin(scrollTop * 0.0012) * 36).toFixed(2)}px`);
+  body.style.setProperty("--aurora-y-soft", `${(Math.cos(scrollTop * 0.0009) * 28).toFixed(2)}px`);
+
   frostParallaxNodes.forEach((node) => {
     const speed = Number(node.dataset.parallax || "0.08");
     const offset = scrollTop * speed * -0.25;
@@ -576,6 +624,25 @@ const syncScrollEffects = () => {
     const offset = distanceFromCenter * -meta.speed;
 
     meta.node.style.setProperty("--parallax-offset", `${Math.max(Math.min(offset, 80), -80)}px`);
+  });
+
+  sectionShellMeta.forEach((meta) => {
+    const centerDistance = (meta.top + (meta.height / 2)) - (scrollTop + (window.innerHeight / 2));
+    const normalized = Math.max(
+      0,
+      Math.min(
+        ((scrollTop + (window.innerHeight * 0.72)) - meta.top) / Math.max(meta.height + (window.innerHeight * 0.5), 1),
+        1
+      )
+    );
+    const shift = Math.max(Math.min(centerDistance * -0.055, 34), -34);
+    const glowBand = 1 - Math.abs((normalized * 2) - 1);
+
+    meta.node.style.setProperty("--section-shift", `${shift.toFixed(2)}px`);
+    meta.node.style.setProperty("--section-shift-y", `${(shift * -0.35).toFixed(2)}px`);
+    meta.node.style.setProperty("--section-glow-x", `${(18 + (normalized * 56)).toFixed(2)}%`);
+    meta.node.style.setProperty("--section-glow-y", `${(12 + (glowBand * 40)).toFixed(2)}%`);
+    meta.node.style.setProperty("--section-glow-opacity", `${(0.24 + (glowBand * 0.48)).toFixed(3)}`);
   });
 
   scrollTicking = false;
@@ -591,11 +658,13 @@ const requestScrollSync = () => {
 window.addEventListener("scroll", requestScrollSync, { passive: true });
 window.addEventListener("resize", () => {
   updateSceneParallaxLayout();
+  updateSectionShellLayout();
   sliderStates.forEach(({ syncSliderState }) => syncSliderState());
   requestScrollSync();
 });
 window.addEventListener("load", () => {
   updateSceneParallaxLayout();
+  updateSectionShellLayout();
   sliderStates.forEach(({ syncSliderState }) => syncSliderState());
   syncScrollEffects();
 });
@@ -603,10 +672,12 @@ window.addEventListener("load", () => {
 if (document.fonts && document.fonts.ready) {
   document.fonts.ready.then(() => {
     updateSceneParallaxLayout();
+    updateSectionShellLayout();
     sliderStates.forEach(({ syncSliderState }) => syncSliderState());
     requestScrollSync();
   });
 }
 
 updateSceneParallaxLayout();
+updateSectionShellLayout();
 syncScrollEffects();
