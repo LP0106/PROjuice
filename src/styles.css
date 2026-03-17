@@ -77,9 +77,8 @@ body::before {
     radial-gradient(circle at calc(18% + var(--aurora-x)) calc(16% + var(--aurora-y)), rgba(255, 168, 94, 0.24), transparent 26%),
     radial-gradient(circle at calc(82% - var(--aurora-x)) calc(18% + var(--aurora-y)), rgba(215, 108, 153, 0.18), transparent 28%),
     radial-gradient(circle at calc(72% + var(--aurora-x-soft)) calc(76% - var(--aurora-y-soft)), rgba(135, 211, 110, 0.18), transparent 24%);
-  filter: blur(44px) hue-rotate(var(--dynamic-hue));
-  opacity: 0.72;
-  mix-blend-mode: screen;
+  filter: blur(28px);
+  opacity: 0.38;
   animation: auroraShift 18s ease-in-out infinite alternate;
 }
 
@@ -93,10 +92,20 @@ body::after {
       rgba(139, 201, 219, 0.08),
       rgba(255, 155, 72, 0.08)
     );
-  filter: blur(110px) hue-rotate(var(--dynamic-hue));
-  opacity: 0.38;
+  filter: blur(72px);
+  opacity: 0.16;
   transform: rotate(0deg) scale(1.08);
   animation: chromaOrbit 28s linear infinite;
+}
+
+body.performance-lite::before {
+  filter: blur(18px);
+  opacity: 0.24;
+}
+
+body.performance-lite::after {
+  opacity: 0.08;
+  filter: blur(52px);
 }
 
 body[data-theme="berry"] {
@@ -184,6 +193,10 @@ button {
   mix-blend-mode: lighten;
 }
 
+body.performance-lite .cursor-glow {
+  display: none;
+}
+
 .scroll-progress {
   position: fixed;
   inset: 0 0 auto;
@@ -209,6 +222,10 @@ button {
   z-index: 0;
   pointer-events: none;
   overflow: hidden;
+}
+
+body.performance-lite .page-frost {
+  opacity: 0.62;
 }
 
 .ambient {
@@ -292,8 +309,7 @@ button {
   margin-bottom: 1.75rem;
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 999px;
-  background: rgba(7, 18, 15, 0.72);
-  backdrop-filter: blur(24px);
+  background: rgba(7, 18, 15, 0.88);
   box-shadow: 0 18px 42px rgba(0, 0, 0, 0.26);
   transition: padding 240ms ease, box-shadow 240ms ease, background 240ms ease;
 }
@@ -396,10 +412,11 @@ main {
   border-radius: var(--radius-xl);
   background:
     radial-gradient(circle at top right, rgba(255, 155, 72, 0.08), rgba(255, 255, 255, 0) 34%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
-  backdrop-filter: blur(26px);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.035));
   box-shadow: var(--shadow-soft);
   isolation: isolate;
+  content-visibility: auto;
+  contain-intrinsic-size: 900px;
 }
 
 .section-shell > * {
@@ -426,10 +443,9 @@ main {
   border-radius: 50%;
   background: radial-gradient(circle, rgba(255, 155, 72, 0.12), rgba(255, 255, 255, 0));
   opacity: var(--section-glow-opacity);
-  filter: blur(4px);
+  filter: none;
   transform: translate3d(var(--section-shift), var(--section-shift-y), 0) scale(1.06);
   pointer-events: none;
-  animation: shellGlowDrift 16s ease-in-out infinite alternate;
 }
 
 .section-atmosphere {
@@ -452,6 +468,10 @@ main {
   pointer-events: none;
 }
 
+body.performance-lite .section-atmosphere::after {
+  opacity: 0.08;
+}
+
 .section-atmosphere .prop {
   position: absolute;
   display: block;
@@ -465,9 +485,13 @@ main {
     rotate(calc(var(--prop-rotate-base, 0deg) + (var(--section-progress-offset, 0) * var(--prop-rotate-range, 0deg))))
     scale(calc(var(--prop-scale-base, 1) + (var(--section-visibility, 0) * var(--prop-scale-boost, 0))));
   transform-origin: center center;
-  filter: blur(var(--prop-blur, 0px)) saturate(calc(0.82 + (var(--section-energy, 0) * 0.28)));
-  will-change: transform, opacity, filter;
+  filter: blur(var(--prop-blur, 0px));
+  will-change: transform, opacity;
   transition: none;
+}
+
+body.performance-lite .section-atmosphere .prop {
+  opacity: calc(var(--prop-opacity, 0.14) * 0.72);
 }
 
 .section-atmosphere .prop::before,

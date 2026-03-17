@@ -6,6 +6,8 @@ if (immersiveShell) {
   const select = (selector) => immersiveShell.querySelector(selector);
   const selectAll = (selector) => [...immersiveShell.querySelectorAll(selector)];
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const performanceLiteQuery = window.matchMedia("(max-width: 1180px)");
+  let performanceLite = performanceLiteQuery.matches;
   const handoffTarget = immersiveShell.dataset.handoffTarget
     ? document.querySelector(immersiveShell.dataset.handoffTarget)
     : document.querySelector("#main-interface");
@@ -131,6 +133,8 @@ if (immersiveShell) {
     lastScrollY: window.scrollY,
     lastProgress: -1,
     lastOverlay: -1,
+    lastPercent: -1,
+    lastSceneLabel: "",
     layout: {
       shellTop: 0,
       shellHeight: 1,
@@ -140,6 +144,54 @@ if (immersiveShell) {
       revealEnd: 1,
       triggerY: 1,
     },
+  };
+
+  let activeRibbons = ribbons;
+  let activeFruits = fruits;
+  let activeProteins = proteins;
+  let activeShards = shards;
+  let activeBubbles = bubbles;
+  let activeRibbonSet = new Set(ribbons);
+  let activeFruitSet = new Set(fruits);
+  let activeProteinSet = new Set(proteins);
+  let activeShardSet = new Set(shards);
+  let activeBubbleSet = new Set(bubbles);
+
+  const setBurstVisibility = (allNodes, activeSet) => {
+    allNodes.forEach((config) => {
+      if (!config.node) {
+        return;
+      }
+
+      if (activeSet.has(config)) {
+        config.node.style.opacity = "";
+        config.node.style.transform = "";
+        return;
+      }
+
+      config.node.style.opacity = "0";
+      config.node.style.transform = "translate3d(0, 0, 0) scale(0.001)";
+    });
+  };
+
+  const syncPerformanceMode = () => {
+    performanceLite = performanceLiteQuery.matches;
+    activeRibbons = performanceLite ? ribbons.slice(0, 4) : ribbons;
+    activeFruits = performanceLite ? fruits.filter((_, index) => index % 2 === 0) : fruits;
+    activeProteins = performanceLite ? proteins.filter((_, index) => index % 3 === 0) : proteins;
+    activeShards = performanceLite ? shards.filter((_, index) => index % 2 === 0) : shards;
+    activeBubbles = performanceLite ? bubbles.filter((_, index) => index % 2 === 0) : bubbles;
+    activeRibbonSet = new Set(activeRibbons);
+    activeFruitSet = new Set(activeFruits);
+    activeProteinSet = new Set(activeProteins);
+    activeShardSet = new Set(activeShards);
+    activeBubbleSet = new Set(activeBubbles);
+
+    setBurstVisibility(ribbons, activeRibbonSet);
+    setBurstVisibility(fruits, activeFruitSet);
+    setBurstVisibility(proteins, activeProteinSet);
+    setBurstVisibility(shards, activeShardSet);
+    setBurstVisibility(bubbles, activeBubbleSet);
   };
 
   const updateLayout = () => {
@@ -209,21 +261,31 @@ if (immersiveShell) {
     }
 
     const percent = Math.round(progress * 100);
-    progressLabel.textContent = `${percent}%`;
-    meterFill.style.width = `${percent}%`;
+    if (percent !== state.lastPercent) {
+      progressLabel.textContent = `${percent}%`;
+      meterFill.style.width = `${percent}%`;
+      state.lastPercent = percent;
+    }
+
+    let nextLabel = "";
 
     if (progress < 0.12) {
-      stateLabel.textContent = "Bottle sealed";
+      nextLabel = "Bottle sealed";
     } else if (progress < 0.34) {
-      stateLabel.textContent = "Pressure rising";
+      nextLabel = "Pressure rising";
     } else if (progress < 0.64) {
-      stateLabel.textContent = "Pour in motion";
+      nextLabel = "Pour in motion";
     } else if (overlayProgress > 0.72) {
-      stateLabel.textContent = "Main interface entering";
+      nextLabel = "Main interface entering";
     } else if (progress < 0.88) {
-      stateLabel.textContent = "Splash fully spread";
+      nextLabel = "Splash fully spread";
     } else {
-      stateLabel.textContent = "Launch frame locked";
+      nextLabel = "Launch frame locked";
+    }
+
+    if (nextLabel !== state.lastSceneLabel) {
+      stateLabel.textContent = nextLabel;
+      state.lastSceneLabel = nextLabel;
     }
   };
 
@@ -295,35 +357,35 @@ if (immersiveShell) {
     updateChapters(progress);
     applyOverlayState(overlayProgress);
 
-    ribbons.forEach((config, index) => {
+    activeRibbons.forEach((config, index) => {
       animateBurstNode(config, progress, {
         fromScale: 0.08,
         toScale: 1 + (index * 0.08),
       });
     });
 
-    fruits.forEach((config) => {
+    activeFruits.forEach((config) => {
       animateBurstNode(config, progress, {
         fromScale: 0.12,
         toScale: 1,
       });
     });
 
-    proteins.forEach((config) => {
+    activeProteins.forEach((config) => {
       animateBurstNode(config, progress, {
         fromScale: 0.3,
         toScale: 1,
       });
     });
 
-    shards.forEach((config) => {
+    activeShards.forEach((config) => {
       animateBurstNode(config, progress, {
         fromScale: 0.24,
         toScale: 1,
       });
     });
 
-    bubbles.forEach((config) => {
+    activeBubbles.forEach((config) => {
       animateBurstNode(config, progress, {
         fromScale: 0.28,
         toScale: 1,
@@ -375,6 +437,14 @@ if (immersiveShell) {
   };
 
   const requestRender = () => {
+    const currentY = window.scrollY;
+    const lowerBound = state.layout.shellTop - window.innerHeight;
+    const upperBound = state.layout.targetTop + window.innerHeight;
+
+    if (currentY < lowerBound || currentY > upperBound) {
+      return;
+    }
+
     if (state.frameRequested) {
       return;
     }
@@ -384,10 +454,12 @@ if (immersiveShell) {
   };
 
   const handleResize = () => {
+    syncPerformanceMode();
     updateLayout();
     requestRender();
   };
 
+  syncPerformanceMode();
   updateLayout();
   window.addEventListener("scroll", requestRender, { passive: true });
   window.addEventListener("resize", handleResize);
@@ -397,6 +469,10 @@ if (immersiveShell) {
 
   if (document.fonts && document.fonts.ready) {
     document.fonts.ready.then(handleResize);
+  }
+
+  if (performanceLiteQuery.addEventListener) {
+    performanceLiteQuery.addEventListener("change", handleResize);
   }
 
   if ("ResizeObserver" in window) {

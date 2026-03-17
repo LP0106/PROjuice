@@ -24,6 +24,12 @@ const sliderRoots = [...document.querySelectorAll("[data-slider-root]")];
 const faqItems = [...document.querySelectorAll(".faq-item")];
 const navLinks = [...document.querySelectorAll(".site-nav a")];
 const sectionNodes = [...document.querySelectorAll("main section[id]")];
+const navigableSectionMeta = sectionNodes.map((node) => ({
+  id: node.id,
+  node,
+  top: 0,
+  height: 0,
+}));
 const sectionShellNodes = [...document.querySelectorAll(".section-shell")];
 const revealMeta = [...revealNodes].map((node) => ({
   node,
@@ -33,6 +39,9 @@ const revealMeta = [...revealNodes].map((node) => ({
 const sliderStates = [];
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const supportsFinePointer = window.matchMedia("(pointer: fine)").matches;
+const lowMotionViewportQuery = window.matchMedia("(max-width: 1180px)");
+let lowMotionViewport = lowMotionViewportQuery.matches;
+const lowPowerDevice = (navigator.hardwareConcurrency || 8) <= 8 || (navigator.deviceMemory && navigator.deviceMemory <= 8);
 const sectionShellMeta = sectionShellNodes.map((node) => ({
   node,
   top: 0,
@@ -534,30 +543,6 @@ if ("IntersectionObserver" in window) {
   );
 
   counterNodes.forEach((node) => counterObserver.observe(node));
-
-  const navObserver = new IntersectionObserver(
-    (entries) => {
-      const visibleEntry = entries
-        .filter((entry) => entry.isIntersecting)
-        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-
-      if (!visibleEntry) {
-        return;
-      }
-
-      const currentId = visibleEntry.target.id;
-
-      navLinks.forEach((link) => {
-        link.classList.toggle("is-current", link.getAttribute("href") === `#${currentId}`);
-      });
-    },
-    {
-      threshold: [0.2, 0.4, 0.6],
-      rootMargin: "-20% 0px -55% 0px",
-    }
-  );
-
-  sectionNodes.forEach((section) => navObserver.observe(section));
 } else {
   counterNodes.forEach(animateCounter);
 }
@@ -581,11 +566,43 @@ const updateRevealLayout = () => {
   });
 };
 
+const updateNavigableSectionLayout = () => {
+  navigableSectionMeta.forEach((meta) => {
+    const rect = meta.node.getBoundingClientRect();
+    meta.top = rect.top + window.scrollY;
+    meta.height = rect.height;
+  });
+};
+
 const updateSectionShellLayout = () => {
   sectionShellMeta.forEach((meta) => {
     const rect = meta.node.getBoundingClientRect();
     meta.top = rect.top + window.scrollY;
     meta.height = rect.height;
+  });
+};
+
+const syncCurrentNav = (scrollTop, viewportHeight) => {
+  if (!navLinks.length || !navigableSectionMeta.length) {
+    return;
+  }
+
+  const headerHeight = header ? header.getBoundingClientRect().height : 0;
+  const anchorY = scrollTop + headerHeight + Math.min(viewportHeight * 0.16, 132);
+  let currentId = null;
+
+  navigableSectionMeta.forEach((meta) => {
+    const sectionBottom = meta.top + meta.height;
+
+    if (anchorY >= meta.top && anchorY < sectionBottom) {
+      currentId = meta.id;
+    } else if (anchorY >= meta.top) {
+      currentId = meta.id;
+    }
+  });
+
+  navLinks.forEach((link) => {
+    link.classList.toggle("is-current", Boolean(currentId) && link.getAttribute("href") === `#${currentId}`);
   });
 };
 
@@ -604,11 +621,7 @@ const syncScrollEffects = () => {
     header.classList.toggle("is-scrolled", scrollTop > 18);
   }
 
-  body.style.setProperty("--dynamic-hue", `${(Math.sin(progress * 0.09) * 8 + (progress * 0.22)).toFixed(2)}deg`);
-  body.style.setProperty("--aurora-x", `${(Math.sin(scrollTop * 0.0018) * 84).toFixed(2)}px`);
-  body.style.setProperty("--aurora-y", `${(Math.cos(scrollTop * 0.0011) * 70).toFixed(2)}px`);
-  body.style.setProperty("--aurora-x-soft", `${(Math.sin(scrollTop * 0.0012) * 36).toFixed(2)}px`);
-  body.style.setProperty("--aurora-y-soft", `${(Math.cos(scrollTop * 0.0009) * 28).toFixed(2)}px`);
+  syncCurrentNav(scrollTop, viewportHeight);
 
   frostParallaxNodes.forEach((node) => {
     const speed = Number(node.dataset.parallax || "0.08");
@@ -624,6 +637,13 @@ const syncScrollEffects = () => {
   });
 
   revealMeta.forEach((meta) => {
+    if (lowMotionViewport) {
+      meta.node.style.setProperty("--reveal-progress", "1");
+      meta.node.style.setProperty("--reveal-shift", "0px");
+      meta.node.style.setProperty("--reveal-scale", "1");
+      return;
+    }
+
     const revealProgress = clamp(
       ((scrollTop + (viewportHeight * 0.82)) - meta.top) / Math.max((meta.height * 0.34) + (viewportHeight * 0.24), 1)
     );
@@ -634,6 +654,20 @@ const syncScrollEffects = () => {
   });
 
   sectionShellMeta.forEach((meta) => {
+    if (lowMotionViewport) {
+      meta.node.style.setProperty("--section-progress", "0.5");
+      meta.node.style.setProperty("--section-progress-offset", "0");
+      meta.node.style.setProperty("--section-visibility", "0.7");
+      meta.node.style.setProperty("--section-energy", "0.45");
+      meta.node.style.setProperty("--section-direction", "0");
+      meta.node.style.setProperty("--section-shift", "0px");
+      meta.node.style.setProperty("--section-shift-y", "0px");
+      meta.node.style.setProperty("--section-glow-x", "46%");
+      meta.node.style.setProperty("--section-glow-y", "34%");
+      meta.node.style.setProperty("--section-glow-opacity", "0.28");
+      return;
+    }
+
     const centerDistance = (meta.top + (meta.height / 2)) - (scrollTop + (viewportHeight / 2));
     const normalized = clamp(
       ((scrollTop + (viewportHeight * 0.72)) - meta.top) / Math.max(meta.height + (viewportHeight * 0.5), 1)
@@ -672,10 +706,17 @@ const requestScrollSync = () => {
   }
 };
 
+const syncViewportMode = () => {
+  lowMotionViewport = lowMotionViewportQuery.matches;
+  body.classList.toggle("performance-lite", lowMotionViewport || lowPowerDevice);
+};
+
 window.addEventListener("scroll", requestScrollSync, { passive: true });
 window.addEventListener("resize", () => {
+  syncViewportMode();
   updateSceneParallaxLayout();
   updateRevealLayout();
+  updateNavigableSectionLayout();
   updateSectionShellLayout();
   sliderStates.forEach(({ syncSliderState }) => syncSliderState());
   requestScrollSync();
@@ -683,6 +724,7 @@ window.addEventListener("resize", () => {
 window.addEventListener("load", () => {
   updateSceneParallaxLayout();
   updateRevealLayout();
+  updateNavigableSectionLayout();
   updateSectionShellLayout();
   sliderStates.forEach(({ syncSliderState }) => syncSliderState());
   syncScrollEffects();
@@ -692,13 +734,23 @@ if (document.fonts && document.fonts.ready) {
   document.fonts.ready.then(() => {
     updateSceneParallaxLayout();
     updateRevealLayout();
+    updateNavigableSectionLayout();
     updateSectionShellLayout();
     sliderStates.forEach(({ syncSliderState }) => syncSliderState());
     requestScrollSync();
   });
 }
 
+if (lowMotionViewportQuery.addEventListener) {
+  lowMotionViewportQuery.addEventListener("change", () => {
+    syncViewportMode();
+    requestScrollSync();
+  });
+}
+
+syncViewportMode();
 updateSceneParallaxLayout();
 updateRevealLayout();
+updateNavigableSectionLayout();
 updateSectionShellLayout();
 syncScrollEffects();
