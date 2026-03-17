@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <meta
+      name="description"
+      content="Immersive scroll-driven PROjuice concept where fruit, liquid and protein motion reverse and replay with every swipe."
+    />
+    <meta http-equiv="Cache-Control" content="no-store, max-age=0" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>PROjuice Immersive Cut | Pour Forward. Rewind Back.</title>
+    <link rel="stylesheet" href="./src/immersive.css?v=1" />
+  </head>
+  <body>
+    <div class="experience-backdrop" aria-hidden="true">
+      <span class="backdrop-glow glow-one"></span>
+      <span class="backdrop-glow glow-two"></span>
+      <span class="backdrop-glow glow-three"></span>
+      <span class="backdrop-noise"></span>
+    </div>
+
+    <header class="experience-header">
+      <a class="experience-brand" href="#top">
+        <span class="brand-mark">PJ</span>
+        <span class="brand-copy">
+          <strong>PROjuice Immersive Cut</strong>
+          <span>Scroll down to pour. Scroll up to rewind.</span>
+        </span>
+      </a>
+
+      <nav class="experience-nav">
+        <a href="./index.html">Stable Version</a>
+        <a href="./deliverables/PROjuice-Lean-Canvas-v4.pdf?v=4">Lean Canvas</a>
+        <a href="./deliverables/PROjuice-Marketing-Report-v4.pdf?v=4">Final Report</a>
+      </nav>
+    </header>
+
+    <div class="experience-stage" aria-hidden="true">
+      <div class="stage-grid"></div>
+      <div class="stage-vignette"></div>
+      <div class="stage-halo stage-halo-a"></div>
+      <div class="stage-halo stage-halo-b"></div>
+      <div class="stage-halo stage-halo-c"></div>
+      <div class="rewind-ring rewind-ring-a"></div>
+      <div class="rewind-ring rewind-ring-b"></div>
+      <div class="rewind-ring rewind-ring-c"></div>
+
+      <div class="bottle-assembly" id="bottle-assembly">
+        <div class="bottle-shadow"></div>
+        <div class="bottle-cap" id="scene-cap"></div>
+        <div class="bottle-shell">
+          <div class="bottle-glare"></div>
+          <div class="bottle-liquid" id="bottle-liquid"></div>
+          <div class="bottle-label">
+            <p>PROjuice</p>
+            <span>Mango Charge</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="liquid-ribbon ribbon-a"></div>
+      <div class="liquid-ribbon ribbon-b"></div>
+      <div class="liquid-ribbon ribbon-c"></div>
+      <div class="liquid-ribbon ribbon-d"></div>
+      <div class="liquid-ribbon ribbon-e"></div>
+      <div class="liquid-ribbon ribbon-f"></div>
+
+      <div class="mist-cloud mist-a"></div>
+      <div class="mist-cloud mist-b"></div>
+      <div class="mist-cloud mist-c"></div>
+
+      <div class="fruit-particle fruit-mango fruit-a"></div>
+      <div class="fruit-particle fruit-mango fruit-b"></div>
+      <div class="fruit-particle fruit-mango fruit-c"></div>
+      <div class="fruit-particle fruit-berry fruit-d"></div>
+      <div class="fruit-particle fruit-berry fruit-e"></div>
+      <div class="fruit-particle fruit-berry fruit-f"></div>
+      <div class="fruit-particle fruit-lime fruit-g"></div>
+      <div class="fruit-particle fruit-lime fruit-h"></div>
+      <div class="fruit-particle fruit-lime fruit-i"></div>
+
+      <div class="protein-particle protein-a"></div>
+      <div class="protein-particle protein-b"></div>
+      <div class="protein-particle protein-c"></div>
+      <div class="protein-particle protein-d"></div>
+      <div class="protein-particle protein-e"></div>
+      <div class="protein-particle protein-f"></div>
+      <div class="protein-particle protein-g"></div>
+      <div class="protein-particle protein-h"></div>
+      <div class="protein-particle protein-i"></div>
+      <div class="protein-particle protein-j"></div>
+      <div class="protein-particle protein-k"></div>
+      <div class="protein-particle protein-l"></div>
+
+      <div class="protein-shard shard-a"></div>
+      <div class="protein-shard shard-b"></div>
+      <div class="protein-shard shard-c"></div>
+      <div class="protein-shard shard-d"></div>
+      <div class="protein-shard shard-e"></div>
+      <div class="protein-shard shard-f"></div>
+
+      <div class="bubble-particle bubble-a"></div>
+      <div class="bubble-particle bubble-b"></div>
+      <div class="bubble-particle bubble-c"></div>
+      <div class="bubble-particle bubble-d"></div>
+      <div class="bubble-particle bubble-e"></div>
+      <div class="bubble-particle bubble-f"></div>
+
+      <div class="scene-hud">
+        <p class="hud-label">Global Scroll Timeline</p>
+        <div class="hud-meter">
+          <span id="scene-meter-fill"></span>
+        </div>
+        <div class="hud-readout">
+          <strong id="scene-progress-label">0%</strong>
+          <span id="scene-state-label">Bottle sealed</span>
+        </div>
+      </div>
+
+      <div class="scene-prompt">
+        <span>Scroll down to pour forward.</span>
+        <span>Scroll up to reverse time.</span>
+      </div>
+    </div>
+
+    <main id="top" class="story-rail">
+      <section class="chapter chapter-left">
+        <div class="chapter-card hero-card" data-start="0.00" data-end="0.18">
+          <p class="chapter-kicker">Immersive Brand Cut</p>
+          <h1>One bottle. One gesture. One reversible launch story.</h1>
+          <p>
+            This version behaves like a cinematic product film controlled by your
+            scroll. Push down and the fruit-protein drink tears forward into the
+            page. Pull back up and the whole moment rewinds into the bottle.
+          </p>
+          <div class="chapter-actions">
+            <a class="chapter-button chapter-button-primary" href="./index.html">Open Stable Site</a>
+            <a class="chapter-button chapter-button-secondary" href="#chapter-flavours">See The Spill Story</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="chapter chapter-right">
+        <div class="chapter-card" data-start="0.12" data-end="0.34">
+          <p class="chapter-kicker">Phase 01</p>
+          <h2>Pressure builds before the pour breaks open.</h2>
+          <p>
+            The bottle tilts, the cap lifts and the liquid mass starts to lean
+            outward. Before any ingredient fully escapes, the whole frame feels
+            charged with stored momentum.
+          </p>
+          <ul class="chapter-list">
+            <li>Cap release and bottle torque are scrubbed by scroll.</li>
+            <li>Ambient glow intensifies as the pour reaches threshold.</li>
+            <li>All motion is reversible without any mode switch.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="chapter-flavours" class="chapter chapter-left">
+        <div class="chapter-card" data-start="0.28" data-end="0.50">
+          <p class="chapter-kicker">Phase 02</p>
+          <h2>Fruit, liquid and protein leave the bottle as one system.</h2>
+          <p>
+            The pour is not a flat splash. Mango, berry, lime, protein granules
+            and mist expand at different speeds to make the drink feel physical,
+            layered and premium instead of decorative.
+          </p>
+          <div class="stat-cluster">
+            <article>
+              <strong>20g</strong>
+              <span>protein narrative</span>
+            </article>
+            <article>
+              <strong>3</strong>
+              <span>signature flavour identities</span>
+            </article>
+            <article>
+              <strong>330ml</strong>
+              <span>grab-and-go format</span>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="chapter chapter-right">
+        <div class="chapter-card" data-start="0.46" data-end="0.68">
+          <p class="chapter-kicker">Phase 03</p>
+          <h2>The spill becomes a flavour theatre for the whole range.</h2>
+          <p>
+            Mango Charge leads the scene with warm energy, Berry Lift adds deep
+            recovery tone, and Apple Lime Pulse cuts through with a colder clean
+            finish. The stage stays global while the taste story evolves.
+          </p>
+          <div class="flavour-tags">
+            <span>Mango Charge</span>
+            <span>Berry Lift</span>
+            <span>Apple Lime Pulse</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="chapter chapter-left">
+        <div class="chapter-card" data-start="0.62" data-end="0.84">
+          <p class="chapter-kicker">Phase 04</p>
+          <h2>Launch thinking appears inside the aftermath of the pour.</h2>
+          <p>
+            Once the splash reaches full spread, the brand logic comes into
+            focus: campus pop-ups for trial, gym fridges for recovery context,
+            cafes for premium signal and the website for repeat bundles.
+          </p>
+          <ul class="chapter-list">
+            <li>Campus and school launch drops</li>
+            <li>Gym fridges and sports club recovery moments</li>
+            <li>Independent cafes and social bundle offers</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="chapter chapter-right chapter-final">
+        <div class="chapter-card" data-start="0.80" data-end="1.00">
+          <p class="chapter-kicker">Final Frame</p>
+          <h2>Keep the stable site. Add the cinematic cut beside it.</h2>
+          <p>
+            This immersive version is a separate experience layer. The original
+            polished site stays available for normal browsing, while this one
+            works as a high-impact showcase and presentation piece.
+          </p>
+          <div class="chapter-actions">
+            <a class="chapter-button chapter-button-primary" href="./index.html">Stable Website</a>
+            <a class="chapter-button chapter-button-secondary" href="./deliverables/PROjuice-Marketing-Report-v4.pdf?v=4">Open Final Report</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="./src/immersive.js?v=1"></script>
+  </body>
+</html>
