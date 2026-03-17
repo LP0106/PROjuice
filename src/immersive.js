@@ -1,13 +1,26 @@
-document.body.classList.add("immersive-enhanced");
-
 const root = document.documentElement;
+const body = document.body;
+const immersiveShell = document.querySelector(".immersive-shell");
+const mainInterface = document.querySelector("#main-interface");
 const bottle = document.querySelector("#bottle-assembly");
 const cap = document.querySelector("#scene-cap");
 const liquid = document.querySelector("#bottle-liquid");
 const meterFill = document.querySelector("#scene-meter-fill");
 const progressLabel = document.querySelector("#scene-progress-label");
 const stateLabel = document.querySelector("#scene-state-label");
+const stage = document.querySelector(".experience-stage");
+const haloA = document.querySelector(".stage-halo-a");
+const haloB = document.querySelector(".stage-halo-b");
+const haloC = document.querySelector(".stage-halo-c");
+const rings = [...document.querySelectorAll(".rewind-ring")];
 const chapterCards = [...document.querySelectorAll(".chapter-card")];
+const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+body.classList.add("immersive-enhanced");
+
+if (immersiveShell) {
+  body.classList.add("has-immersive-intro");
+}
 
 const ribbons = [
   { node: document.querySelector(".ribbon-a"), toX: -420, toY: -280, rotate: -30, scale: 1.6, delay: 0.12 },
@@ -63,12 +76,14 @@ const bubbles = [
   { node: document.querySelector(".bubble-f"), toX: 120, toY: 20, delay: 0.44, drift: 12 },
 ];
 
+const clamp = (value, min = 0, max = 1) => Math.min(Math.max(value, min), max);
+
 const mapRange = (value, start, end) => {
   if (end === start) {
     return 0;
   }
 
-  return Math.min(Math.max((value - start) / (end - start), 0), 1);
+  return clamp((value - start) / (end - start));
 };
 
 const mix = (start, end, amount) => start + (end - start) * amount;
@@ -101,12 +116,27 @@ chapterCards.forEach((card) => {
   card.dataset.rangeEnd = String(end);
 });
 
-let targetProgress = 0;
-let smoothProgress = 0;
+const getImmersiveMetrics = () => {
+  if (!immersiveShell) {
+    const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
 
-const getScrollProgress = () => {
-  const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-  return scrollHeight > 0 ? window.scrollY / scrollHeight : 0;
+    return {
+      progress: scrollHeight > 0 ? clamp(window.scrollY / scrollHeight) : 0,
+      triggerY: scrollHeight,
+      revealY: 0,
+    };
+  }
+
+  const shellTop = immersiveShell.offsetTop;
+  const shellHeight = immersiveShell.offsetHeight;
+  const distance = Math.max(shellHeight - window.innerHeight, 1);
+  const current = window.scrollY - shellTop;
+
+  return {
+    progress: clamp(current / distance),
+    triggerY: shellTop + Math.max(shellHeight - window.innerHeight - 24, 0),
+    revealY: (mainInterface?.offsetTop || shellTop + shellHeight) - (window.innerHeight * 0.38),
+  };
 };
 
 const updateSceneLabels = (progress) => {
@@ -127,7 +157,7 @@ const updateSceneLabels = (progress) => {
   } else if (progress < 0.88) {
     stateLabel.textContent = "Splash fully spread";
   } else {
-    stateLabel.textContent = "Launch frame locked";
+    stateLabel.textContent = "Main interface loading";
   }
 };
 
@@ -153,12 +183,6 @@ const updateBottle = (progress) => {
 };
 
 const updateBackground = (progress) => {
-  const stage = document.querySelector(".experience-stage");
-  const haloA = document.querySelector(".stage-halo-a");
-  const haloB = document.querySelector(".stage-halo-b");
-  const haloC = document.querySelector(".stage-halo-c");
-  const rings = [...document.querySelectorAll(".rewind-ring")];
-
   if (stage) {
     stage.style.filter = `saturate(${mix(0.96, 1.14, progress)}) brightness(${mix(0.96, 1.04, progress)})`;
   }
@@ -192,7 +216,7 @@ const updateChapters = (progress) => {
     const midpoint = (start + end) / 2;
     const halfRange = (end - start) / 2;
     const distance = Math.abs(progress - midpoint) / Math.max(halfRange, 0.001);
-    const visibility = Math.min(Math.max(1 - distance, 0), 1);
+    const visibility = clamp(1 - distance);
     const eased = ease(visibility);
 
     card.style.opacity = String(mix(0.16, 1, eased));
@@ -245,8 +269,54 @@ const renderScene = (progress) => {
   root.style.setProperty("--scene-progress", progress.toFixed(4));
 };
 
+let targetProgress = 0;
+let smoothProgress = 0;
+let autoEntered = false;
+let autoEntering = false;
+let handoffTimer = 0;
+let lastScrollY = window.scrollY;
+
+const syncImmersiveState = () => {
+  if (!immersiveShell || !mainInterface) {
+    lastScrollY = window.scrollY;
+    return;
+  }
+
+  const { triggerY, revealY } = getImmersiveMetrics();
+  const isScrollingDown = window.scrollY > lastScrollY + 1;
+  const mainIsVisible = window.scrollY >= revealY;
+
+  immersiveShell.classList.toggle("is-main-visible", mainIsVisible);
+
+  if (autoEntered && window.scrollY < triggerY - (window.innerHeight * 0.45)) {
+    autoEntered = false;
+  }
+
+  if (!autoEntered && !autoEntering && isScrollingDown && window.scrollY >= triggerY) {
+    autoEntered = true;
+    autoEntering = true;
+    immersiveShell.classList.add("is-handoff");
+
+    window.scrollTo({
+      top: mainInterface.offsetTop,
+      behavior: prefersReducedMotion ? "auto" : "smooth",
+    });
+
+    window.clearTimeout(handoffTimer);
+    handoffTimer = window.setTimeout(() => {
+      autoEntering = false;
+      immersiveShell.classList.remove("is-handoff");
+      immersiveShell.classList.add("is-main-visible");
+    }, prefersReducedMotion ? 0 : 720);
+  } else if (!autoEntering && !mainIsVisible) {
+    immersiveShell.classList.remove("is-handoff");
+  }
+
+  lastScrollY = window.scrollY;
+};
+
 const tick = () => {
-  targetProgress = getScrollProgress();
+  targetProgress = getImmersiveMetrics().progress;
   smoothProgress += (targetProgress - smoothProgress) * 0.085;
 
   if (Math.abs(targetProgress - smoothProgress) < 0.0006) {
@@ -254,6 +324,7 @@ const tick = () => {
   }
 
   renderScene(smoothProgress);
+  syncImmersiveState();
   requestAnimationFrame(tick);
 };
 

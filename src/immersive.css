@@ -1,4 +1,4 @@
-:root {
+.immersive-shell {
   --bg-top: #08120f;
   --bg-bottom: #14231d;
   --panel: rgba(255, 255, 255, 0.1);
@@ -22,16 +22,7 @@
   --radius-md: 16px;
   --font-display: "Iowan Old Style", "Baskerville", "Palatino Linotype", serif;
   --font-sans: "Avenir Next", "Optima", "Gill Sans", "Trebuchet MS", sans-serif;
-}
-
-html {
-  min-height: 100%;
-  scroll-behavior: smooth;
-}
-
-body {
   min-height: 100vh;
-  margin: 0;
   color: var(--ink);
   font-family: var(--font-sans);
   line-height: 1.55;
@@ -40,7 +31,13 @@ body {
     radial-gradient(circle at 82% 20%, rgba(207, 93, 132, 0.08), transparent 28%),
     radial-gradient(circle at 72% 82%, rgba(120, 200, 90, 0.08), transparent 24%),
     linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
-  overflow-x: hidden;
+  overflow: clip;
+  isolation: isolate;
+}
+
+html {
+  min-height: 100%;
+  scroll-behavior: smooth;
 }
 
 *,
@@ -49,15 +46,15 @@ body {
   box-sizing: border-box;
 }
 
-a {
+.immersive-shell a {
   color: inherit;
   text-decoration: none;
 }
 
-button,
-input,
-textarea,
-select {
+.immersive-shell button,
+.immersive-shell input,
+.immersive-shell textarea,
+.immersive-shell select {
   font: inherit;
 }
 
@@ -136,7 +133,7 @@ select {
   min-width: 0;
 }
 
-.brand-mark {
+.experience-brand .brand-mark {
   display: inline-grid;
   place-items: center;
   width: 3rem;
@@ -192,6 +189,39 @@ select {
   z-index: 1;
   pointer-events: none;
   overflow: hidden;
+}
+
+.immersive-shell .experience-backdrop,
+.immersive-shell .experience-header,
+.immersive-shell .experience-stage {
+  transition: opacity 420ms ease, transform 420ms ease, filter 420ms ease, visibility 420ms ease;
+}
+
+.immersive-shell.is-handoff .experience-backdrop,
+.immersive-shell.is-handoff .experience-header,
+.immersive-shell.is-handoff .experience-stage {
+  opacity: 0.28;
+  filter: blur(10px);
+}
+
+.immersive-shell.is-handoff .experience-stage {
+  transform: scale(1.02);
+}
+
+.immersive-shell.is-main-visible .experience-backdrop,
+.immersive-shell.is-main-visible .experience-header,
+.immersive-shell.is-main-visible .experience-stage {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.immersive-shell.is-main-visible .experience-stage {
+  transform: scale(1.04);
+}
+
+.immersive-shell.is-main-visible .experience-backdrop {
+  transform: scale(1.02);
 }
 
 .stage-grid,
@@ -627,6 +657,13 @@ select {
   margin-top: 1.35rem;
 }
 
+.chapter-flow-note {
+  margin-top: 1rem;
+  color: var(--ink);
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
 .chapter-button {
   display: inline-flex;
   align-items: center;
@@ -719,7 +756,7 @@ select {
 }
 
 @media (max-width: 980px) {
-  :root {
+  .immersive-shell {
     --stage-center-x: 50%;
   }
 
