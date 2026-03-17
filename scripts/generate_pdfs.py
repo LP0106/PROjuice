@@ -294,9 +294,9 @@ FONT_IDS = {
 
 
 FONT_WIDTH_FACTOR = {
-    "regular": 0.52,
-    "bold": 0.55,
-    "italic": 0.5,
+    "regular": 0.54,
+    "bold": 0.6,
+    "italic": 0.52,
 }
 
 
@@ -641,8 +641,8 @@ def make_report_pages() -> list[PDFPage]:
         size=11.5,
         color=PALETTE["slate"],
     )
-    toc.rect(44, 152, 302, 540, fill=PALETTE["white"], stroke=None)
-    toc.rect(366, 152, 176, 540, fill=PALETTE["white"], stroke=None)
+    toc.rect(44, 152, 302, 520, fill=PALETTE["white"], stroke=None)
+    toc.rect(366, 152, 176, 286, fill=PALETTE["white"], stroke=None)
     toc.text(60, 174, "Report Structure", size=16, font="bold", color=PALETTE["ink"])
     items = [
         "1. Description of product or service",
@@ -672,10 +672,19 @@ def make_report_pages() -> list[PDFPage]:
     draw_badge(toc, 382, 208, 144, "UVP", "Fresh like juice, functional like a protein drink", PALETTE["leaf"])
     draw_badge(toc, 382, 292, 144, "Launch Goal", "2,340 bottles in 6 months", PALETTE["orange"])
     draw_badge(toc, 382, 376, 144, "Channels", "Campus, gyms, cafes and pre-orders", PALETTE["berry"])
+
+    toc.rect(366, 458, 176, 124, fill=PALETTE["white"], stroke=None)
     toc.text(382, 478, "Pilot Findings", size=13, font="bold", color=PALETTE["ink"])
-    toc.bullet_list(382, 504, BUSINESS["survey"], width=150, size=9.7)
-    toc.text(382, 660, "Core Message", size=13, font="bold", color=PALETTE["ink"])
-    toc.paragraph(382, 686, BUSINESS["uvp"], width=144, size=12.5, font="bold", color=PALETTE["leaf"])
+    toc.text(382, 504, "42", size=18, font="bold", color=PALETTE["berry"])
+    toc.paragraph(418, 502, "respondents tested the concept", width=100, size=8.9, color=PALETTE["slate"])
+    toc.text(382, 534, "86%", size=18, font="bold", color=PALETTE["orange"])
+    toc.paragraph(418, 532, "disliked chalky or artificial protein drinks", width=100, size=8.9, color=PALETTE["slate"])
+    toc.text(382, 564, "79%", size=18, font="bold", color=PALETTE["leaf"])
+    toc.paragraph(418, 562, "wanted a faster on-the-go breakfast or recovery option", width=100, size=8.9, color=PALETTE["slate"])
+
+    toc.rect(366, 602, 176, 70, fill=PALETTE["white"], stroke=None)
+    toc.text(382, 620, "Core Message", size=13, font="bold", color=PALETTE["ink"])
+    toc.paragraph(382, 644, BUSINESS["uvp"], width=144, size=10.7, font="bold", color=PALETTE["leaf"])
     pages.append(toc)
 
     intro = PDFPage(width, height, background=PALETTE["cream"])
@@ -801,25 +810,25 @@ def make_report_pages() -> list[PDFPage]:
 
     mix_a = PDFPage(width, height, background=PALETTE["cream"])
     y = draw_section_heading(mix_a, "10", "Marketing Assumptions", 44, 46, 500)
-    mix_a.bullet_list(44, y, BUSINESS["assumptions"], width=500, size=10.7, accent=PALETTE["orange"])
+    mix_a.bullet_list(44, y, BUSINESS["assumptions"], width=500, size=10.2, accent=PALETTE["orange"])
     y = draw_section_heading(mix_a, "11", "Marketing Objectives", 44, 260, 500)
-    mix_a.bullet_list(44, y, BUSINESS["marketing_objectives"], width=500, size=10.7, accent=PALETTE["berry"])
+    mix_a.bullet_list(44, y, BUSINESS["marketing_objectives"], width=500, size=10.2, accent=PALETTE["berry"])
     y = draw_section_heading(mix_a, "12", "Marketing Mix: Product and Price", 44, 508, 500)
-    mix_a.rect(44, y, 240, 232, fill=PALETTE["white"], stroke=None)
-    mix_a.rect(302, y, 240, 232, fill=PALETTE["white"], stroke=None)
+    mix_a.rect(44, y, 240, 176, fill=PALETTE["white"], stroke=None)
+    mix_a.rect(302, y, 240, 176, fill=PALETTE["white"], stroke=None)
     mix_a.text(58, y + 16, "Product", size=14, font="bold", color=PALETTE["leaf"])
-    mix_a.bullet_list(58, y + 42, MARKETING["marketing_mix"]["Product"], width=210, size=10.0, accent=PALETTE["leaf"])
+    mix_a.bullet_list(58, y + 42, MARKETING["marketing_mix"]["Product"], width=210, size=9.4, accent=PALETTE["leaf"])
     mix_a.text(316, y + 16, "Price", size=14, font="bold", color=PALETTE["orange"])
-    mix_a.bullet_list(316, y + 42, MARKETING["marketing_mix"]["Price"], width=210, size=10.0, accent=PALETTE["orange"])
+    mix_a.bullet_list(316, y + 42, MARKETING["marketing_mix"]["Price"], width=210, size=9.4, accent=PALETTE["orange"])
     unit_cost = sum(cost for _, cost in FINANCE["unit_costs"])
-    mix_a.rect(316, y + 136, 210, 78, fill=PALETTE["sand"], stroke=None)
-    mix_a.text(330, y + 150, "Gross Margin Snapshot", size=11, font="bold", color=PALETTE["ink"])
+    mix_a.rect(44, y + 194, 498, 78, fill=PALETTE["sand"], stroke=None)
+    mix_a.text(58, y + 212, "Gross Margin Snapshot", size=11.5, font="bold", color=PALETTE["ink"])
     mix_a.paragraph(
-        330,
-        y + 172,
+        58,
+        y + 236,
         f"Variable cost per bottle: NZD {unit_cost:.2f}\nRetail price: NZD {FINANCE['retail_price']:.2f}\nGross profit per direct sale: NZD {FINANCE['retail_price'] - unit_cost:.2f}",
-        width=184,
-        size=10.2,
+        width=454,
+        size=10.0,
         font="bold",
         color=PALETTE["slate"],
     )
@@ -882,7 +891,7 @@ def make_report_pages() -> list[PDFPage]:
 
     controls = PDFPage(width, height, background=PALETTE["cream"])
     y = draw_section_heading(controls, "16", "Marketing Budget", 44, 46, 500)
-    controls.rect(44, y, 498, 300, fill=PALETTE["white"], stroke=None)
+    controls.rect(44, y, 498, 340, fill=PALETTE["white"], stroke=None)
     controls.text(58, y + 18, "Budget item", size=11, font="bold", color=PALETTE["ink"])
     controls.text(470, y + 18, "NZD", size=11, font="bold", color=PALETTE["ink"], width=50, align="right")
     current = y + 48
@@ -892,35 +901,37 @@ def make_report_pages() -> list[PDFPage]:
         controls.line(58, current - 8, 520, current - 8, PALETTE["sand"], 1)
         controls.paragraph(58, current, item, width=360, size=9.8)
         controls.text(458, current, f"{amount}", size=10.1, font="bold", color=PALETTE["slate"], width=60, align="right")
-        current += 34
+        current += 36
     controls.line(58, current - 8, 520, current - 8, PALETTE["ink"], 1.1)
     controls.text(58, current, "Total marketing budget", size=11.4, font="bold", color=PALETTE["ink"])
     controls.text(454, current, f"{total_budget}", size=11.4, font="bold", color=PALETTE["leaf"], width=64, align="right")
-    controls.rect(58, y + 232, 460, 48, fill=PALETTE["sand"], stroke=None)
+    controls.rect(58, y + 252, 460, 62, fill=PALETTE["sand"], stroke=None)
     controls.paragraph(
         72,
-        y + 246,
+        y + 270,
         "Budget priority is front-loaded into launch sampling and social content because early taste proof and visual storytelling are the fastest ways to earn trial.",
         width=432,
-        size=9.7,
+        size=9.2,
         font="bold",
         color=PALETTE["slate"],
     )
+    pages.append(controls)
 
-    y = draw_section_heading(controls, "17", "Plan for Monitoring Sales", 44, 384, 500)
-    controls.rect(44, y, 498, 310, fill=PALETTE["white"], stroke=None)
-    controls.bullet_list(58, y + 28, MARKETING["monitoring"], width=454, size=10.3, accent=PALETTE["leaf"])
-    controls.rect(58, y + 190, 454, 94, fill=PALETTE["sand"], stroke=None)
-    controls.text(72, y + 206, "Weekly Dashboard Fields", size=11.5, font="bold", color=PALETTE["ink"])
-    controls.paragraph(
+    monitoring = PDFPage(width, height, background=PALETTE["cream"])
+    y = draw_section_heading(monitoring, "17", "Plan for Monitoring Sales", 44, 46, 500)
+    monitoring.rect(44, y, 498, 340, fill=PALETTE["white"], stroke=None)
+    monitoring.bullet_list(58, y + 28, MARKETING["monitoring"], width=454, size=10.3, accent=PALETTE["leaf"])
+    monitoring.rect(58, y + 206, 454, 104, fill=PALETTE["sand"], stroke=None)
+    monitoring.text(72, y + 224, "Weekly Dashboard Fields", size=11.5, font="bold", color=PALETTE["ink"])
+    monitoring.paragraph(
         72,
-        y + 228,
+        y + 248,
         "Units sold by flavour | units sold by channel | conversion from sampling | repeat purchase | stockist sell-through | social saves, clicks and QR scans",
         width=428,
-        size=10.0,
+        size=9.6,
         color=PALETTE["slate"],
     )
-    pages.append(controls)
+    pages.append(monitoring)
 
     total = len(pages)
     for idx, page in enumerate(pages, start=1):
@@ -973,10 +984,10 @@ def make_canvas_pages() -> list[PDFPage]:
 def generate() -> None:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     report_writer = PDFWriter()
-    report_writer.build(make_report_pages(), OUT_DIR / "PROjuice-Marketing-Report-v2.pdf")
+    report_writer.build(make_report_pages(), OUT_DIR / "PROjuice-Marketing-Report-v3.pdf")
 
     canvas_writer = PDFWriter()
-    canvas_writer.build(make_canvas_pages(), OUT_DIR / "PROjuice-Lean-Canvas-v2.pdf")
+    canvas_writer.build(make_canvas_pages(), OUT_DIR / "PROjuice-Lean-Canvas-v3.pdf")
 
 
 if __name__ == "__main__":
