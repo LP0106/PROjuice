@@ -12,9 +12,7 @@ const parallaxNodes = [...document.querySelectorAll("[data-parallax]")];
 const tiltNodes = [...document.querySelectorAll("[data-tilt]")];
 const magneticNodes = [...document.querySelectorAll(".magnetic")];
 const counterNodes = [...document.querySelectorAll("[data-count]")];
-const roadmapTrack = document.querySelector("[data-slider-track]");
-const prevButton = document.querySelector("[data-slider-prev]");
-const nextButton = document.querySelector("[data-slider-next]");
+const sliderRoots = [...document.querySelectorAll("[data-slider-root]")];
 const faqItems = [...document.querySelectorAll(".faq-item")];
 const navLinks = [...document.querySelectorAll(".site-nav a")];
 const sectionNodes = [...document.querySelectorAll("main section[id]")];
@@ -264,22 +262,45 @@ window.addEventListener("resize", () => {
   });
 });
 
-if (roadmapTrack && prevButton && nextButton) {
-  const scrollRoadmap = (direction) => {
-    const firstCard = roadmapTrack.querySelector(".roadmap-card");
-    const step = firstCard
-      ? firstCard.getBoundingClientRect().width + 16
-      : 320;
+sliderRoots.forEach((sliderRoot) => {
+  const track = sliderRoot.querySelector("[data-slider-track]");
+  const prevButton = sliderRoot.querySelector("[data-slider-prev]");
+  const nextButton = sliderRoot.querySelector("[data-slider-next]");
 
-    roadmapTrack.scrollBy({
-      left: step * direction,
+  if (!track || !prevButton || !nextButton) {
+    return;
+  }
+
+  const resolveStep = () => {
+    const cardSelector = track.dataset.sliderCardSelector || ".roadmap-card, .route-card";
+    const firstCard = track.querySelector(cardSelector);
+    const trackStyles = window.getComputedStyle(track);
+    const gapValue = Number.parseFloat(trackStyles.columnGap || trackStyles.gap || "16");
+
+    return firstCard
+      ? firstCard.getBoundingClientRect().width + gapValue
+      : Math.max(track.getBoundingClientRect().width * 0.82, 260);
+  };
+
+  const syncSliderState = () => {
+    const maxScrollLeft = track.scrollWidth - track.clientWidth - 4;
+    prevButton.disabled = track.scrollLeft <= 4;
+    nextButton.disabled = track.scrollLeft >= maxScrollLeft;
+  };
+
+  const scrollTrack = (direction) => {
+    track.scrollBy({
+      left: resolveStep() * direction,
       behavior: "smooth",
     });
   };
 
-  prevButton.addEventListener("click", () => scrollRoadmap(-1));
-  nextButton.addEventListener("click", () => scrollRoadmap(1));
-}
+  prevButton.addEventListener("click", () => scrollTrack(-1));
+  nextButton.addEventListener("click", () => scrollTrack(1));
+  track.addEventListener("scroll", syncSliderState, { passive: true });
+  window.addEventListener("resize", syncSliderState);
+  syncSliderState();
+});
 
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const supportsFinePointer = window.matchMedia("(pointer: fine)").matches;

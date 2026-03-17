@@ -14,8 +14,8 @@
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
     <title>PROjuice | Real Fruit Energy. Serious Protein.</title>
-    <link rel="stylesheet" href="./src/styles.css?v=8" />
-    <link rel="stylesheet" href="./src/immersive.css?v=3" />
+    <link rel="stylesheet" href="./src/styles.css?v=9" />
+    <link rel="stylesheet" href="./src/immersive.css?v=4" />
   </head>
   <body class="has-immersive-intro" data-theme="mango">
     <div
@@ -50,6 +50,8 @@
     <section
       id="immersive-intro"
       class="immersive-shell"
+      data-immersive-mode="integrated"
+      data-handoff-target="#main-interface"
       aria-label="PROjuice immersive intro"
     >
       <div
@@ -176,7 +178,7 @@
 
         <div class="scene-prompt">
           <span>Scroll down to pour forward.</span>
-          <span>At the end, the full PROjuice site opens automatically below.</span>
+          <span>At the end, the full PROjuice site glides in and scrubs back live when you scroll up.</span>
         </div>
       </div>
 
@@ -780,63 +782,99 @@
               </div>
             </div>
 
-            <div class="route-stack">
-              <article
-                class="route-card"
-                data-tilt
+            <div
+              class="route-module"
+              data-slider-root
+            >
+              <div class="route-module-head">
+                <p class="card-label">Swipe sideways through the channel sequence</p>
+                <div class="slider-controls">
+                  <button
+                    class="slider-button magnetic"
+                    type="button"
+                    data-slider-prev
+                  >
+                    Prev
+                  </button>
+                  <button
+                    class="slider-button magnetic"
+                    type="button"
+                    data-slider-next
+                  >
+                    Next
+                  </button>
+                </div>
+              </div>
+
+              <div
+                class="route-stack"
+                data-slider-track
+                data-slider-card-selector=".route-card"
               >
-                <p class="card-label">01 · Awareness</p>
-                <h3>Campus pop-ups and school launch drops</h3>
-                <p>
-                  The fastest way to build belief is still in-person tasting.
-                  Pop-ups create visual noise, immediate feedback and content at
-                  the same time.
-                </p>
-              </article>
-              <article
-                class="route-card"
-                data-tilt
-              >
-                <p class="card-label">02 · Conversion</p>
-                <h3>Gym fridges and sports-club recovery moments</h3>
-                <p>
-                  This is where the protein promise becomes most relevant.
-                  PROjuice earns repeat use when it appears right after effort.
-                </p>
-              </article>
-              <article
-                class="route-card"
-                data-tilt
-              >
-                <p class="card-label">03 · Premium signal</p>
-                <h3>Independent cafes and lifestyle-led counters</h3>
-                <p>
-                  Cafe placement lifts perceived quality and makes the bottle
-                  feel more like a premium drink than a typical supplement.
-                </p>
-              </article>
-              <article
-                class="route-card"
-                data-tilt
-              >
-                <p class="card-label">04 · Retention</p>
-                <h3>Social bundles, QR offers and re-order packs</h3>
-                <p>
-                  The website and Instagram layer turn first purchase into a
-                  repeat habit through bundles, short-form content and direct
-                  reminders.
-                </p>
-              </article>
+                <article
+                  class="route-card"
+                  data-tilt
+                >
+                  <p class="card-label">01 · Awareness</p>
+                  <h3>Campus pop-ups and school launch drops</h3>
+                  <p>
+                    The fastest way to build belief is still in-person tasting.
+                    Pop-ups create visual noise, immediate feedback and content at
+                    the same time.
+                  </p>
+                </article>
+                <article
+                  class="route-card"
+                  data-tilt
+                >
+                  <p class="card-label">02 · Conversion</p>
+                  <h3>Gym fridges and sports-club recovery moments</h3>
+                  <p>
+                    This is where the protein promise becomes most relevant.
+                    PROjuice earns repeat use when it appears right after effort.
+                  </p>
+                </article>
+                <article
+                  class="route-card"
+                  data-tilt
+                >
+                  <p class="card-label">03 · Premium signal</p>
+                  <h3>Independent cafes and lifestyle-led counters</h3>
+                  <p>
+                    Cafe placement lifts perceived quality and makes the bottle
+                    feel more like a premium drink than a typical supplement.
+                  </p>
+                </article>
+                <article
+                  class="route-card"
+                  data-tilt
+                >
+                  <p class="card-label">04 · Retention</p>
+                  <h3>Social bundles, QR offers and re-order packs</h3>
+                  <p>
+                    The website and Instagram layer turn first purchase into a
+                    repeat habit through bundles, short-form content and direct
+                    reminders.
+                  </p>
+                </article>
+              </div>
+
+              <p class="route-swipe-note">
+                Drag or swipe left and right to read each launch channel without clipping the layout.
+              </p>
             </div>
           </div>
 
-          <div class="roadmap-module">
+          <div
+            class="roadmap-module"
+            data-slider-root
+          >
             <div class="roadmap-head">
               <div>
                 <p class="eyebrow">Interactive roadmap</p>
                 <h2>Slide through the first seven months of launch activity.</h2>
               </div>
-              <div class="roadmap-controls">
+              <div class="slider-controls roadmap-controls">
                 <button
                   class="slider-button magnetic"
                   type="button"
@@ -1079,7 +1117,7 @@
       </footer>
     </div>
 
-    <script src="./src/immersive.js?v=3"></script>
-    <script src="./src/main.js?v=8"></script>
+    <script src="./src/immersive.js?v=4"></script>
+    <script src="./src/main.js?v=9"></script>
   </body>
 </html>

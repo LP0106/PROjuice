@@ -38,6 +38,13 @@
 html {
   min-height: 100%;
   scroll-behavior: smooth;
+  background: #08120f;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
 *,
@@ -124,6 +131,7 @@ html {
   background: rgba(8, 18, 15, 0.54);
   backdrop-filter: blur(22px);
   box-shadow: 0 18px 48px rgba(0, 0, 0, 0.18);
+  will-change: opacity;
 }
 
 .experience-brand {
@@ -189,39 +197,19 @@ html {
   z-index: 1;
   pointer-events: none;
   overflow: hidden;
+  transform-origin: center center;
+  will-change: transform, opacity, filter;
 }
 
-.immersive-shell .experience-backdrop,
-.immersive-shell .experience-header,
-.immersive-shell .experience-stage {
-  transition: opacity 420ms ease, transform 420ms ease, filter 420ms ease, visibility 420ms ease;
+.experience-backdrop {
+  will-change: opacity;
 }
 
-.immersive-shell.is-handoff .experience-backdrop,
-.immersive-shell.is-handoff .experience-header,
-.immersive-shell.is-handoff .experience-stage {
-  opacity: 0.28;
-  filter: blur(10px);
-}
-
-.immersive-shell.is-handoff .experience-stage {
-  transform: scale(1.02);
-}
-
-.immersive-shell.is-main-visible .experience-backdrop,
-.immersive-shell.is-main-visible .experience-header,
-.immersive-shell.is-main-visible .experience-stage {
-  opacity: 0;
+.immersive-shell.is-overlay-hidden .experience-backdrop,
+.immersive-shell.is-overlay-hidden .experience-header,
+.immersive-shell.is-overlay-hidden .experience-stage {
   visibility: hidden;
   pointer-events: none;
-}
-
-.immersive-shell.is-main-visible .experience-stage {
-  transform: scale(1.04);
-}
-
-.immersive-shell.is-main-visible .experience-backdrop {
-  transform: scale(1.02);
 }
 
 .stage-grid,
