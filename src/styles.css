@@ -508,9 +508,33 @@ main {
 .contrast-panel,
 .strategy-mini-metrics article,
 .flavour-meta article {
+  position: relative;
+  overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
   box-shadow: 0 18px 34px rgba(0, 0, 0, 0.14);
+}
+
+.metric-card::before,
+.signal-card::before,
+.board-card::before,
+.route-card::before,
+.roadmap-card::before,
+.immersion-card::before,
+.download-card::before,
+.faq-item::before,
+.contrast-panel::before,
+.strategy-mini-metrics article::before,
+.flavour-meta article::before {
+  content: "";
+  position: absolute;
+  inset: auto -8% -24% auto;
+  width: 11rem;
+  height: 11rem;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(255, 155, 72, 0.16), rgba(255, 255, 255, 0));
+  opacity: 0.8;
 }
 
 .metric-card {
@@ -827,9 +851,12 @@ main {
 .ticker-band {
   padding: 0.7rem 0;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.48);
-  border: 1px solid rgba(255, 255, 255, 0.58);
-  box-shadow: 0 16px 32px rgba(16, 39, 31, 0.05);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.05)),
+    radial-gradient(circle at 16% 50%, rgba(255, 155, 72, 0.12), rgba(255, 255, 255, 0) 30%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(18px);
   overflow: hidden;
 }
 
@@ -850,7 +877,7 @@ main {
   display: inline-flex;
   align-items: center;
   gap: 0.7rem;
-  color: var(--ink);
+  color: var(--ink-strong);
   font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -902,9 +929,11 @@ main {
   padding: 1rem 1rem 0.95rem;
   text-align: left;
   border-radius: 1.4rem;
-  border: 1px solid rgba(23, 53, 45, 0.09);
-  background: rgba(255, 255, 255, 0.56);
-  box-shadow: 0 14px 28px rgba(16, 39, 31, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04)),
+    radial-gradient(circle at left center, rgba(255, 155, 72, 0.08), rgba(255, 255, 255, 0) 35%);
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.16);
   transform: translate3d(var(--mag-x), var(--mag-y), 0);
   transition: transform 220ms ease, background 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
 }
@@ -912,13 +941,15 @@ main {
 .flavour-chip:hover,
 .flavour-chip:focus-visible {
   transform: translate3d(var(--mag-x), calc(var(--mag-y) - 2px), 0);
-  box-shadow: 0 20px 34px rgba(16, 39, 31, 0.08);
+  box-shadow: 0 22px 42px rgba(0, 0, 0, 0.22);
 }
 
 .flavour-chip.is-active {
-  border-color: rgba(255, 255, 255, 0.7);
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.72));
-  box-shadow: 0 24px 40px var(--accent-soft);
+  border-color: rgba(255, 255, 255, 0.2);
+  background:
+    linear-gradient(145deg, rgba(255, 155, 72, 0.18), rgba(255, 255, 255, 0.06) 52%, rgba(255, 255, 255, 0.04)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  box-shadow: 0 26px 44px rgba(0, 0, 0, 0.26), 0 0 0 1px rgba(255, 155, 72, 0.08);
 }
 
 .flavour-chip.is-active::after {
@@ -940,7 +971,8 @@ main {
   width: 2rem;
   height: 2rem;
   border-radius: 999px;
-  background: rgba(23, 53, 45, 0.07);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--accent-deep);
   font-size: 0.82rem;
   font-weight: 800;
 }
@@ -963,8 +995,10 @@ main {
   overflow: hidden;
   border-radius: calc(var(--radius-xl) - 8px);
   background:
-    radial-gradient(circle at 18% 35%, rgba(255, 255, 255, 0.62), rgba(255, 255, 255, 0) 38%),
+    radial-gradient(circle at 18% 35%, rgba(255, 244, 225, 0.16), rgba(255, 255, 255, 0) 34%),
+    radial-gradient(circle at 82% 24%, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0) 28%),
     linear-gradient(145deg, var(--stage-a), var(--stage-b));
+  border: 1px solid rgba(255, 255, 255, 0.12);
   box-shadow: var(--shadow-strong);
 }
 
@@ -976,6 +1010,15 @@ main {
   height: 34rem;
   border-radius: 50%;
   background: radial-gradient(circle, var(--aura), rgba(255, 255, 255, 0));
+}
+
+.flavour-canvas::after {
+  content: "";
+  position: absolute;
+  inset: 1rem;
+  border-radius: calc(var(--radius-xl) - 12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  pointer-events: none;
 }
 
 .flavour-aura {
@@ -1059,7 +1102,7 @@ main {
   height: 0.7rem;
   margin-top: 0.45rem;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.08);
   overflow: hidden;
 }
 
@@ -1068,8 +1111,8 @@ main {
   width: var(--meter-width, 0%);
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.92), var(--accent), var(--accent-strong));
-  box-shadow: 0 0 18px rgba(255, 255, 255, 0.36);
+  background: linear-gradient(90deg, var(--accent-deep), var(--accent), var(--accent-strong));
+  box-shadow: 0 0 24px rgba(255, 155, 72, 0.28);
   transition: width 520ms cubic-bezier(0.22, 1, 0.36, 1), background 300ms ease;
 }
 
@@ -1131,10 +1174,10 @@ main {
 .manifesto-tags span {
   padding: 0.7rem 1rem;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.74);
-  border: 1px solid rgba(23, 53, 45, 0.08);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   color: var(--ink);
-  box-shadow: 0 12px 24px rgba(16, 39, 31, 0.04);
+  box-shadow: 0 14px 26px rgba(0, 0, 0, 0.14);
 }
 
 .manifesto-board {
@@ -1147,6 +1190,12 @@ main {
 .board-card {
   padding: 1.2rem;
   border-radius: 1.6rem;
+}
+
+.board-card-large {
+  background:
+    radial-gradient(circle at top right, rgba(255, 155, 72, 0.14), rgba(255, 255, 255, 0) 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.04));
 }
 
 .board-card-large {
@@ -1163,6 +1212,9 @@ main {
 .signal-card {
   padding: 1.15rem;
   border-radius: 1.5rem;
+  background:
+    radial-gradient(circle at top right, rgba(255, 155, 72, 0.1), rgba(255, 255, 255, 0) 32%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
 }
 
 .signal-value {
@@ -1183,14 +1235,14 @@ main {
 
 .contrast-problem {
   background:
-    radial-gradient(circle at top right, rgba(255, 186, 144, 0.35), rgba(255, 255, 255, 0) 38%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(255, 242, 235, 0.72));
+    radial-gradient(circle at top right, rgba(255, 155, 72, 0.16), rgba(255, 255, 255, 0) 38%),
+    linear-gradient(180deg, rgba(55, 27, 21, 0.82), rgba(22, 14, 12, 0.76));
 }
 
 .contrast-solution {
   background:
-    radial-gradient(circle at top right, rgba(160, 215, 181, 0.3), rgba(255, 255, 255, 0) 38%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(238, 249, 243, 0.72));
+    radial-gradient(circle at top right, rgba(120, 200, 90, 0.16), rgba(255, 255, 255, 0) 38%),
+    linear-gradient(180deg, rgba(19, 38, 31, 0.82), rgba(11, 23, 19, 0.76));
 }
 
 .launch-architecture {
@@ -1250,9 +1302,10 @@ main {
 .route-stack {
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: minmax(18rem, calc(50% - 0.5rem));
+  grid-auto-columns: minmax(21rem, calc(52% - 0.5rem));
   gap: 0.95rem;
   overflow-x: auto;
+  scroll-padding-left: 0.1rem;
   padding-bottom: 0.45rem;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-x: contain;
@@ -1274,16 +1327,22 @@ main {
 
 .route-card {
   min-width: 0;
+  position: relative;
   display: grid;
   align-content: start;
   padding: 1.2rem;
   border-radius: 1.55rem;
   min-height: 100%;
   scroll-snap-align: start;
+  background:
+    radial-gradient(circle at top right, rgba(255, 155, 72, 0.12), rgba(255, 255, 255, 0) 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.05));
 }
 
 .route-card h3,
 .roadmap-card h3 {
+  font-size: clamp(1.7rem, 2.5vw, 2.2rem);
+  line-height: 0.98;
   text-wrap: balance;
   overflow-wrap: anywhere;
 }
@@ -1296,7 +1355,7 @@ main {
 
 .roadmap-module {
   padding-top: 1.55rem;
-  border-top: 1px solid rgba(23, 53, 45, 0.08);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .slider-controls,
@@ -1308,16 +1367,16 @@ main {
 .slider-button {
   padding: 0.85rem 1.15rem;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.68);
-  border: 1px solid rgba(23, 53, 45, 0.08);
-  box-shadow: 0 14px 28px rgba(16, 39, 31, 0.05);
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.14);
   transform: translate3d(var(--mag-x), var(--mag-y), 0);
 }
 
 .slider-button:hover,
 .slider-button:focus-visible {
   transform: translate3d(var(--mag-x), calc(var(--mag-y) - 2px), 0);
-  box-shadow: 0 18px 34px rgba(16, 39, 31, 0.08);
+  box-shadow: 0 18px 34px rgba(0, 0, 0, 0.2);
 }
 
 .slider-button:disabled {
@@ -1331,7 +1390,7 @@ main {
 .roadmap-track {
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: minmax(18rem, calc(33% - 0.65rem));
+  grid-auto-columns: minmax(20rem, calc(34% - 0.65rem));
   gap: 0.95rem;
   margin-top: 1.35rem;
   padding-bottom: 0.5rem;
@@ -1349,12 +1408,16 @@ main {
 }
 
 .roadmap-card {
+  position: relative;
   display: grid;
   align-content: start;
   padding: 1.2rem;
   border-radius: 1.5rem;
   min-height: 100%;
   scroll-snap-align: start;
+  background:
+    radial-gradient(circle at top right, rgba(207, 93, 132, 0.12), rgba(255, 255, 255, 0) 36%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
 }
 
 .roadmap-card span {
@@ -1386,6 +1449,9 @@ main {
   min-height: 16rem;
   padding: 1.2rem;
   border-radius: 1.55rem;
+  background:
+    radial-gradient(circle at top right, rgba(120, 200, 90, 0.1), rgba(255, 255, 255, 0) 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
 }
 
 .downloads-grid {
@@ -1409,7 +1475,7 @@ main {
   width: 12rem;
   height: 12rem;
   border-radius: 50%;
-  background: radial-gradient(circle, var(--accent-soft), rgba(255, 255, 255, 0));
+  background: radial-gradient(circle, rgba(255, 155, 72, 0.18), rgba(255, 255, 255, 0));
 }
 
 .download-card .button {
@@ -1418,8 +1484,8 @@ main {
 
 .download-card-featured {
   background:
-    radial-gradient(circle at top right, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0) 38%),
-    linear-gradient(145deg, rgba(255, 255, 255, 0.88), rgba(255, 247, 239, 0.72));
+    radial-gradient(circle at top right, rgba(255, 155, 72, 0.2), rgba(255, 255, 255, 0) 36%),
+    linear-gradient(145deg, rgba(48, 22, 15, 0.9), rgba(18, 15, 13, 0.78));
 }
 
 .faq-list {
@@ -1431,6 +1497,9 @@ main {
 .faq-item {
   border-radius: 1.55rem;
   padding: 0.25rem;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04)),
+    radial-gradient(circle at right top, rgba(255, 155, 72, 0.08), rgba(255, 255, 255, 0) 32%);
 }
 
 .faq-question {
@@ -1464,7 +1533,7 @@ main {
   width: 1rem;
   height: 2px;
   border-radius: 999px;
-  background: var(--ink);
+  background: var(--ink-strong);
   transform: translate(-50%, -50%);
   transition: transform 220ms ease, opacity 220ms ease;
 }
@@ -1499,6 +1568,8 @@ main {
   justify-content: space-between;
   gap: 1.2rem;
   padding: 1.4rem 0.6rem 0.2rem;
+  margin-top: 0.8rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
   color: var(--muted);
 }
 
@@ -1611,7 +1682,7 @@ main {
   }
 
   .site-nav a {
-    background: rgba(255, 255, 255, 0.56);
+    background: rgba(255, 255, 255, 0.05);
   }
 
   .hero-shell,
@@ -1654,11 +1725,11 @@ main {
   }
 
   .route-stack {
-    grid-auto-columns: minmax(17rem, 72vw);
+    grid-auto-columns: minmax(18rem, 78vw);
   }
 
   .roadmap-track {
-    grid-auto-columns: minmax(17rem, 72vw);
+    grid-auto-columns: minmax(18rem, 78vw);
   }
 }
 
@@ -1747,7 +1818,7 @@ main {
 
   .route-stack,
   .roadmap-track {
-    grid-auto-columns: minmax(15rem, 84vw);
+    grid-auto-columns: minmax(16rem, 86vw);
   }
 
   .site-footer {
@@ -1795,7 +1866,7 @@ main {
 
   .route-stack,
   .roadmap-track {
-    grid-auto-columns: minmax(14rem, 88vw);
+    grid-auto-columns: minmax(15.5rem, 90vw);
   }
 }
 

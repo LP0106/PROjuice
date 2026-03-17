@@ -6,7 +6,6 @@ if (immersiveShell) {
   const select = (selector) => immersiveShell.querySelector(selector);
   const selectAll = (selector) => [...immersiveShell.querySelectorAll(selector)];
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const mode = immersiveShell.dataset.immersiveMode || "standalone";
   const handoffTarget = immersiveShell.dataset.handoffTarget
     ? document.querySelector(immersiveShell.dataset.handoffTarget)
     : document.querySelector("#main-interface");
@@ -34,7 +33,7 @@ if (immersiveShell) {
 
   body.classList.add("immersive-enhanced");
 
-  if (mode === "integrated" && handoffTarget) {
+  if (handoffTarget) {
     body.classList.add("has-immersive-intro");
   }
 
@@ -150,10 +149,10 @@ if (immersiveShell) {
     state.layout.shellHeight = shellHeight;
     state.layout.scrollDistance = scrollDistance;
 
-    if (mode !== "integrated" || !handoffTarget) {
-      state.layout.targetTop = 0;
-      state.layout.revealStart = 0;
-      state.layout.revealEnd = 1;
+    if (!handoffTarget) {
+      state.layout.targetTop = shellTop + scrollDistance;
+      state.layout.revealStart = shellTop + scrollDistance;
+      state.layout.revealEnd = shellTop + scrollDistance;
       state.layout.triggerY = shellTop + scrollDistance;
       return;
     }
@@ -171,15 +170,6 @@ if (immersiveShell) {
 
   const getMetrics = () => {
     const sceneProgress = clamp((window.scrollY - state.layout.shellTop) / state.layout.scrollDistance);
-
-    if (mode !== "integrated" || !handoffTarget) {
-      return {
-        sceneProgress,
-        overlayProgress: 0,
-        triggerY: state.layout.triggerY,
-        targetTop: state.layout.targetTop,
-      };
-    }
 
     return {
       sceneProgress,
@@ -231,7 +221,7 @@ if (immersiveShell) {
     } else if (progress < 0.88) {
       stateLabel.textContent = "Splash fully spread";
     } else {
-      stateLabel.textContent = mode === "integrated" ? "Launch frame locked" : "Rewind ready";
+      stateLabel.textContent = "Launch frame locked";
     }
   };
 
@@ -343,7 +333,7 @@ if (immersiveShell) {
   };
 
   const maybeAutoHandoff = (metrics) => {
-    if (mode !== "integrated" || !handoffTarget) {
+    if (!handoffTarget) {
       return;
     }
 
