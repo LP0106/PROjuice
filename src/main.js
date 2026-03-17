@@ -57,7 +57,7 @@ const spillLayout = {
   endY: 1,
   travel: 1,
   layerHeight: 1,
-  baseX: window.innerWidth * 0.5,
+  sourceX: window.innerWidth * 0.5,
 };
 
 const flavourData = {
@@ -620,11 +620,19 @@ const updateSpillLayout = () => {
   spillLayout.endY = endY;
   spillLayout.travel = Math.max(endY - startY, 1);
   spillLayout.layerHeight = docHeight;
-  spillLayout.baseX = sourceX;
+  spillLayout.sourceX = sourceX;
+  const centerX = window.innerWidth * 0.5;
+  const sourceOffset = sourceX - centerX;
+  const bridgeWidth = Math.max(Math.abs(sourceOffset) + 84, 84);
+  const bridgeRotate = Math.max(Math.min(sourceOffset * 0.04, 10), -10);
 
   spillLayer.style.setProperty("--spill-layer-height", `${docHeight}px`);
   spillLayer.style.setProperty("--spill-start-y", `${startY.toFixed(2)}px`);
-  spillLayer.style.setProperty("--spill-base-x", `${sourceX.toFixed(2)}px`);
+  spillLayer.style.setProperty("--spill-base-x", `${centerX.toFixed(2)}px`);
+  spillLayer.style.setProperty("--spill-source-offset-x", `${sourceOffset.toFixed(2)}px`);
+  spillLayer.style.setProperty("--spill-bridge-width", `${bridgeWidth.toFixed(2)}px`);
+  spillLayer.style.setProperty("--spill-bridge-shift", `${(sourceOffset * 0.5).toFixed(2)}px`);
+  spillLayer.style.setProperty("--spill-bridge-rotate", `${bridgeRotate.toFixed(2)}deg`);
   spillLayer.style.setProperty("--spill-ground-y", `${endY.toFixed(2)}px`);
 };
 
@@ -746,6 +754,10 @@ const syncScrollEffects = () => {
     const streamReach = spillLayout.startY + (spillLayout.travel * streamProgress);
     const streamHeight = Math.max(streamReach - spillLayout.startY, 0);
     const groundProgress = clamp((streamProgress - 0.84) / 0.16);
+    const centerX = window.innerWidth * 0.5;
+    const sourceOffset = spillLayout.sourceX - centerX;
+    const bridgeWidth = Math.max(Math.abs(sourceOffset) + 84, 84);
+    const bridgeRotate = Math.max(Math.min(sourceOffset * 0.04, 10), -10);
     const laneAmplitude = lowMotionViewport ? 5 : 14;
     const laneX = (
       Math.sin((streamProgress * Math.PI * 2.3) + 0.35) * laneAmplitude +
@@ -754,6 +766,11 @@ const syncScrollEffects = () => {
 
     spillLayer.style.setProperty("--spill-height", `${streamHeight.toFixed(2)}px`);
     spillLayer.style.setProperty("--spill-progress", streamProgress.toFixed(4));
+    spillLayer.style.setProperty("--spill-base-x", `${centerX.toFixed(2)}px`);
+    spillLayer.style.setProperty("--spill-source-offset-x", `${sourceOffset.toFixed(2)}px`);
+    spillLayer.style.setProperty("--spill-bridge-width", `${bridgeWidth.toFixed(2)}px`);
+    spillLayer.style.setProperty("--spill-bridge-shift", `${(sourceOffset * 0.5).toFixed(2)}px`);
+    spillLayer.style.setProperty("--spill-bridge-rotate", `${bridgeRotate.toFixed(2)}deg`);
     spillLayer.style.setProperty("--spill-lane-x", `${laneX.toFixed(2)}px`);
     spillLayer.style.setProperty("--spill-ground-progress", groundProgress.toFixed(4));
   }

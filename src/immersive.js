@@ -345,8 +345,16 @@ if (immersiveShell) {
     const shellRect = bottleShell.getBoundingClientRect();
     const mouthX = shellRect.left + (shellRect.width * mix(0.5, 0.2, tip));
     const mouthY = window.scrollY + shellRect.top + (shellRect.height * mix(0.03, 0.085, tip));
+    const centerX = window.innerWidth * 0.5;
+    const sourceOffset = mouthX - centerX;
+    const bridgeWidth = Math.max(Math.abs(sourceOffset) + 84, 84);
+    const bridgeRotate = Math.max(Math.min(sourceOffset * 0.04, 10), -10);
 
-    spillLayer.style.setProperty("--spill-base-x", `${mouthX.toFixed(2)}px`);
+    spillLayer.style.setProperty("--spill-base-x", `${centerX.toFixed(2)}px`);
+    spillLayer.style.setProperty("--spill-source-offset-x", `${sourceOffset.toFixed(2)}px`);
+    spillLayer.style.setProperty("--spill-bridge-width", `${bridgeWidth.toFixed(2)}px`);
+    spillLayer.style.setProperty("--spill-bridge-shift", `${(sourceOffset * 0.5).toFixed(2)}px`);
+    spillLayer.style.setProperty("--spill-bridge-rotate", `${bridgeRotate.toFixed(2)}deg`);
     spillLayer.style.setProperty("--spill-start-y", `${mouthY.toFixed(2)}px`);
   };
 
