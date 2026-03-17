@@ -1,3 +1,5 @@
+document.body.classList.add("immersive-enhanced");
+
 const root = document.documentElement;
 const bottle = document.querySelector("#bottle-assembly");
 const cap = document.querySelector("#scene-cap");
