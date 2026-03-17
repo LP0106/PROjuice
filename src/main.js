@@ -25,6 +25,8 @@ const faqItems = [...document.querySelectorAll(".faq-item")];
 const navLinks = [...document.querySelectorAll(".site-nav a")];
 const sectionNodes = [...document.querySelectorAll("main section[id]")];
 const sliderStates = [];
+const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const supportsFinePointer = window.matchMedia("(pointer: fine)").matches;
 
 const flavourData = {
   mango: {
@@ -397,9 +399,6 @@ sliderRoots.forEach((sliderRoot) => {
   sliderStates.push({ syncSliderState });
   syncSliderState();
 });
-
-const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-const supportsFinePointer = window.matchMedia("(pointer: fine)").matches;
 
 if (supportsFinePointer && cursorGlow && !prefersReducedMotion) {
   let pointerX = window.innerWidth / 2;

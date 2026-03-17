@@ -103,11 +103,11 @@ if (immersiveShell) {
     return clamp((value - start) / (end - start));
   };
 
-  const ease = (value) => {
-    return value < 0.5
+  const ease = (value) => (
+    value < 0.5
       ? 4 * value * value * value
-      : 1 - Math.pow(-2 * value + 2, 3) / 2;
-  };
+      : 1 - Math.pow(-2 * value + 2, 3) / 2
+  );
 
   const animateBurstNode = (config, progress, options = {}) => {
     if (!config.node) {
@@ -206,7 +206,6 @@ if (immersiveShell) {
       stage.style.opacity = opacity;
       stage.style.setProperty("--stage-overlay-scale", mix(1, 1.035, overlayProgress).toFixed(4));
       stage.style.setProperty("--stage-overlay-y", `${mix(0, -18, overlayProgress).toFixed(2)}px`);
-      stage.style.setProperty("--stage-overlay-blur", `${mix(0, 10, overlayProgress).toFixed(2)}px`);
     }
 
     immersiveShell.classList.toggle("is-overlay-hidden", overlayProgress > 0.995);
@@ -258,11 +257,6 @@ if (immersiveShell) {
   };
 
   const updateBackground = (progress) => {
-    if (stage) {
-      stage.style.setProperty("--stage-saturate", mix(0.96, 1.14, progress).toFixed(4));
-      stage.style.setProperty("--stage-brightness", mix(0.96, 1.04, progress).toFixed(4));
-    }
-
     if (haloA) {
       haloA.style.transform = `translate(-50%, -50%) scale(${mix(0.82, 1.18, progress)})`;
       haloA.style.opacity = String(mix(0.64, 1, progress));

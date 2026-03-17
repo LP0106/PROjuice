@@ -131,8 +131,8 @@ body {
   border: 1px solid var(--line);
   border-radius: 999px;
   background: rgba(8, 18, 15, 0.54);
-  backdrop-filter: blur(22px);
-  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.18);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.16);
   will-change: opacity;
 }
 
@@ -194,11 +194,8 @@ body {
 }
 
 .experience-stage {
-  --stage-saturate: 1;
-  --stage-brightness: 1;
   --stage-overlay-scale: 1;
   --stage-overlay-y: 0px;
-  --stage-overlay-blur: 0px;
   position: fixed;
   inset: 0;
   z-index: 1;
@@ -206,8 +203,7 @@ body {
   overflow: hidden;
   transform: translate3d(0, var(--stage-overlay-y), 0) scale(var(--stage-overlay-scale));
   transform-origin: center center;
-  filter: saturate(var(--stage-saturate)) brightness(var(--stage-brightness)) blur(var(--stage-overlay-blur));
-  will-change: transform, opacity, filter;
+  will-change: transform, opacity;
   contain: paint;
   backface-visibility: hidden;
 }
@@ -453,8 +449,7 @@ body {
   background:
     radial-gradient(circle at 18% 50%, rgba(255, 238, 198, 0.9), rgba(255, 238, 198, 0) 36%),
     linear-gradient(90deg, rgba(255, 194, 94, 0.86), rgba(239, 104, 64, 0.88));
-  filter: blur(1px);
-  box-shadow: 0 0 28px rgba(255, 155, 72, 0.22);
+  box-shadow: 0 0 14px rgba(255, 155, 72, 0.16);
 }
 
 .mist-cloud {
@@ -462,14 +457,14 @@ body {
   height: 10rem;
   border-radius: 50%;
   background: radial-gradient(circle, rgba(255, 218, 161, 0.36), rgba(255, 218, 161, 0));
-  filter: blur(20px);
+  filter: blur(14px);
 }
 
 .fruit-particle {
   width: 4.8rem;
   height: 4.8rem;
   border-radius: 50%;
-  box-shadow: 0 18px 34px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.14);
 }
 
 .fruit-mango {
@@ -489,7 +484,6 @@ body {
   height: 1rem;
   border-radius: 50%;
   background: radial-gradient(circle, rgba(255, 255, 255, 0.96), rgba(255, 238, 206, 0.78));
-  box-shadow: 0 0 22px rgba(255, 238, 206, 0.18);
 }
 
 .protein-shard {
@@ -497,7 +491,6 @@ body {
   height: 3.4rem;
   border-radius: 999px;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 224, 174, 0.66));
-  box-shadow: 0 0 18px rgba(255, 238, 206, 0.16);
 }
 
 .bubble-particle {
@@ -506,7 +499,6 @@ body {
   border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.34);
   background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0.04));
-  backdrop-filter: blur(6px);
 }
 
 .scene-hud {
@@ -517,7 +509,7 @@ body {
   border-radius: 1.4rem;
   border: 1px solid var(--line);
   background: rgba(8, 18, 15, 0.58);
-  backdrop-filter: blur(20px);
+  backdrop-filter: blur(12px);
   box-shadow: var(--shadow);
 }
 
@@ -574,7 +566,7 @@ body {
   border-radius: 1.3rem;
   border: 1px solid var(--line);
   background: rgba(8, 18, 15, 0.44);
-  backdrop-filter: blur(20px);
+  backdrop-filter: blur(12px);
   color: var(--ink-soft);
   font-size: 0.9rem;
 }
@@ -605,7 +597,7 @@ body {
   border: 1px solid var(--line);
   border-radius: var(--radius-xl);
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.08));
-  backdrop-filter: blur(22px);
+  backdrop-filter: blur(14px);
   box-shadow: var(--shadow);
   opacity: 1;
   transform: none;
