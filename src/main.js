@@ -582,21 +582,21 @@ const updateSectionShellLayout = () => {
   });
 };
 
-const syncCurrentNav = (scrollTop, viewportHeight) => {
+const syncCurrentNav = (_scrollTop, viewportHeight) => {
   if (!navLinks.length || !navigableSectionMeta.length) {
     return;
   }
 
   const headerHeight = header ? header.getBoundingClientRect().height : 0;
-  const anchorY = scrollTop + headerHeight + Math.min(viewportHeight * 0.16, 132);
+  const anchorY = headerHeight + Math.min(viewportHeight * 0.16, 132);
   let currentId = null;
 
   navigableSectionMeta.forEach((meta) => {
-    const sectionBottom = meta.top + meta.height;
+    const rect = meta.node.getBoundingClientRect();
 
-    if (anchorY >= meta.top && anchorY < sectionBottom) {
+    if (anchorY >= rect.top && anchorY < rect.bottom) {
       currentId = meta.id;
-    } else if (anchorY >= meta.top) {
+    } else if (rect.top <= anchorY) {
       currentId = meta.id;
     }
   });
@@ -612,6 +612,10 @@ const syncScrollEffects = () => {
   const scrollHeight = document.documentElement.scrollHeight - viewportHeight;
   const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
   const scrollDirection = scrollTop > lastSyncedScrollTop ? 1 : scrollTop < lastSyncedScrollTop ? -1 : 0;
+  const headerHeight = header ? header.getBoundingClientRect().height : 0;
+  const revealStartLine = viewportHeight;
+  const revealEndLine = Math.max(headerHeight + 40, viewportHeight * 0.52);
+  const revealTravel = Math.max(revealStartLine - revealEndLine, 1);
 
   if (progressBar) {
     progressBar.style.setProperty("--scroll-progress", `${Math.min(progress, 100)}%`);
@@ -644,12 +648,11 @@ const syncScrollEffects = () => {
       return;
     }
 
-    const revealProgress = clamp(
-      ((scrollTop + (viewportHeight * 0.82)) - meta.top) / Math.max((meta.height * 0.34) + (viewportHeight * 0.24), 1)
-    );
+    const rect = meta.node.getBoundingClientRect();
+    const revealProgress = clamp((revealStartLine - rect.top) / revealTravel);
 
     meta.node.style.setProperty("--reveal-progress", revealProgress.toFixed(4));
-    meta.node.style.setProperty("--reveal-shift", `${((1 - revealProgress) * 34).toFixed(2)}px`);
+    meta.node.style.setProperty("--reveal-shift", `${((1 - revealProgress) * 26).toFixed(2)}px`);
     meta.node.style.setProperty("--reveal-scale", `${(0.982 + (revealProgress * 0.018)).toFixed(4)}`);
   });
 
@@ -668,17 +671,13 @@ const syncScrollEffects = () => {
       return;
     }
 
-    const centerDistance = (meta.top + (meta.height / 2)) - (scrollTop + (viewportHeight / 2));
-    const normalized = clamp(
-      ((scrollTop + (viewportHeight * 0.72)) - meta.top) / Math.max(meta.height + (viewportHeight * 0.5), 1)
-    );
-    const sectionProgress = clamp(
-      ((scrollTop + viewportHeight) - meta.top) / Math.max(meta.height + viewportHeight, 1)
-    );
+    const rect = meta.node.getBoundingClientRect();
+    const sectionHeight = Math.max(rect.height, 1);
+    const centerDistance = (rect.top + (sectionHeight / 2)) - (viewportHeight / 2);
+    const normalized = clamp((revealStartLine - rect.top) / Math.max(sectionHeight + (viewportHeight * 0.18), 1));
+    const sectionProgress = clamp((revealStartLine - rect.top) / Math.max(sectionHeight + (viewportHeight * 0.08), 1));
     const progressOffset = sectionProgress - 0.5;
-    const visibility = clamp(
-      1 - (Math.abs(centerDistance) / Math.max((meta.height * 0.55) + (viewportHeight * 0.55), 1))
-    );
+    const visibility = clamp((revealStartLine - rect.top) / revealTravel);
     const shift = Math.max(Math.min(centerDistance * -0.055, 34), -34);
     const glowBand = 1 - Math.abs((normalized * 2) - 1);
     const energy = clamp((visibility * 0.76) + (glowBand * 0.24));

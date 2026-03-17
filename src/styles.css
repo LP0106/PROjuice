@@ -401,6 +401,8 @@ main {
 }
 
 .section-shell {
+  --section-accent-rgb: 255, 155, 72;
+  --section-accent-soft-rgb: 255, 223, 168;
   --section-shift: 0px;
   --section-shift-y: 0px;
   --section-glow-x: 18%;
@@ -408,15 +410,58 @@ main {
   --section-glow-opacity: 0.36;
   position: relative;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-xl);
   background:
-    radial-gradient(circle at top right, rgba(255, 155, 72, 0.08), rgba(255, 255, 255, 0) 34%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.035));
-  box-shadow: var(--shadow-soft);
+    linear-gradient(180deg, rgba(7, 16, 13, 0.24), rgba(7, 16, 13, 0)),
+    radial-gradient(circle at 14% 18%, rgba(var(--section-accent-soft-rgb), 0.09), rgba(255, 255, 255, 0) 30%),
+    radial-gradient(circle at 86% 82%, rgba(var(--section-accent-rgb), 0.11), rgba(255, 255, 255, 0) 36%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.03));
+  box-shadow:
+    0 30px 72px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 0 0 1px rgba(var(--section-accent-rgb), 0.03);
   isolation: isolate;
-  content-visibility: auto;
-  contain-intrinsic-size: 900px;
+}
+
+.hero-shell {
+  --section-accent-rgb: 255, 162, 79;
+  --section-accent-soft-rgb: 255, 229, 184;
+}
+
+.flavour-lab {
+  --section-accent-rgb: 246, 156, 63;
+  --section-accent-soft-rgb: 255, 220, 164;
+}
+
+.manifesto-section {
+  --section-accent-rgb: 117, 177, 138;
+  --section-accent-soft-rgb: 210, 239, 220;
+}
+
+.signal-section {
+  --section-accent-rgb: 229, 144, 93;
+  --section-accent-soft-rgb: 255, 218, 189;
+}
+
+.launch-architecture {
+  --section-accent-rgb: 126, 198, 142;
+  --section-accent-soft-rgb: 214, 245, 208;
+}
+
+.immersion-panel {
+  --section-accent-rgb: 214, 150, 102;
+  --section-accent-soft-rgb: 249, 216, 193;
+}
+
+.downloads-section {
+  --section-accent-rgb: 214, 181, 109;
+  --section-accent-soft-rgb: 244, 229, 193;
+}
+
+.faq-section {
+  --section-accent-rgb: 149, 169, 160;
+  --section-accent-soft-rgb: 217, 231, 224;
 }
 
 .section-shell > * {
@@ -429,22 +474,22 @@ main {
   position: absolute;
   inset: 1px;
   border-radius: inherit;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(var(--section-accent-rgb), calc(0.06 + (var(--section-energy, 0) * 0.12)));
   pointer-events: none;
 }
 
 .section-shell::after {
   content: "";
   position: absolute;
-  left: var(--section-glow-x);
-  top: var(--section-glow-y);
-  width: 20rem;
-  height: 20rem;
+  left: calc(var(--section-glow-x) - 8%);
+  top: calc(var(--section-glow-y) - 8%);
+  width: clamp(18rem, 34vw, 28rem);
+  height: clamp(18rem, 34vw, 28rem);
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 155, 72, 0.12), rgba(255, 255, 255, 0));
-  opacity: var(--section-glow-opacity);
+  background: radial-gradient(circle, rgba(var(--section-accent-rgb), calc(0.14 + (var(--section-energy, 0) * 0.14))), rgba(255, 255, 255, 0) 72%);
+  opacity: calc(0.14 + (var(--section-visibility, 0) * 0.34));
   filter: none;
-  transform: translate3d(var(--section-shift), var(--section-shift-y), 0) scale(1.06);
+  transform: translate3d(var(--section-shift), var(--section-shift-y), 0) scale(calc(0.9 + (var(--section-energy, 0) * 0.22)));
   pointer-events: none;
 }
 
@@ -457,18 +502,33 @@ main {
   opacity: calc(var(--section-layer-opacity, 0.14) + (var(--section-visibility, 0) * 0.12));
 }
 
+.section-atmosphere::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(var(--section-accent-soft-rgb), 0.11), rgba(255, 255, 255, 0) 28%),
+    radial-gradient(circle at 88% 80%, rgba(var(--section-accent-rgb), 0.12), rgba(255, 255, 255, 0) 32%);
+  opacity: calc(0.1 + (var(--section-energy, 0) * 0.12));
+  pointer-events: none;
+}
+
 .section-atmosphere::after {
   content: "";
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at var(--section-glow-x, 18%) var(--section-glow-y, 16%), rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0) 34%),
+    radial-gradient(circle at var(--section-glow-x, 18%) var(--section-glow-y, 16%), rgba(var(--section-accent-soft-rgb), 0.12), rgba(255, 255, 255, 0) 34%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0));
   opacity: calc(0.08 + (var(--section-energy, 0) * 0.08));
   pointer-events: none;
 }
 
 body.performance-lite .section-atmosphere::after {
+  opacity: 0.08;
+}
+
+body.performance-lite .section-atmosphere::before {
   opacity: 0.08;
 }
 
