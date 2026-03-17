@@ -9,6 +9,14 @@ const revealNodes = document.querySelectorAll(".reveal");
 const progressBar = document.querySelector("#scroll-progress-bar");
 const cursorGlow = document.querySelector(".cursor-glow");
 const parallaxNodes = [...document.querySelectorAll("[data-parallax]")];
+const frostParallaxNodes = parallaxNodes.filter((node) => node.closest(".page-frost"));
+const sceneParallaxNodes = parallaxNodes.filter((node) => !node.closest(".page-frost"));
+const sceneParallaxMeta = sceneParallaxNodes.map((node) => ({
+  node,
+  speed: Number(node.dataset.parallax || "0.08"),
+  top: 0,
+  half: 0,
+}));
 const tiltNodes = [...document.querySelectorAll("[data-tilt]")];
 const magneticNodes = [...document.querySelectorAll(".magnetic")];
 const counterNodes = [...document.querySelectorAll("[data-count]")];
@@ -16,6 +24,7 @@ const sliderRoots = [...document.querySelectorAll("[data-slider-root]")];
 const faqItems = [...document.querySelectorAll(".faq-item")];
 const navLinks = [...document.querySelectorAll(".site-nav a")];
 const sectionNodes = [...document.querySelectorAll("main section[id]")];
+const sliderStates = [];
 
 const flavourData = {
   mango: {
@@ -271,6 +280,14 @@ sliderRoots.forEach((sliderRoot) => {
     return;
   }
 
+  const sliderState = {
+    pointerId: null,
+    startX: 0,
+    startScrollLeft: 0,
+    dragDistance: 0,
+    isDragging: false,
+  };
+
   const resolveStep = () => {
     const cardSelector = track.dataset.sliderCardSelector || ".roadmap-card, .route-card";
     const firstCard = track.querySelector(cardSelector);
@@ -283,9 +300,12 @@ sliderRoots.forEach((sliderRoot) => {
   };
 
   const syncSliderState = () => {
-    const maxScrollLeft = track.scrollWidth - track.clientWidth - 4;
-    prevButton.disabled = track.scrollLeft <= 4;
-    nextButton.disabled = track.scrollLeft >= maxScrollLeft;
+    const maxScrollLeft = Math.max(track.scrollWidth - track.clientWidth - 4, 0);
+    const canScroll = maxScrollLeft > 4;
+
+    sliderRoot.classList.toggle("is-scrollable", canScroll);
+    prevButton.disabled = !canScroll || track.scrollLeft <= 4;
+    nextButton.disabled = !canScroll || track.scrollLeft >= maxScrollLeft;
   };
 
   const scrollTrack = (direction) => {
@@ -295,10 +315,86 @@ sliderRoots.forEach((sliderRoot) => {
     });
   };
 
+  const stopDragging = (event) => {
+    if (!sliderState.isDragging) {
+      return;
+    }
+
+    if (event && sliderState.pointerId !== null && event.pointerId !== sliderState.pointerId) {
+      return;
+    }
+
+    sliderState.isDragging = false;
+    sliderState.pointerId = null;
+    track.classList.remove("is-dragging");
+  };
+
   prevButton.addEventListener("click", () => scrollTrack(-1));
   nextButton.addEventListener("click", () => scrollTrack(1));
   track.addEventListener("scroll", syncSliderState, { passive: true });
-  window.addEventListener("resize", syncSliderState);
+
+  track.addEventListener("pointerdown", (event) => {
+    if (event.pointerType === "mouse" && event.button !== 0) {
+      return;
+    }
+
+    if (event.pointerType === "touch") {
+      return;
+    }
+
+    if (track.scrollWidth <= track.clientWidth + 4) {
+      return;
+    }
+
+    sliderState.pointerId = event.pointerId;
+    sliderState.startX = event.clientX;
+    sliderState.startScrollLeft = track.scrollLeft;
+    sliderState.dragDistance = 0;
+    sliderState.isDragging = true;
+
+    track.classList.add("is-dragging");
+
+    if (track.setPointerCapture) {
+      track.setPointerCapture(event.pointerId);
+    }
+  });
+
+  track.addEventListener("pointermove", (event) => {
+    if (!sliderState.isDragging || event.pointerId !== sliderState.pointerId) {
+      return;
+    }
+
+    const deltaX = event.clientX - sliderState.startX;
+    sliderState.dragDistance = Math.abs(deltaX);
+    track.scrollLeft = sliderState.startScrollLeft - deltaX;
+
+    if (sliderState.dragDistance > 6) {
+      event.preventDefault();
+    }
+  });
+
+  track.addEventListener("pointerup", stopDragging);
+  track.addEventListener("pointercancel", stopDragging);
+  track.addEventListener("lostpointercapture", stopDragging);
+
+  track.addEventListener(
+    "click",
+    (event) => {
+      if (sliderState.dragDistance > 8) {
+        event.preventDefault();
+        event.stopPropagation();
+        sliderState.dragDistance = 0;
+      }
+    },
+    true
+  );
+
+  if ("ResizeObserver" in window) {
+    const resizeObserver = new ResizeObserver(syncSliderState);
+    resizeObserver.observe(track);
+  }
+
+  sliderStates.push({ syncSliderState });
   syncSliderState();
 });
 
@@ -310,20 +406,44 @@ if (supportsFinePointer && cursorGlow && !prefersReducedMotion) {
   let pointerY = window.innerHeight / 2;
   let glowX = pointerX;
   let glowY = pointerY;
+  let glowFrame = 0;
+  let lastPointerMoveAt = 0;
 
   window.addEventListener("pointermove", (event) => {
     pointerX = event.clientX;
     pointerY = event.clientY;
+    lastPointerMoveAt = performance.now();
+
+    if (!glowFrame) {
+      glowFrame = requestAnimationFrame(renderGlow);
+    }
   });
 
-  const renderGlow = () => {
+  const renderGlow = (now) => {
+    glowFrame = 0;
     glowX += (pointerX - glowX) * 0.14;
     glowY += (pointerY - glowY) * 0.14;
     cursorGlow.style.transform = `translate3d(${glowX - 224}px, ${glowY - 224}px, 0)`;
-    requestAnimationFrame(renderGlow);
+
+    const isStillEasing =
+      Math.abs(pointerX - glowX) > 0.4 ||
+      Math.abs(pointerY - glowY) > 0.4;
+
+    if (!document.hidden && (isStillEasing || now - lastPointerMoveAt < 140)) {
+      glowFrame = requestAnimationFrame(renderGlow);
+    }
   };
 
-  requestAnimationFrame(renderGlow);
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden && glowFrame) {
+      cancelAnimationFrame(glowFrame);
+      glowFrame = 0;
+    } else if (!document.hidden && !glowFrame) {
+      glowFrame = requestAnimationFrame(renderGlow);
+    }
+  });
+
+  glowFrame = requestAnimationFrame(renderGlow);
 }
 
 if (supportsFinePointer && !prefersReducedMotion) {
@@ -425,6 +545,14 @@ if ("IntersectionObserver" in window) {
 
 let scrollTicking = false;
 
+const updateSceneParallaxLayout = () => {
+  sceneParallaxMeta.forEach((meta) => {
+    const rect = meta.node.getBoundingClientRect();
+    meta.top = rect.top + window.scrollY;
+    meta.half = rect.height / 2;
+  });
+};
+
 const syncScrollEffects = () => {
   const scrollTop = window.scrollY;
   const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
@@ -438,19 +566,17 @@ const syncScrollEffects = () => {
     header.classList.toggle("is-scrolled", scrollTop > 18);
   }
 
-  parallaxNodes.forEach((node) => {
+  frostParallaxNodes.forEach((node) => {
     const speed = Number(node.dataset.parallax || "0.08");
-    const rect = node.getBoundingClientRect();
-    let offset;
-
-    if (node.closest(".page-frost")) {
-      offset = scrollTop * speed * -0.25;
-    } else {
-      const distanceFromCenter = rect.top + rect.height / 2 - window.innerHeight / 2;
-      offset = distanceFromCenter * -speed;
-    }
-
+    const offset = scrollTop * speed * -0.25;
     node.style.setProperty("--parallax-offset", `${Math.max(Math.min(offset, 80), -80)}px`);
+  });
+
+  sceneParallaxMeta.forEach((meta) => {
+    const distanceFromCenter = (meta.top + meta.half) - (scrollTop + (window.innerHeight / 2));
+    const offset = distanceFromCenter * -meta.speed;
+
+    meta.node.style.setProperty("--parallax-offset", `${Math.max(Math.min(offset, 80), -80)}px`);
   });
 
   scrollTicking = false;
@@ -464,5 +590,24 @@ const requestScrollSync = () => {
 };
 
 window.addEventListener("scroll", requestScrollSync, { passive: true });
-window.addEventListener("resize", requestScrollSync);
+window.addEventListener("resize", () => {
+  updateSceneParallaxLayout();
+  sliderStates.forEach(({ syncSliderState }) => syncSliderState());
+  requestScrollSync();
+});
+window.addEventListener("load", () => {
+  updateSceneParallaxLayout();
+  sliderStates.forEach(({ syncSliderState }) => syncSliderState());
+  syncScrollEffects();
+});
+
+if (document.fonts && document.fonts.ready) {
+  document.fonts.ready.then(() => {
+    updateSceneParallaxLayout();
+    sliderStates.forEach(({ syncSliderState }) => syncSliderState());
+    requestScrollSync();
+  });
+}
+
+updateSceneParallaxLayout();
 syncScrollEffects();

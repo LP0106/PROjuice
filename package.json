@@ -1,21 +1,10 @@
 {
-  "name": "apple-silicon-3d-snake-arena",
+  "name": "projuice-site",
   "private": true,
   "version": "0.1.0",
-  "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "rm -rf dist && mkdir -p dist && cp -R index.html index-immersive.html src deliverables dist",
-    "preview": "vite preview",
-    "test": "vitest run"
-  },
-  "dependencies": {
-    "@dimforge/rapier3d-compat": "^0.17.3",
-    "three": "^0.176.0"
-  },
-  "devDependencies": {
-    "typescript": "^5.8.3",
-    "vite": "^6.3.5",
-    "vitest": "^3.1.4"
+    "dev": "python3 -m http.server 4173",
+    "build": "rm -rf dist && mkdir -p dist/src dist/deliverables && cp index.html index-immersive.html dist && cp src/styles.css src/main.js src/immersive.css src/immersive.js dist/src && cp deliverables/PROjuice-Lean-Canvas-v4.pdf deliverables/PROjuice-Marketing-Report-v4.pdf dist/deliverables",
+    "preview": "cd dist && python3 -m http.server 4173"
   }
 }

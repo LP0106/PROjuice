@@ -25,6 +25,12 @@ if (immersiveShell) {
   const haloC = select(".stage-halo-c");
   const rings = selectAll(".rewind-ring");
   const chapterCards = selectAll(".chapter-card");
+  const chapterMeta = chapterCards.map((card) => ({
+    card,
+    start: Number(card.dataset.start || "0"),
+    end: Number(card.dataset.end || "1"),
+    isRightAligned: Boolean(card.closest(".chapter-right")),
+  }));
 
   body.classList.add("immersive-enhanced");
 
@@ -118,47 +124,70 @@ if (immersiveShell) {
     config.node.style.transform = `translate3d(${mix(0, config.toX, local)}px, ${mix(0, config.toY, local) + wave}px, 0) rotate(${rotate}deg) scale(${scale})`;
   };
 
-  chapterCards.forEach((card) => {
-    const start = Number(card.dataset.start || "0");
-    const end = Number(card.dataset.end || "1");
-    card.dataset.rangeStart = String(start);
-    card.dataset.rangeEnd = String(end);
-  });
-
   const state = {
     frameRequested: false,
     autoHandoffLocked: false,
     lastScrollY: window.scrollY,
     lastProgress: -1,
     lastOverlay: -1,
+    layout: {
+      shellTop: 0,
+      shellHeight: 1,
+      scrollDistance: 1,
+      targetTop: 0,
+      revealStart: 0,
+      revealEnd: 1,
+      triggerY: 1,
+    },
   };
 
-  const getMetrics = () => {
+  const updateLayout = () => {
     const shellTop = immersiveShell.offsetTop;
     const shellHeight = immersiveShell.offsetHeight;
     const scrollDistance = Math.max(shellHeight - window.innerHeight, 1);
-    const sceneProgress = clamp((window.scrollY - shellTop) / scrollDistance);
+
+    state.layout.shellTop = shellTop;
+    state.layout.shellHeight = shellHeight;
+    state.layout.scrollDistance = scrollDistance;
 
     if (mode !== "integrated" || !handoffTarget) {
-      return {
-        sceneProgress,
-        overlayProgress: 0,
-        triggerY: shellTop + scrollDistance,
-        targetTop: 0,
-      };
+      state.layout.targetTop = 0;
+      state.layout.revealStart = 0;
+      state.layout.revealEnd = 1;
+      state.layout.triggerY = shellTop + scrollDistance;
+      return;
     }
 
     const targetTop = handoffTarget.offsetTop;
     const revealStart = Math.max(targetTop - (window.innerHeight * 0.82), shellTop + (scrollDistance * 0.72));
     const revealEnd = targetTop - (window.innerHeight * 0.08);
-    const overlayProgress = clamp((window.scrollY - revealStart) / Math.max(revealEnd - revealStart, 1));
     const triggerY = shellTop + scrollDistance - Math.min(window.innerHeight * 0.06, 32);
+
+    state.layout.targetTop = targetTop;
+    state.layout.revealStart = revealStart;
+    state.layout.revealEnd = revealEnd;
+    state.layout.triggerY = triggerY;
+  };
+
+  const getMetrics = () => {
+    const sceneProgress = clamp((window.scrollY - state.layout.shellTop) / state.layout.scrollDistance);
+
+    if (mode !== "integrated" || !handoffTarget) {
+      return {
+        sceneProgress,
+        overlayProgress: 0,
+        triggerY: state.layout.triggerY,
+        targetTop: state.layout.targetTop,
+      };
+    }
 
     return {
       sceneProgress,
-      overlayProgress,
-      triggerY,
-      targetTop,
+      overlayProgress: clamp(
+        (window.scrollY - state.layout.revealStart) / Math.max(state.layout.revealEnd - state.layout.revealStart, 1)
+      ),
+      triggerY: state.layout.triggerY,
+      targetTop: state.layout.targetTop,
     };
   };
 
@@ -175,7 +204,9 @@ if (immersiveShell) {
 
     if (stage) {
       stage.style.opacity = opacity;
-      stage.style.transform = `scale(${mix(1, 1.035, overlayProgress)})`;
+      stage.style.setProperty("--stage-overlay-scale", mix(1, 1.035, overlayProgress).toFixed(4));
+      stage.style.setProperty("--stage-overlay-y", `${mix(0, -18, overlayProgress).toFixed(2)}px`);
+      stage.style.setProperty("--stage-overlay-blur", `${mix(0, 10, overlayProgress).toFixed(2)}px`);
     }
 
     immersiveShell.classList.toggle("is-overlay-hidden", overlayProgress > 0.995);
@@ -228,7 +259,8 @@ if (immersiveShell) {
 
   const updateBackground = (progress) => {
     if (stage) {
-      stage.style.filter = `saturate(${mix(0.96, 1.14, progress)}) brightness(${mix(0.96, 1.04, progress)})`;
+      stage.style.setProperty("--stage-saturate", mix(0.96, 1.14, progress).toFixed(4));
+      stage.style.setProperty("--stage-brightness", mix(0.96, 1.04, progress).toFixed(4));
     }
 
     if (haloA) {
@@ -254,15 +286,13 @@ if (immersiveShell) {
   };
 
   const updateChapters = (progress) => {
-    chapterCards.forEach((card) => {
-      const start = Number(card.dataset.rangeStart || "0");
-      const end = Number(card.dataset.rangeEnd || "1");
+    chapterMeta.forEach(({ card, start, end, isRightAligned }) => {
       const midpoint = (start + end) / 2;
       const halfRange = (end - start) / 2;
       const distance = Math.abs(progress - midpoint) / Math.max(halfRange, 0.001);
       const visibility = clamp(1 - distance);
       const eased = ease(visibility);
-      const horizontalOffset = card.closest(".chapter-right")
+      const horizontalOffset = isRightAligned
         ? mix(48, 0, eased)
         : mix(-48, 0, eased);
 
@@ -325,16 +355,17 @@ if (immersiveShell) {
 
     const isScrollingDown = window.scrollY > state.lastScrollY + 1;
     const resetThreshold = metrics.triggerY - (window.innerHeight * 0.35);
+    const remainingDistance = Math.abs(metrics.targetTop - window.scrollY);
 
     if (window.scrollY < resetThreshold) {
       state.autoHandoffLocked = false;
     }
 
-    if (!state.autoHandoffLocked && isScrollingDown && metrics.sceneProgress >= 0.992) {
+    if (!state.autoHandoffLocked && isScrollingDown && metrics.sceneProgress >= 0.992 && remainingDistance > 12) {
       state.autoHandoffLocked = true;
       window.scrollTo({
         top: metrics.targetTop,
-        behavior: prefersReducedMotion ? "auto" : "smooth",
+        behavior: prefersReducedMotion || remainingDistance < 96 ? "auto" : "smooth",
       });
     }
   };
@@ -366,8 +397,30 @@ if (immersiveShell) {
     window.requestAnimationFrame(renderFrame);
   };
 
+  const handleResize = () => {
+    updateLayout();
+    requestRender();
+  };
+
+  updateLayout();
   window.addEventListener("scroll", requestRender, { passive: true });
-  window.addEventListener("resize", requestRender);
-  window.addEventListener("load", requestRender);
+  window.addEventListener("resize", handleResize);
+  window.addEventListener("orientationchange", handleResize);
+  window.addEventListener("load", handleResize);
+  window.addEventListener("pageshow", handleResize);
+
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(handleResize);
+  }
+
+  if ("ResizeObserver" in window) {
+    const resizeObserver = new ResizeObserver(handleResize);
+    resizeObserver.observe(immersiveShell);
+
+    if (handoffTarget) {
+      resizeObserver.observe(handoffTarget);
+    }
+  }
+
   requestRender();
 }

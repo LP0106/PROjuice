@@ -71,6 +71,8 @@ body {
   z-index: 0;
   pointer-events: none;
   overflow: hidden;
+  contain: paint;
+  transform: translateZ(0);
 }
 
 .backdrop-glow {
@@ -192,13 +194,22 @@ body {
 }
 
 .experience-stage {
+  --stage-saturate: 1;
+  --stage-brightness: 1;
+  --stage-overlay-scale: 1;
+  --stage-overlay-y: 0px;
+  --stage-overlay-blur: 0px;
   position: fixed;
   inset: 0;
   z-index: 1;
   pointer-events: none;
   overflow: hidden;
+  transform: translate3d(0, var(--stage-overlay-y), 0) scale(var(--stage-overlay-scale));
   transform-origin: center center;
+  filter: saturate(var(--stage-saturate)) brightness(var(--stage-brightness)) blur(var(--stage-overlay-blur));
   will-change: transform, opacity, filter;
+  contain: paint;
+  backface-visibility: hidden;
 }
 
 .experience-backdrop {
@@ -311,6 +322,7 @@ body {
   transform: translate(-50%, var(--bottle-y)) rotate(var(--bottle-rotate)) scale(var(--bottle-scale));
   transform-origin: 50% 76%;
   filter: drop-shadow(0 34px 48px rgba(0, 0, 0, 0.22));
+  will-change: transform;
 }
 
 .bottle-shadow {
@@ -599,6 +611,7 @@ body {
   transform: none;
   transition: opacity 180ms linear, transform 180ms linear, border-color 180ms linear, background 180ms linear;
   pointer-events: auto;
+  will-change: transform, opacity;
 }
 
 .immersive-enhanced .chapter-card {
@@ -840,6 +853,52 @@ body {
   .fruit-particle {
     width: 3.6rem;
     height: 3.6rem;
+  }
+}
+
+@media (max-width: 560px) {
+  .experience-header {
+    gap: 0.7rem;
+  }
+
+  .brand-copy span {
+    display: none;
+  }
+
+  .experience-nav a {
+    padding: 0.55rem 0.75rem;
+    font-size: 0.84rem;
+  }
+
+  .chapter {
+    padding: 7.6rem 0.85rem 2.5rem;
+  }
+
+  .chapter-card {
+    padding: 1.05rem;
+    border-radius: 1.45rem;
+  }
+
+  .scene-hud {
+    padding: 0.85rem 0.9rem;
+  }
+
+  .hud-readout {
+    align-items: center;
+  }
+
+  .hud-readout strong {
+    font-size: 1.65rem;
+  }
+
+  .bottle-assembly {
+    width: 9.5rem;
+    height: 19rem;
+  }
+
+  .bottle-label {
+    inset: 5rem 0.75rem 2rem;
+    padding: 1rem 0.9rem;
   }
 }
 

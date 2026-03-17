@@ -1204,6 +1204,7 @@ main {
 .route-module {
   display: grid;
   gap: 0.95rem;
+  overflow: hidden;
 }
 
 .route-module-head,
@@ -1221,24 +1222,38 @@ main {
   gap: 0.95rem;
   overflow-x: auto;
   padding-bottom: 0.45rem;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
   scroll-behavior: smooth;
-  scroll-snap-type: x proximity;
+  scroll-snap-type: x mandatory;
   scrollbar-width: none;
+  cursor: grab;
 }
 
 .route-stack::-webkit-scrollbar {
   display: none;
 }
 
+.route-stack.is-dragging,
+.roadmap-track.is-dragging {
+  cursor: grabbing;
+  scroll-snap-type: none;
+}
+
 .route-card {
   min-width: 0;
+  display: grid;
+  align-content: start;
   padding: 1.2rem;
   border-radius: 1.55rem;
+  min-height: 100%;
   scroll-snap-align: start;
 }
 
-.route-card h3 {
+.route-card h3,
+.roadmap-card h3 {
   text-wrap: balance;
+  overflow-wrap: anywhere;
 }
 
 .route-swipe-note {
@@ -1289,9 +1304,12 @@ main {
   margin-top: 1.35rem;
   padding-bottom: 0.5rem;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
   scroll-behavior: smooth;
-  scroll-snap-type: x proximity;
+  scroll-snap-type: x mandatory;
   scrollbar-width: none;
+  cursor: grab;
 }
 
 .roadmap-track::-webkit-scrollbar {
@@ -1299,8 +1317,11 @@ main {
 }
 
 .roadmap-card {
+  display: grid;
+  align-content: start;
   padding: 1.2rem;
   border-radius: 1.5rem;
+  min-height: 100%;
   scroll-snap-align: start;
 }
 
@@ -1699,6 +1720,50 @@ main {
 
   .site-footer {
     flex-direction: column;
+  }
+}
+
+@media (max-width: 560px) {
+  .page-shell {
+    width: min(100% - 0.75rem, 100%);
+    padding-top: 0.65rem;
+  }
+
+  .section-shell {
+    border-radius: 1.8rem;
+  }
+
+  .site-header {
+    top: 0.5rem;
+    padding: 0.8rem 0.9rem;
+  }
+
+  .brand-wording strong {
+    font-size: 1.55rem;
+  }
+
+  .brand-wording span {
+    font-size: 0.82rem;
+  }
+
+  .hero-shell,
+  .signal-section,
+  .downloads-section,
+  .faq-section,
+  .manifesto-section,
+  .launch-architecture,
+  .immersion-panel,
+  .flavour-lab {
+    padding: 1rem;
+  }
+
+  .hero-actions .button {
+    width: 100%;
+  }
+
+  .route-stack,
+  .roadmap-track {
+    grid-auto-columns: minmax(14rem, 88vw);
   }
 }
 
