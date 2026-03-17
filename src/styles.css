@@ -272,6 +272,305 @@ body.performance-lite .page-frost {
   mix-blend-mode: soft-light;
 }
 
+.scroll-spill-layer {
+  --spill-layer-height: 100%;
+  --spill-start-y: 38vh;
+  --spill-base-x: 50vw;
+  --spill-height: 0px;
+  --spill-lane-x: 0px;
+  --spill-progress: 0;
+  --spill-ground-y: 100vh;
+  --spill-ground-progress: 0;
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 0;
+  width: 100%;
+  height: var(--spill-layer-height);
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.scroll-spill-column {
+  position: absolute;
+  top: var(--spill-start-y);
+  left: calc(var(--spill-base-x) + var(--spill-lane-x));
+  width: clamp(6.8rem, 10vw, 8.8rem);
+  height: max(0px, var(--spill-height));
+  transform: translateX(-50%);
+  opacity: calc(0.08 + (var(--spill-progress) * 0.42));
+  filter: saturate(1.04);
+}
+
+.scroll-spill-column::before,
+.scroll-spill-column::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.scroll-spill-column::before {
+  top: 0;
+  bottom: 2rem;
+  width: 3.2rem;
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 245, 219, 0.3) 18%, rgba(255, 212, 132, 0.48) 50%, rgba(183, 76, 35, 0.22) 86%, rgba(255, 255, 255, 0)),
+    linear-gradient(180deg, rgba(255, 188, 83, 0.5), rgba(236, 108, 57, 0.34) 58%, rgba(126, 46, 25, 0.16));
+  box-shadow:
+    inset 0 0.2rem 0.5rem rgba(255, 255, 255, 0.14),
+    0 0.6rem 1.6rem rgba(96, 38, 21, 0.08);
+}
+
+.scroll-spill-column::after {
+  top: 8%;
+  bottom: 6%;
+  width: 1.1rem;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255, 254, 246, 0.38), rgba(255, 255, 255, 0));
+  opacity: 0.52;
+}
+
+.spill-source-pool,
+.spill-rivulet,
+.spill-thread,
+.spill-tip-core,
+.spill-tip-spray,
+.spill-puddle {
+  position: absolute;
+  display: block;
+}
+
+.spill-source-pool {
+  left: 50%;
+  top: -2.1rem;
+  width: clamp(11rem, 18vw, 16rem);
+  height: clamp(3.8rem, 5vw, 5rem);
+  border-radius: 54% 46% 58% 42% / 58% 40% 60% 42%;
+  transform: translateX(-50%) scale(calc(0.45 + (var(--spill-progress) * 0.55)));
+  transform-origin: center center;
+  opacity: calc(0.04 + (var(--spill-progress) * 0.6));
+  background:
+    radial-gradient(circle at 28% 26%, rgba(255, 248, 228, 0.48), rgba(255, 248, 228, 0) 26%),
+    radial-gradient(circle at 68% 52%, rgba(255, 202, 118, 0.24), rgba(255, 202, 118, 0) 32%),
+    linear-gradient(96deg, rgba(255, 208, 124, 0.1), rgba(255, 177, 82, 0.42) 28%, rgba(239, 104, 64, 0.48) 72%, rgba(118, 44, 26, 0.24));
+  box-shadow:
+    inset 0 0.2rem 0.6rem rgba(255, 255, 255, 0.14),
+    0 1rem 2rem rgba(94, 38, 22, 0.1);
+}
+
+.spill-source-pool::before,
+.spill-source-pool::after,
+.spill-rivulet::before,
+.spill-tip-core::before,
+.spill-puddle::before,
+.spill-puddle::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.spill-source-pool::before {
+  inset: 0.45rem auto auto 1rem;
+  width: 42%;
+  height: 0.8rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.44), rgba(255, 255, 255, 0));
+}
+
+.spill-source-pool::after {
+  inset: auto 1.4rem 0.55rem 1.3rem;
+  height: 0.55rem;
+  background: linear-gradient(90deg, rgba(132, 44, 24, 0), rgba(132, 44, 24, 0.14), rgba(132, 44, 24, 0));
+}
+
+.spill-rivulet {
+  top: 0;
+  bottom: 2.2rem;
+  border-radius: 999px;
+  background:
+    linear-gradient(180deg, rgba(255, 244, 216, 0.18), rgba(255, 244, 216, 0) 18%),
+    linear-gradient(104deg, rgba(255, 219, 146, 0.08), rgba(255, 189, 84, 0.5) 34%, rgba(239, 104, 64, 0.42) 72%, rgba(122, 45, 26, 0.18));
+  box-shadow: 0 0.5rem 1.2rem rgba(98, 40, 22, 0.08);
+}
+
+.spill-rivulet::before {
+  inset: 0.2rem 24% auto;
+  height: 20%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0));
+}
+
+.spill-rivulet-main {
+  left: 50%;
+  width: 2.55rem;
+  transform: translateX(-50%);
+}
+
+.spill-rivulet-left {
+  left: calc(50% - 1.7rem);
+  width: 1.4rem;
+  opacity: 0.84;
+  transform: rotate(-2.8deg);
+}
+
+.spill-rivulet-right {
+  right: calc(50% - 2rem);
+  width: 1rem;
+  opacity: 0.76;
+  transform: rotate(2.6deg);
+}
+
+.spill-thread {
+  top: 10%;
+  bottom: 2.9rem;
+  width: 0.48rem;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255, 249, 237, 0.34), rgba(239, 104, 64, 0.18));
+  opacity: 0.5;
+}
+
+.spill-thread-a {
+  left: calc(50% - 2.15rem);
+}
+
+.spill-thread-b {
+  left: calc(50% + 1.7rem);
+}
+
+.spill-thread-c {
+  left: calc(50% - 0.1rem);
+  opacity: 0.38;
+}
+
+.spill-tip-core {
+  left: 50%;
+  bottom: -1.4rem;
+  width: 2.35rem;
+  height: 3.25rem;
+  border-radius: 46% 54% 54% 46% / 18% 18% 82% 82%;
+  transform: translateX(-50%) scale(calc(0.76 + (var(--spill-progress) * 0.24)));
+  background:
+    radial-gradient(circle at 36% 18%, rgba(255, 255, 255, 0.54), rgba(255, 255, 255, 0) 24%),
+    linear-gradient(180deg, rgba(255, 214, 126, 0.92), rgba(239, 104, 64, 0.98) 68%, rgba(122, 47, 28, 0.78));
+  box-shadow:
+    inset 0 0.16rem 0.4rem rgba(255, 255, 255, 0.18),
+    0 1rem 1.8rem rgba(96, 37, 21, 0.12);
+}
+
+.spill-tip-core::before {
+  inset: 0.34rem 0.42rem auto;
+  height: 0.54rem;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0));
+}
+
+.spill-tip-spray {
+  bottom: -0.3rem;
+  width: 0.95rem;
+  height: 1.35rem;
+  border-radius: 46% 54% 54% 46% / 24% 24% 76% 76%;
+  background: linear-gradient(180deg, rgba(255, 225, 154, 0.78), rgba(239, 104, 64, 0.58));
+  opacity: calc(0.08 + (var(--spill-progress) * 0.32));
+}
+
+.spill-tip-spray-a {
+  left: calc(50% - 2.6rem);
+  transform: rotate(-16deg);
+}
+
+.spill-tip-spray-b {
+  left: calc(50% + 1.8rem);
+  transform: rotate(12deg);
+}
+
+.spill-tip-spray-c {
+  left: calc(50% - 0.35rem);
+  bottom: -1rem;
+  width: 0.72rem;
+  height: 0.95rem;
+  opacity: calc(0.06 + (var(--spill-progress) * 0.18));
+}
+
+.spill-ground {
+  position: absolute;
+  left: calc(var(--spill-base-x) + var(--spill-lane-x));
+  top: calc(var(--spill-ground-y) - 6.5rem);
+  width: clamp(20rem, 34vw, 36rem);
+  height: 11rem;
+  transform: translateX(-50%) scale(calc(0.52 + (var(--spill-ground-progress) * 0.48)));
+  transform-origin: center center;
+  opacity: calc(0.02 + (var(--spill-ground-progress) * 0.62));
+}
+
+.spill-puddle {
+  inset: auto 0 0;
+  border-radius: 58% 42% 54% 46% / 54% 40% 60% 46%;
+}
+
+.spill-puddle-main {
+  left: 50%;
+  bottom: 0;
+  width: 100%;
+  height: 6rem;
+  transform: translateX(-50%);
+  background:
+    radial-gradient(circle at 28% 26%, rgba(255, 247, 220, 0.34), rgba(255, 247, 220, 0) 22%),
+    radial-gradient(circle at 60% 52%, rgba(255, 195, 104, 0.14), rgba(255, 195, 104, 0) 30%),
+    linear-gradient(94deg, rgba(255, 210, 124, 0.06), rgba(255, 182, 84, 0.28) 34%, rgba(239, 104, 64, 0.38) 70%, rgba(122, 44, 24, 0.12));
+  box-shadow:
+    inset 0 0.2rem 0.7rem rgba(255, 255, 255, 0.12),
+    0 1.3rem 2.8rem rgba(86, 34, 20, 0.12);
+}
+
+.spill-puddle-secondary {
+  left: 12%;
+  bottom: 1.3rem;
+  width: 56%;
+  height: 3rem;
+  opacity: 0.72;
+  background:
+    radial-gradient(circle at 26% 24%, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0) 24%),
+    linear-gradient(90deg, rgba(255, 194, 102, 0.08), rgba(239, 104, 64, 0.26));
+}
+
+.spill-puddle-reflection {
+  left: 26%;
+  bottom: 0.6rem;
+  width: 46%;
+  height: 1.5rem;
+  opacity: 0.58;
+  filter: blur(0.4rem);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0));
+}
+
+.spill-puddle::before {
+  inset: 0.55rem 0.9rem auto auto;
+  width: 22%;
+  height: 0.7rem;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0));
+}
+
+.spill-puddle::after {
+  inset: auto 1.2rem 0.45rem 1.2rem;
+  height: 0.35rem;
+  background: linear-gradient(90deg, rgba(122, 44, 24, 0), rgba(122, 44, 24, 0.12), rgba(122, 44, 24, 0));
+}
+
+body.performance-lite .scroll-spill-column {
+  width: 6.2rem;
+  opacity: calc(0.06 + (var(--spill-progress) * 0.32));
+}
+
+body.performance-lite .spill-thread,
+body.performance-lite .spill-tip-spray {
+  display: none;
+}
+
+body.performance-lite .spill-ground {
+  opacity: calc(0.02 + (var(--spill-ground-progress) * 0.42));
+}
+
 .page-shell {
   position: relative;
   z-index: 1;
@@ -872,6 +1171,219 @@ body.performance-lite .section-atmosphere .prop {
   background: rgba(255, 255, 255, 0.16);
 }
 
+.prop-sample-glass {
+  width: 7.4rem;
+  height: 10rem;
+  border-radius: 1.8rem 1.8rem 2.2rem 2.2rem;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0.04) 44%, rgba(255, 255, 255, 0.12)),
+    linear-gradient(180deg, rgba(255, 188, 83, 0.08), rgba(239, 104, 64, 0.04));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.04),
+    inset 0.9rem 0 0.8rem rgba(255, 255, 255, 0.06),
+    0 1.3rem 2.8rem rgba(0, 0, 0, 0.12);
+}
+
+.prop-sample-glass::before {
+  inset: 38% 0.5rem 0.55rem;
+  border-radius: 1.2rem 1.2rem 1.6rem 1.6rem;
+  background:
+    radial-gradient(circle at 28% 18%, rgba(255, 235, 192, 0.42), rgba(255, 235, 192, 0) 24%),
+    linear-gradient(180deg, rgba(255, 192, 84, 0.84), rgba(239, 104, 64, 0.78));
+}
+
+.prop-sample-glass::after {
+  inset: 0.5rem 0.7rem auto;
+  height: 0.45rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0.08));
+}
+
+.prop-swatch-strip {
+  width: 6.6rem;
+  height: 13rem;
+  border-radius: 1.4rem;
+  background:
+    linear-gradient(180deg, rgba(255, 248, 239, 0.16), rgba(226, 217, 206, 0.08)),
+    linear-gradient(180deg, rgba(255, 185, 82, 0.18) 0 20%, rgba(208, 93, 132, 0.16) 20% 40%, rgba(120, 200, 90, 0.16) 40% 60%, rgba(131, 191, 210, 0.15) 60% 80%, rgba(255, 240, 215, 0.1) 80% 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 1.3rem 2.7rem rgba(0, 0, 0, 0.12);
+}
+
+.prop-swatch-strip::before {
+  inset: 0.85rem 0.85rem auto;
+  height: 0.8rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0));
+}
+
+.prop-swatch-strip::after {
+  inset: auto 1rem 0.9rem;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.prop-mold-frame {
+  width: 11rem;
+  height: 16rem;
+  border-radius: 2rem;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)),
+    linear-gradient(180deg, rgba(25, 38, 34, 0.36), rgba(10, 16, 14, 0.12));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 1.4rem 3rem rgba(0, 0, 0, 0.12);
+}
+
+.prop-mold-frame::before {
+  inset: 1rem 2.1rem 1rem;
+  border-radius: 3.4rem 3.4rem 2rem 2rem;
+  border: 1px dashed rgba(255, 235, 201, 0.2);
+}
+
+.prop-mold-frame::after {
+  inset: 0.8rem auto auto 0.9rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 50%;
+  background: rgba(255, 205, 129, 0.18);
+  box-shadow:
+    8.1rem 0 0 rgba(255, 205, 129, 0.18),
+    0 13rem 0 rgba(255, 205, 129, 0.1),
+    8.1rem 13rem 0 rgba(255, 205, 129, 0.1);
+}
+
+.prop-chart-strip {
+  width: 12rem;
+  height: 7rem;
+  border-radius: 1.35rem;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(255, 250, 243, 0.14), rgba(229, 218, 201, 0.08));
+  background-size: 1.5rem 1.5rem, 1.5rem 1.5rem, auto;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 1.2rem 2.6rem rgba(0, 0, 0, 0.11);
+}
+
+.prop-chart-strip::before {
+  inset: 1rem 1rem 1.1rem;
+  clip-path: polygon(0 78%, 18% 62%, 36% 68%, 54% 40%, 72% 50%, 100% 18%, 100% 100%, 0 100%);
+  background: linear-gradient(180deg, rgba(255, 190, 82, 0.28), rgba(255, 190, 82, 0.02));
+}
+
+.prop-chart-strip::after {
+  inset: 1.3rem 1rem 1.2rem;
+  clip-path: polygon(0 70%, 18% 56%, 36% 60%, 54% 32%, 72% 40%, 100% 10%, 100% 16%, 72% 46%, 54% 38%, 36% 66%, 18% 62%, 0 76%);
+  background: linear-gradient(90deg, rgba(255, 231, 188, 0.28), rgba(255, 168, 84, 0.36));
+}
+
+.prop-retail-card {
+  width: 10rem;
+  height: 12.8rem;
+  border-radius: 1.55rem;
+  background:
+    radial-gradient(circle at 72% 22%, rgba(255, 240, 207, 0.24), rgba(255, 240, 207, 0) 28%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.04)),
+    linear-gradient(180deg, rgba(255, 188, 83, 0.14), rgba(239, 104, 64, 0.08));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 1.3rem 2.8rem rgba(0, 0, 0, 0.12);
+}
+
+.prop-retail-card::before {
+  inset: 1rem 1rem auto;
+  height: 2.9rem;
+  border-radius: 1rem;
+  background: linear-gradient(180deg, rgba(255, 191, 91, 0.26), rgba(239, 104, 64, 0.12));
+}
+
+.prop-retail-card::after {
+  inset: 5rem 1rem 1rem;
+  background:
+    repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0 2px, rgba(255, 255, 255, 0) 2px 1rem);
+  border-radius: 1rem;
+}
+
+.prop-lightbox {
+  width: 13rem;
+  height: 8.5rem;
+  border-radius: 1.6rem;
+  background:
+    radial-gradient(circle at 56% 42%, rgba(255, 223, 160, 0.2), rgba(255, 223, 160, 0) 28%),
+    linear-gradient(180deg, rgba(255, 250, 243, 0.18), rgba(255, 255, 255, 0.04)),
+    linear-gradient(140deg, rgba(30, 45, 40, 0.38), rgba(10, 16, 14, 0.16));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.04),
+    0 1.5rem 3rem rgba(0, 0, 0, 0.12);
+}
+
+.prop-lightbox::before {
+  inset: 0.9rem;
+  border-radius: 1rem;
+  background:
+    radial-gradient(circle at 64% 34%, rgba(255, 224, 161, 0.24), rgba(255, 224, 161, 0) 30%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+}
+
+.prop-lightbox::after {
+  inset: auto 1.2rem 0.9rem;
+  height: 0.35rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0));
+}
+
+.prop-print-marks {
+  width: 11.5rem;
+  height: 11.5rem;
+  border-radius: 1.4rem;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)),
+    linear-gradient(180deg, rgba(22, 34, 30, 0.28), rgba(10, 16, 14, 0.08));
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.prop-print-marks::before {
+  inset: 1rem;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.18) 0 1px, transparent 1px calc(100% - 1px), rgba(255, 255, 255, 0.18) calc(100% - 1px)),
+    linear-gradient(rgba(255, 255, 255, 0.18) 0 1px, transparent 1px calc(100% - 1px), rgba(255, 255, 255, 0.18) calc(100% - 1px));
+}
+
+.prop-print-marks::after {
+  inset: 1.7rem;
+  background:
+    radial-gradient(circle at 0 0, rgba(255, 192, 85, 0.26) 0 0.45rem, transparent 0.46rem),
+    radial-gradient(circle at 100% 0, rgba(207, 93, 132, 0.22) 0 0.45rem, transparent 0.46rem),
+    radial-gradient(circle at 0 100%, rgba(120, 200, 90, 0.22) 0 0.45rem, transparent 0.46rem),
+    radial-gradient(circle at 100% 100%, rgba(139, 201, 219, 0.2) 0 0.45rem, transparent 0.46rem);
+}
+
+.prop-index-tab {
+  width: 8.8rem;
+  height: 10rem;
+  border-radius: 1.35rem 1.35rem 1.4rem 1.4rem;
+  background:
+    linear-gradient(180deg, rgba(255, 250, 243, 0.16), rgba(229, 218, 201, 0.08)),
+    repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0 2px, rgba(255, 255, 255, 0) 2px 1.05rem);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 1.3rem 2.7rem rgba(0, 0, 0, 0.11);
+}
+
+.prop-index-tab::before {
+  inset: -0.9rem auto auto 1rem;
+  width: 3.4rem;
+  height: 1.6rem;
+  border-radius: 0.9rem 0.9rem 0 0;
+  background: linear-gradient(180deg, rgba(255, 200, 108, 0.22), rgba(239, 104, 64, 0.1));
+}
+
+.prop-index-tab::after {
+  inset: auto 0.9rem 0.9rem;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
 .atmosphere-hero {
   --section-layer-opacity: 0.17;
 }
@@ -945,6 +1457,18 @@ body.performance-lite .section-atmosphere .prop {
   --prop-scale-base: 0.96;
 }
 
+.prop-hero-glass {
+  left: 52%;
+  bottom: 4%;
+  --prop-opacity: 0.12;
+  --prop-shift-x: -28px;
+  --prop-shift-y: -40px;
+  --prop-rotate-base: 6deg;
+  --prop-rotate-range: -10deg;
+  --prop-scale-base: 0.92;
+  --prop-scale-boost: 0.06;
+}
+
 .prop-products-bottle {
   right: -3rem;
   bottom: -6rem;
@@ -1001,6 +1525,17 @@ body.performance-lite .section-atmosphere .prop {
   --prop-scale-base: 0.9;
 }
 
+.prop-products-swatch {
+  left: 34%;
+  top: 9%;
+  --prop-opacity: 0.09;
+  --prop-shift-x: 24px;
+  --prop-shift-y: 18px;
+  --prop-rotate-base: 8deg;
+  --prop-rotate-range: -10deg;
+  --prop-scale-base: 0.88;
+}
+
 .prop-about-bottle {
   right: -2rem;
   bottom: -5.6rem;
@@ -1045,6 +1580,17 @@ body.performance-lite .section-atmosphere .prop {
   --prop-scale-base: 0.9;
 }
 
+.prop-about-mold {
+  right: 18%;
+  top: 10%;
+  --prop-opacity: 0.08;
+  --prop-shift-x: -22px;
+  --prop-shift-y: 16px;
+  --prop-rotate-base: 10deg;
+  --prop-rotate-range: -12deg;
+  --prop-scale-base: 0.88;
+}
+
 .prop-insights-sheet {
   right: 4%;
   bottom: 5%;
@@ -1087,6 +1633,17 @@ body.performance-lite .section-atmosphere .prop {
   --prop-rotate-base: 22deg;
   --prop-rotate-range: -14deg;
   --prop-scale-base: 0.94;
+}
+
+.prop-insights-chart {
+  left: 38%;
+  bottom: 7%;
+  --prop-opacity: 0.08;
+  --prop-shift-x: -20px;
+  --prop-shift-y: -12px;
+  --prop-rotate-base: 4deg;
+  --prop-rotate-range: -8deg;
+  --prop-scale-base: 0.9;
 }
 
 .prop-strategy-rail {
@@ -1143,6 +1700,17 @@ body.performance-lite .section-atmosphere .prop {
   --prop-scale-base: 0.92;
 }
 
+.prop-strategy-card {
+  right: 36%;
+  bottom: 8%;
+  --prop-opacity: 0.08;
+  --prop-shift-x: -24px;
+  --prop-shift-y: -16px;
+  --prop-rotate-base: 10deg;
+  --prop-rotate-range: -10deg;
+  --prop-scale-base: 0.88;
+}
+
 .prop-immersion-phone {
   right: 6%;
   bottom: 8%;
@@ -1185,6 +1753,17 @@ body.performance-lite .section-atmosphere .prop {
   --prop-rotate-base: -10deg;
   --prop-rotate-range: 12deg;
   --prop-scale-base: 0.88;
+}
+
+.prop-immersion-lightbox {
+  left: 10%;
+  top: 12%;
+  --prop-opacity: 0.08;
+  --prop-shift-x: 24px;
+  --prop-shift-y: 14px;
+  --prop-rotate-base: -6deg;
+  --prop-rotate-range: 10deg;
+  --prop-scale-base: 0.9;
 }
 
 .prop-downloads-sheet {
@@ -1231,6 +1810,17 @@ body.performance-lite .section-atmosphere .prop {
   --prop-scale-base: 0.92;
 }
 
+.prop-downloads-marks {
+  right: 27%;
+  top: 10%;
+  --prop-opacity: 0.07;
+  --prop-shift-x: -20px;
+  --prop-shift-y: 14px;
+  --prop-rotate-base: 6deg;
+  --prop-rotate-range: -10deg;
+  --prop-scale-base: 0.84;
+}
+
 .prop-faq-bottle {
   right: -2rem;
   bottom: -7rem;
@@ -1273,6 +1863,17 @@ body.performance-lite .section-atmosphere .prop {
   --prop-rotate-base: 8deg;
   --prop-rotate-range: -10deg;
   --prop-scale-base: 0.9;
+}
+
+.prop-faq-tab {
+  right: 36%;
+  bottom: 10%;
+  --prop-opacity: 0.08;
+  --prop-shift-x: -22px;
+  --prop-shift-y: -18px;
+  --prop-rotate-base: 8deg;
+  --prop-rotate-range: -10deg;
+  --prop-scale-base: 0.86;
 }
 
 .hero-shell {

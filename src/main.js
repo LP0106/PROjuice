@@ -4,6 +4,11 @@ const body = document.body;
 const navToggle = document.querySelector(".nav-toggle");
 const nav = document.querySelector(".site-nav");
 const header = document.querySelector(".site-header");
+const immersiveIntro = document.querySelector("#immersive-intro");
+const siteFooter = document.querySelector(".site-footer");
+const spillLayer = document.querySelector(".scroll-spill-layer");
+const spillSourceBottle = document.querySelector("#bottle-assembly");
+const spillSourceMouth = document.querySelector(".bottle-shell");
 const yearNode = document.querySelector("#year");
 const revealNodes = document.querySelectorAll(".reveal");
 const progressBar = document.querySelector("#scroll-progress-bar");
@@ -47,6 +52,13 @@ const sectionShellMeta = sectionShellNodes.map((node) => ({
   top: 0,
   height: 0,
 }));
+const spillLayout = {
+  startY: 0,
+  endY: 1,
+  travel: 1,
+  layerHeight: 1,
+  baseX: window.innerWidth * 0.5,
+};
 
 const flavourData = {
   mango: {
@@ -582,6 +594,40 @@ const updateSectionShellLayout = () => {
   });
 };
 
+const updateSpillLayout = () => {
+  if (!spillLayer) {
+    return;
+  }
+
+  const docHeight = Math.max(document.documentElement.scrollHeight, body.scrollHeight, window.innerHeight);
+  const sourceNode = spillSourceMouth || spillSourceBottle;
+  const sourceRect = sourceNode ? sourceNode.getBoundingClientRect() : null;
+  const introAnchor = sourceRect
+    ? window.scrollY + sourceRect.top + (sourceRect.height * 0.06)
+    : immersiveIntro
+      ? immersiveIntro.offsetTop + (window.innerHeight * 0.2)
+      : window.innerHeight * 0.2;
+  const sourceX = sourceRect
+    ? sourceRect.left + (sourceRect.width * 0.5)
+    : window.innerWidth * 0.58;
+  const footerAnchor = siteFooter
+    ? siteFooter.offsetTop - Math.min(window.innerHeight * 0.12, 56)
+    : docHeight - (window.innerHeight * 0.24);
+  const startY = Math.max(180, introAnchor);
+  const endY = Math.max(startY + (window.innerHeight * 1.2), Math.min(docHeight - 64, footerAnchor));
+
+  spillLayout.startY = startY;
+  spillLayout.endY = endY;
+  spillLayout.travel = Math.max(endY - startY, 1);
+  spillLayout.layerHeight = docHeight;
+  spillLayout.baseX = sourceX;
+
+  spillLayer.style.setProperty("--spill-layer-height", `${docHeight}px`);
+  spillLayer.style.setProperty("--spill-start-y", `${startY.toFixed(2)}px`);
+  spillLayer.style.setProperty("--spill-base-x", `${sourceX.toFixed(2)}px`);
+  spillLayer.style.setProperty("--spill-ground-y", `${endY.toFixed(2)}px`);
+};
+
 const syncCurrentNav = (_scrollTop, viewportHeight) => {
   if (!navLinks.length || !navigableSectionMeta.length) {
     return;
@@ -694,6 +740,24 @@ const syncScrollEffects = () => {
     meta.node.style.setProperty("--section-glow-opacity", `${(0.24 + (glowBand * 0.48)).toFixed(3)}`);
   });
 
+  if (spillLayer) {
+    const streamProbe = scrollTop + (viewportHeight * 0.78);
+    const streamProgress = clamp((streamProbe - spillLayout.startY) / spillLayout.travel);
+    const streamReach = spillLayout.startY + (spillLayout.travel * streamProgress);
+    const streamHeight = Math.max(streamReach - spillLayout.startY, 0);
+    const groundProgress = clamp((streamProgress - 0.84) / 0.16);
+    const laneAmplitude = lowMotionViewport ? 5 : 14;
+    const laneX = (
+      Math.sin((streamProgress * Math.PI * 2.3) + 0.35) * laneAmplitude +
+      Math.sin((scrollTop * 0.0011) + 0.8) * (laneAmplitude * 0.4)
+    );
+
+    spillLayer.style.setProperty("--spill-height", `${streamHeight.toFixed(2)}px`);
+    spillLayer.style.setProperty("--spill-progress", streamProgress.toFixed(4));
+    spillLayer.style.setProperty("--spill-lane-x", `${laneX.toFixed(2)}px`);
+    spillLayer.style.setProperty("--spill-ground-progress", groundProgress.toFixed(4));
+  }
+
   lastSyncedScrollTop = scrollTop;
   scrollTicking = false;
 };
@@ -717,6 +781,7 @@ window.addEventListener("resize", () => {
   updateRevealLayout();
   updateNavigableSectionLayout();
   updateSectionShellLayout();
+  updateSpillLayout();
   sliderStates.forEach(({ syncSliderState }) => syncSliderState());
   requestScrollSync();
 });
@@ -725,6 +790,7 @@ window.addEventListener("load", () => {
   updateRevealLayout();
   updateNavigableSectionLayout();
   updateSectionShellLayout();
+  updateSpillLayout();
   sliderStates.forEach(({ syncSliderState }) => syncSliderState());
   syncScrollEffects();
 });
@@ -735,6 +801,7 @@ if (document.fonts && document.fonts.ready) {
     updateRevealLayout();
     updateNavigableSectionLayout();
     updateSectionShellLayout();
+    updateSpillLayout();
     sliderStates.forEach(({ syncSliderState }) => syncSliderState());
     requestScrollSync();
   });
@@ -752,4 +819,5 @@ updateSceneParallaxLayout();
 updateRevealLayout();
 updateNavigableSectionLayout();
 updateSectionShellLayout();
+updateSpillLayout();
 syncScrollEffects();
