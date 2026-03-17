@@ -235,8 +235,6 @@ body.performance-lite .mist-cloud {
 .stage-vignette,
 .stage-halo,
 .rewind-ring,
-.liquid-ribbon,
-.liquid-drop,
 .mist-cloud,
 .fruit-particle,
 .protein-particle,
@@ -441,8 +439,6 @@ body.performance-lite .mist-cloud {
   font-weight: 700;
 }
 
-.liquid-ribbon,
-.liquid-drop,
 .mist-cloud,
 .fruit-particle,
 .protein-particle,
@@ -452,110 +448,6 @@ body.performance-lite .mist-cloud {
   top: var(--stage-center-y);
   opacity: 0;
   will-change: transform, opacity;
-}
-
-.liquid-ribbon {
-  width: clamp(15rem, 18vw, 18.5rem);
-  height: clamp(3rem, 4.2vw, 4.7rem);
-  border-radius: 62% 38% 48% 52% / 62% 34% 66% 38%;
-  overflow: visible;
-  background:
-    radial-gradient(circle at 18% 34%, rgba(255, 247, 229, 0.92), rgba(255, 247, 229, 0) 24%),
-    radial-gradient(circle at 68% 54%, rgba(255, 207, 118, 0.34), rgba(255, 207, 118, 0) 34%),
-    linear-gradient(102deg, rgba(255, 218, 143, 0.12), rgba(255, 178, 84, 0.92) 18%, rgba(239, 104, 64, 0.98) 62%, rgba(150, 48, 25, 0.9));
-  box-shadow:
-    inset 0 0.28rem 0.56rem rgba(255, 255, 255, 0.18),
-    inset 0 -0.8rem 1.2rem rgba(145, 42, 25, 0.2),
-    0 1.2rem 2rem rgba(122, 49, 23, 0.18);
-}
-
-.liquid-ribbon::before,
-.liquid-ribbon::after {
-  content: "";
-  position: absolute;
-  pointer-events: none;
-}
-
-.liquid-ribbon::before {
-  inset: auto auto 4% -6%;
-  width: 38%;
-  height: 78%;
-  border-radius: 58% 42% 62% 38% / 56% 34% 66% 44%;
-  background:
-    radial-gradient(circle at 34% 28%, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0) 34%),
-    linear-gradient(120deg, rgba(255, 211, 128, 0.92), rgba(235, 104, 57, 0.84));
-  transform: rotate(-9deg);
-}
-
-.liquid-ribbon::after {
-  inset: 16% -10% auto auto;
-  width: 28%;
-  height: 54%;
-  border-radius: 54% 46% 58% 42% / 54% 30% 70% 46%;
-  background:
-    linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 239, 214, 0.26) 40%, rgba(255, 255, 255, 0)),
-    linear-gradient(140deg, rgba(255, 176, 82, 0.8), rgba(170, 60, 35, 0.66));
-  transform: rotate(14deg);
-}
-
-.ribbon-a {
-  width: 20rem;
-  height: 4.8rem;
-}
-
-.ribbon-b {
-  width: 16rem;
-  height: 3.8rem;
-}
-
-.ribbon-c {
-  width: 18.4rem;
-  height: 4.2rem;
-}
-
-.ribbon-d {
-  width: 17rem;
-  height: 4rem;
-}
-
-.ribbon-e {
-  width: 14.6rem;
-  height: 3.5rem;
-}
-
-.ribbon-f {
-  width: 15.2rem;
-  height: 3.7rem;
-}
-
-.liquid-drop {
-  width: clamp(1.8rem, 2.4vw, 2.5rem);
-  height: clamp(2.6rem, 3.4vw, 3.5rem);
-  border-radius: 46% 54% 52% 48% / 22% 24% 76% 78%;
-  background:
-    radial-gradient(circle at 34% 20%, rgba(255, 255, 255, 0.48), rgba(255, 255, 255, 0) 26%),
-    linear-gradient(180deg, rgba(255, 218, 136, 0.96), rgba(239, 104, 64, 0.98) 70%, rgba(145, 52, 29, 0.92));
-  box-shadow:
-    inset 0 0.18rem 0.32rem rgba(255, 255, 255, 0.2),
-    0 0.8rem 1.6rem rgba(122, 49, 23, 0.18);
-}
-
-.liquid-drop::before {
-  content: "";
-  position: absolute;
-  inset: -0.42rem 0.8rem auto;
-  height: 0.85rem;
-  border-radius: 999px 999px 0.2rem 0.2rem;
-  background: linear-gradient(180deg, rgba(255, 223, 153, 0.72), rgba(255, 223, 153, 0));
-}
-
-.liquid-drop::after {
-  content: "";
-  position: absolute;
-  inset: 0.32rem 0.46rem auto 0.44rem;
-  height: 0.55rem;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.18);
 }
 
 .mist-cloud {
@@ -987,11 +879,6 @@ body.performance-lite .mist-cloud {
 
   .bottle-label {
     inset: 6rem 0.9rem 2.4rem;
-  }
-
-  .liquid-ribbon {
-    width: 13rem;
-    height: 2.8rem;
   }
 
   .fruit-particle {

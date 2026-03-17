@@ -16,10 +16,8 @@ if (immersiveShell) {
   const experienceHeader = select(".experience-header");
   const stage = select(".experience-stage");
   const bottle = select("#bottle-assembly");
-  const bottleShell = select(".bottle-shell");
   const cap = select("#scene-cap");
   const liquid = select("#bottle-liquid");
-  const spillLayer = document.querySelector(".scroll-spill-layer");
   const meterFill = select("#scene-meter-fill");
   const progressLabel = select("#scene-progress-label");
   const stateLabel = select("#scene-state-label");
@@ -41,26 +39,10 @@ if (immersiveShell) {
     body.classList.add("has-immersive-intro");
   }
 
-  const ribbons = [
-    { node: select(".ribbon-a"), fromX: -86, fromY: -188, toX: -390, toY: -104, rotate: -18, delay: 0.14, drift: 16 },
-    { node: select(".ribbon-b"), fromX: -74, fromY: -176, toX: -250, toY: -68, rotate: -8, delay: 0.19, drift: 12 },
-    { node: select(".ribbon-c"), fromX: -66, fromY: -170, toX: 220, toY: -92, rotate: 12, delay: 0.24, drift: 14 },
-    { node: select(".ribbon-d"), fromX: -56, fromY: -160, toX: 380, toY: -40, rotate: 24, delay: 0.29, drift: 18 },
-    { node: select(".ribbon-e"), fromX: -70, fromY: -154, toX: -136, toY: 106, rotate: 10, delay: 0.34, drift: 10 },
-    { node: select(".ribbon-f"), fromX: -52, fromY: -146, toX: 144, toY: 124, rotate: -8, delay: 0.39, drift: 12 },
-  ];
-
   const mists = [
     { node: select(".mist-a"), fromX: -78, fromY: -166, toX: -300, toY: -70, rotate: -8, delay: 0.16, drift: 20 },
     { node: select(".mist-b"), fromX: -60, fromY: -154, toX: 10, toY: -18, rotate: 0, delay: 0.24, drift: 18 },
     { node: select(".mist-c"), fromX: -44, fromY: -148, toX: 290, toY: -40, rotate: 8, delay: 0.3, drift: 22 },
-  ];
-
-  const drops = [
-    { node: select(".drop-a"), fromX: -78, fromY: -170, toX: -120, toY: 252, rotate: -12, delay: 0.2, drift: 14 },
-    { node: select(".drop-b"), fromX: -64, fromY: -164, toX: 8, toY: 318, rotate: -4, delay: 0.26, drift: 16 },
-    { node: select(".drop-c"), fromX: -52, fromY: -156, toX: 136, toY: 276, rotate: 10, delay: 0.31, drift: 12 },
-    { node: select(".drop-d"), fromX: -58, fromY: -148, toX: -16, toY: 386, rotate: 4, delay: 0.38, drift: 18 },
   ];
 
   const fruits = [
@@ -162,16 +144,12 @@ if (immersiveShell) {
     },
   };
 
-  let activeRibbons = ribbons;
   let activeMists = mists;
-  let activeDrops = drops;
   let activeFruits = fruits;
   let activeProteins = proteins;
   let activeShards = shards;
   let activeBubbles = bubbles;
-  let activeRibbonSet = new Set(ribbons);
   let activeMistSet = new Set(mists);
-  let activeDropSet = new Set(drops);
   let activeFruitSet = new Set(fruits);
   let activeProteinSet = new Set(proteins);
   let activeShardSet = new Set(shards);
@@ -196,24 +174,18 @@ if (immersiveShell) {
 
   const syncPerformanceMode = () => {
     performanceLite = performanceLiteQuery.matches;
-    activeRibbons = performanceLite ? ribbons.slice(0, 4) : ribbons;
     activeMists = performanceLite ? mists.slice(0, 2) : mists;
-    activeDrops = performanceLite ? drops.slice(0, 3) : drops;
     activeFruits = performanceLite ? fruits.filter((_, index) => index % 2 === 0) : fruits;
     activeProteins = performanceLite ? proteins.filter((_, index) => index % 3 === 0) : proteins;
     activeShards = performanceLite ? shards.filter((_, index) => index % 2 === 0) : shards;
     activeBubbles = performanceLite ? bubbles.filter((_, index) => index % 2 === 0) : bubbles;
-    activeRibbonSet = new Set(activeRibbons);
     activeMistSet = new Set(activeMists);
-    activeDropSet = new Set(activeDrops);
     activeFruitSet = new Set(activeFruits);
     activeProteinSet = new Set(activeProteins);
     activeShardSet = new Set(activeShards);
     activeBubbleSet = new Set(activeBubbles);
 
-    setBurstVisibility(ribbons, activeRibbonSet);
     setBurstVisibility(mists, activeMistSet);
-    setBurstVisibility(drops, activeDropSet);
     setBurstVisibility(fruits, activeFruitSet);
     setBurstVisibility(proteins, activeProteinSet);
     setBurstVisibility(shards, activeShardSet);
@@ -336,28 +308,6 @@ if (immersiveShell) {
     liquid.style.setProperty("--liquid-opacity", `${mix(1, 0.68, release)}`);
   };
 
-  const syncSpillSource = (progress) => {
-    if (!spillLayer || !bottleShell) {
-      return;
-    }
-
-    const tip = ease(mapRange(progress, 0.08, 0.34));
-    const shellRect = bottleShell.getBoundingClientRect();
-    const mouthX = shellRect.left + (shellRect.width * mix(0.5, 0.2, tip));
-    const mouthY = window.scrollY + shellRect.top + (shellRect.height * mix(0.03, 0.085, tip));
-    const centerX = window.innerWidth * 0.5;
-    const sourceOffset = mouthX - centerX;
-    const bridgeWidth = Math.max(Math.abs(sourceOffset) + 84, 84);
-    const bridgeRotate = Math.max(Math.min(sourceOffset * 0.04, 10), -10);
-
-    spillLayer.style.setProperty("--spill-base-x", `${centerX.toFixed(2)}px`);
-    spillLayer.style.setProperty("--spill-source-offset-x", `${sourceOffset.toFixed(2)}px`);
-    spillLayer.style.setProperty("--spill-bridge-width", `${bridgeWidth.toFixed(2)}px`);
-    spillLayer.style.setProperty("--spill-bridge-shift", `${(sourceOffset * 0.5).toFixed(2)}px`);
-    spillLayer.style.setProperty("--spill-bridge-rotate", `${bridgeRotate.toFixed(2)}deg`);
-    spillLayer.style.setProperty("--spill-start-y", `${mouthY.toFixed(2)}px`);
-  };
-
   const updateBackground = (progress) => {
     if (haloA) {
       haloA.style.transform = `translate(-50%, -50%) scale(${mix(0.82, 1.18, progress)})`;
@@ -401,19 +351,9 @@ if (immersiveShell) {
   const renderScene = (progress, overlayProgress) => {
     updateSceneLabels(progress, overlayProgress);
     updateBottle(progress);
-    syncSpillSource(progress);
     updateBackground(progress);
     updateChapters(progress);
     applyOverlayState(overlayProgress);
-
-    activeRibbons.forEach((config, index) => {
-      animateBurstNode(config, progress, {
-        fromScaleX: 0.16,
-        fromScaleY: 0.08,
-        toScaleX: 1 + (index * 0.08),
-        toScaleY: 1 + (index * 0.04),
-      });
-    });
 
     activeMists.forEach((config, index) => {
       animateBurstNode(config, progress, {
@@ -421,15 +361,6 @@ if (immersiveShell) {
         fromScaleY: 0.22,
         toScaleX: 1.18 + (index * 0.08),
         toScaleY: 1 + (index * 0.04),
-      });
-    });
-
-    activeDrops.forEach((config, index) => {
-      animateBurstNode(config, progress, {
-        fromScaleX: 0.18,
-        fromScaleY: 0.1,
-        toScaleX: 0.92 + (index * 0.08),
-        toScaleY: 1.08 + (index * 0.12),
       });
     });
 
