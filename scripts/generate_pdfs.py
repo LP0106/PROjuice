@@ -669,9 +669,9 @@ def make_report_pages() -> list[PDFPage]:
         current += 24
 
     toc.text(382, 174, "Brand Snapshot", size=16, font="bold", color=PALETTE["ink"])
-    draw_badge(toc, 382, 208, 144, "UVP", "Fresh like juice, functional like a protein drink", PALETTE["leaf"])
+    draw_badge(toc, 382, 208, 144, "UVP", "Juice taste with protein benefits", PALETTE["leaf"])
     draw_badge(toc, 382, 292, 144, "Launch Goal", "2,340 bottles in 6 months", PALETTE["orange"])
-    draw_badge(toc, 382, 376, 144, "Channels", "Campus, gyms, cafes and pre-orders", PALETTE["berry"])
+    draw_badge(toc, 382, 376, 144, "Channels", "Campus, gym, cafe and pre-order sales", PALETTE["berry"])
 
     toc.rect(366, 458, 176, 124, fill=PALETTE["white"], stroke=None)
     toc.text(382, 478, "Pilot Findings", size=13, font="bold", color=PALETTE["ink"])
@@ -984,10 +984,10 @@ def make_canvas_pages() -> list[PDFPage]:
 def generate() -> None:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     report_writer = PDFWriter()
-    report_writer.build(make_report_pages(), OUT_DIR / "PROjuice-Marketing-Report-v3.pdf")
+    report_writer.build(make_report_pages(), OUT_DIR / "PROjuice-Marketing-Report-v4.pdf")
 
     canvas_writer = PDFWriter()
-    canvas_writer.build(make_canvas_pages(), OUT_DIR / "PROjuice-Lean-Canvas-v3.pdf")
+    canvas_writer.build(make_canvas_pages(), OUT_DIR / "PROjuice-Lean-Canvas-v4.pdf")
 
 
 if __name__ == "__main__":
