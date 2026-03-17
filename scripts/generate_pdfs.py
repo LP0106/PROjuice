@@ -733,63 +733,70 @@ def make_report_pages() -> list[PDFPage]:
 
     audit = PDFPage(width, height, background=PALETTE["cream"])
     y = draw_section_heading(audit, "6", "Competitor Analysis", 44, 46, 500)
-    audit.rect(44, 84, 498, 238, fill=PALETTE["white"], stroke=None)
-    cols = [58, 210, 354, 480]
-    headers = ["Competitor type", "Strengths", "Weaknesses", "PROjuice edge"]
-    for index, header in enumerate(headers):
-        width_hint = [132, 130, 110, 50][index]
-        audit.text(cols[index], 102, header, size=10.5, font="bold", color=PALETTE["ink"], width=width_hint)
-    row_top = 132
-    for row in MARKETING["competitors"]:
-        audit.line(58, row_top - 10, 520, row_top - 10, PALETTE["sand"], 1)
-        audit.paragraph(cols[0], row_top, row["name"], width=132, size=9.4)
-        audit.paragraph(cols[1], row_top, row["strengths"], width=126, size=9.4)
-        audit.paragraph(cols[2], row_top, row["weaknesses"], width=110, size=9.4)
-        audit.paragraph(cols[3], row_top, row["projuice_edge"], width=48, size=9.0, font="bold", color=PALETTE["leaf"])
-        row_top += 62
+    card_top = y
+    accents = [PALETTE["orange"], PALETTE["berry"], PALETTE["leaf"]]
+    for row, accent in zip(MARKETING["competitors"], accents):
+        audit.rect(44, card_top, 498, 154, fill=PALETTE["white"], stroke=None)
+        audit.rect(44, card_top, 498, 28, fill=accent, stroke=None)
+        audit.text(58, card_top + 8, row["name"], size=12.4, font="bold", color=PALETTE["white"])
+        audit.text(58, card_top + 46, "Strengths", size=10, font="bold", color=PALETTE["ink"])
+        audit.paragraph(58, card_top + 62, row["strengths"], width=132, size=9.8, color=PALETTE["slate"])
+        audit.text(220, card_top + 46, "Weaknesses", size=10, font="bold", color=PALETTE["ink"])
+        audit.paragraph(220, card_top + 62, row["weaknesses"], width=132, size=9.8, color=PALETTE["slate"])
+        audit.text(382, card_top + 46, "PROjuice edge", size=10, font="bold", color=PALETTE["ink"])
+        audit.paragraph(382, card_top + 62, row["projuice_edge"], width=130, size=9.8, font="bold", color=PALETTE["leaf"])
+        card_top += 170
+    pages.append(audit)
 
-    y = draw_section_heading(audit, "7", "PESTEL Analysis", 44, 358, 500)
+    pestel_page = PDFPage(width, height, background=PALETTE["cream"])
+    y = draw_section_heading(pestel_page, "7", "PESTEL Analysis", 44, 46, 500)
     pestel_items = list(MARKETING["pestel"].items())
     box_width = 238
-    box_height = 86
+    box_height = 116
     start_y = y
     for idx, (label, body) in enumerate(pestel_items):
         row = idx // 2
         col = idx % 2
         x = 44 + col * 258
-        y_box = start_y + row * 102
-        audit.rect(x, y_box, box_width, box_height, fill=PALETTE["white"], stroke=None)
-        audit.text(x + 14, y_box + 14, label, size=12, font="bold", color=PALETTE["berry"])
-        audit.paragraph(x + 14, y_box + 34, body, width=box_width - 28, size=9.4, color=PALETTE["slate"])
-    pages.append(audit)
+        y_box = start_y + row * 132
+        pestel_page.rect(x, y_box, box_width, box_height, fill=PALETTE["white"], stroke=None)
+        pestel_page.text(x + 14, y_box + 16, label, size=12.5, font="bold", color=PALETTE["berry"])
+        pestel_page.paragraph(x + 14, y_box + 40, body, width=box_width - 28, size=9.8, color=PALETTE["slate"])
+    pages.append(pestel_page)
 
-    strategy_foundation = PDFPage(width, height, background=PALETTE["cream"])
-    y = draw_section_heading(strategy_foundation, "8", "SWOT Analysis", 44, 46, 500)
+    swot_page = PDFPage(width, height, background=PALETTE["cream"])
+    y = draw_section_heading(swot_page, "8", "SWOT Analysis", 44, 46, 500)
     quadrant_data = list(MARKETING["swot"].items())
     quad_positions = [
-        (44, y, "Strengths", PALETTE["leaf"]),
-        (302, y, "Weaknesses", PALETTE["orange"]),
-        (44, y + 186, "Opportunities", PALETTE["berry"]),
-        (302, y + 186, "Threats", PALETTE["gold"]),
+        (44, y, PALETTE["leaf"]),
+        (302, y, PALETTE["orange"]),
+        (44, y + 202, PALETTE["berry"]),
+        (302, y + 202, PALETTE["gold"]),
     ]
-    for (label, items), (x, y_box, title, accent) in zip(quadrant_data, quad_positions):
-        strategy_foundation.rect(x, y_box, 240, 162, fill=PALETTE["white"], stroke=None)
-        strategy_foundation.text(x + 14, y_box + 14, title, size=13, font="bold", color=accent)
-        strategy_foundation.bullet_list(x + 14, y_box + 40, items, width=210, size=9.2, accent=accent)
+    for (label, items), (x, y_box, accent) in zip(quadrant_data, quad_positions):
+        swot_page.rect(x, y_box, 240, 178, fill=PALETTE["white"], stroke=None)
+        swot_page.text(x + 14, y_box + 16, label, size=13.5, font="bold", color=accent)
+        swot_page.bullet_list(x + 14, y_box + 44, items, width=210, size=9.7, accent=accent)
+    pages.append(swot_page)
 
-    y = draw_section_heading(strategy_foundation, "9", "Ansoff Matrix", 44, 446, 500)
-    strategy_foundation.rect(44, y, 498, 208, fill=PALETTE["white"], stroke=None)
-    strategy_foundation.line(293, y + 20, 293, y + 188, PALETTE["sand"], 1.2)
-    strategy_foundation.line(60, y + 104, 526, y + 104, PALETTE["sand"], 1.2)
+    strategy_foundation = PDFPage(width, height, background=PALETTE["cream"])
+    y = draw_section_heading(strategy_foundation, "9", "Ansoff Matrix", 44, 46, 500)
+    strategy_foundation.rect(44, y, 498, 272, fill=PALETTE["white"], stroke=None)
+    strategy_foundation.line(293, y + 24, 293, y + 248, PALETTE["sand"], 1.2)
+    strategy_foundation.line(60, y + 136, 526, y + 136, PALETTE["sand"], 1.2)
     ansoff_positions = [
-        (60, y + 28, "Market Penetration"),
-        (310, y + 28, "Product Development"),
-        (60, y + 122, "Market Development"),
-        (310, y + 122, "Diversification"),
+        (60, y + 34),
+        (310, y + 34),
+        (60, y + 146),
+        (310, y + 146),
     ]
-    for (title, body), (x, y_box, _) in zip(MARKETING["ansoff"].items(), ansoff_positions):
-        strategy_foundation.text(x, y_box, title, size=10.5, font="bold", color=PALETTE["ink"])
-        strategy_foundation.paragraph(x, y_box + 20, body, width=200, size=8.8, color=PALETTE["slate"])
+    for (title, body), (x, y_box) in zip(MARKETING["ansoff"].items(), ansoff_positions):
+        strategy_foundation.text(x, y_box, title, size=10.8, font="bold", color=PALETTE["ink"])
+        strategy_foundation.paragraph(x, y_box + 22, body, width=200, size=9.4, color=PALETTE["slate"])
+
+    y = draw_section_heading(strategy_foundation, "10", "Marketing Assumptions", 44, 392, 500)
+    strategy_foundation.rect(44, y, 498, 280, fill=PALETTE["white"], stroke=None)
+    strategy_foundation.bullet_list(58, y + 22, BUSINESS["assumptions"], width=454, size=10.4, accent=PALETTE["orange"])
     pages.append(strategy_foundation)
 
     mix_a = PDFPage(width, height, background=PALETTE["cream"])
@@ -862,20 +869,20 @@ def make_report_pages() -> list[PDFPage]:
     y = draw_section_heading(plan, "14", "Contingency Plans", 44, 46, 500)
     plan.bullet_list(44, y, MARKETING["contingencies"], width=500, size=10.8, accent=PALETTE["orange"])
     y = draw_section_heading(plan, "15", "Marketing Action Plan", 44, 248, 500)
-    plan.rect(44, y, 498, 456, fill=PALETTE["white"], stroke=None)
+    plan.rect(44, y, 498, 510, fill=PALETTE["white"], stroke=None)
     plan.text(58, y + 18, "Month", size=11.2, font="bold", color=PALETTE["ink"])
-    plan.text(144, y + 18, "Actions", size=11.2, font="bold", color=PALETTE["ink"])
-    current = y + 48
+    plan.text(152, y + 18, "Actions", size=11.2, font="bold", color=PALETTE["ink"])
+    current = y + 52
     for month, actions in FINANCE["action_plan"]:
         plan.line(58, current - 8, 526, current - 8, PALETTE["sand"], 1)
         plan.text(58, current, month, size=10.2, font="bold", color=PALETTE["berry"])
-        plan.paragraph(144, current, actions, width=360, size=9.7, color=PALETTE["slate"])
-        current += 56
+        plan.paragraph(152, current, actions, width=350, size=9.7, color=PALETTE["slate"])
+        current += 68
     pages.append(plan)
 
     controls = PDFPage(width, height, background=PALETTE["cream"])
     y = draw_section_heading(controls, "16", "Marketing Budget", 44, 46, 500)
-    controls.rect(44, y, 498, 274, fill=PALETTE["white"], stroke=None)
+    controls.rect(44, y, 498, 300, fill=PALETTE["white"], stroke=None)
     controls.text(58, y + 18, "Budget item", size=11, font="bold", color=PALETTE["ink"])
     controls.text(470, y + 18, "NZD", size=11, font="bold", color=PALETTE["ink"], width=50, align="right")
     current = y + 48
@@ -885,14 +892,14 @@ def make_report_pages() -> list[PDFPage]:
         controls.line(58, current - 8, 520, current - 8, PALETTE["sand"], 1)
         controls.paragraph(58, current, item, width=360, size=9.8)
         controls.text(458, current, f"{amount}", size=10.1, font="bold", color=PALETTE["slate"], width=60, align="right")
-        current += 32
+        current += 34
     controls.line(58, current - 8, 520, current - 8, PALETTE["ink"], 1.1)
     controls.text(58, current, "Total marketing budget", size=11.4, font="bold", color=PALETTE["ink"])
     controls.text(454, current, f"{total_budget}", size=11.4, font="bold", color=PALETTE["leaf"], width=64, align="right")
-    controls.rect(58, y + 214, 460, 42, fill=PALETTE["sand"], stroke=None)
+    controls.rect(58, y + 232, 460, 48, fill=PALETTE["sand"], stroke=None)
     controls.paragraph(
         72,
-        y + 226,
+        y + 246,
         "Budget priority is front-loaded into launch sampling and social content because early taste proof and visual storytelling are the fastest ways to earn trial.",
         width=432,
         size=9.7,
@@ -948,9 +955,17 @@ def make_canvas_pages() -> list[PDFPage]:
         page.text(x + 12, y + 6, title, size=11.4, font="bold", color=PALETTE["white"])
         page.bullet_list(x + 12, y + 38, LEAN_CANVAS[title], width=w - 24, size=9.0, accent=accent)
 
-    page.rect(538, 84, 270, 52, fill=PALETTE["white"], stroke=None)
+    page.rect(538, 84, 270, 74, fill=PALETTE["white"], stroke=None)
     page.text(552, 99, "Launch Targets", size=11.2, font="bold", color=PALETTE["ink"])
-    page.text(552, 120, "2,340 bottles by Sep 30, 2026 | 5 repeat stockists | 35% repeat purchase rate", size=9.8, font="bold", color=PALETTE["slate"])
+    page.paragraph(
+        552,
+        118,
+        "2,340 bottles by Sep 30, 2026 | 5 repeat stockists | 35% repeat purchase rate",
+        width=236,
+        size=9.5,
+        font="bold",
+        color=PALETTE["slate"],
+    )
     page.footer(1, 1, "PROjuice Lean Canvas")
     return [page]
 
@@ -958,10 +973,10 @@ def make_canvas_pages() -> list[PDFPage]:
 def generate() -> None:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     report_writer = PDFWriter()
-    report_writer.build(make_report_pages(), OUT_DIR / "PROjuice-Marketing-Report.pdf")
+    report_writer.build(make_report_pages(), OUT_DIR / "PROjuice-Marketing-Report-v2.pdf")
 
     canvas_writer = PDFWriter()
-    canvas_writer.build(make_canvas_pages(), OUT_DIR / "PROjuice-Lean-Canvas.pdf")
+    canvas_writer.build(make_canvas_pages(), OUT_DIR / "PROjuice-Lean-Canvas-v2.pdf")
 
 
 if __name__ == "__main__":
