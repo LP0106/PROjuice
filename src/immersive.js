@@ -38,12 +38,12 @@ if (immersiveShell) {
   }
 
   const ribbons = [
-    { node: select(".ribbon-a"), toX: -420, toY: -280, rotate: -30, delay: 0.12, drift: 0 },
-    { node: select(".ribbon-b"), toX: -280, toY: -210, rotate: -16, delay: 0.18, drift: 0 },
-    { node: select(".ribbon-c"), toX: 250, toY: -250, rotate: 18, delay: 0.24, drift: 0 },
-    { node: select(".ribbon-d"), toX: 420, toY: -170, rotate: 34, delay: 0.28, drift: 0 },
-    { node: select(".ribbon-e"), toX: -170, toY: 20, rotate: 8, delay: 0.32, drift: 0 },
-    { node: select(".ribbon-f"), toX: 160, toY: 42, rotate: -6, delay: 0.36, drift: 0 },
+    { node: select(".ribbon-a"), fromX: -36, fromY: 62, toX: -420, toY: -280, rotate: -30, delay: 0.12, drift: 0 },
+    { node: select(".ribbon-b"), fromX: -22, fromY: 56, toX: -280, toY: -210, rotate: -16, delay: 0.18, drift: 0 },
+    { node: select(".ribbon-c"), fromX: 12, fromY: 70, toX: 250, toY: -250, rotate: 18, delay: 0.24, drift: 0 },
+    { node: select(".ribbon-d"), fromX: 30, fromY: 82, toX: 420, toY: -170, rotate: 34, delay: 0.28, drift: 0 },
+    { node: select(".ribbon-e"), fromX: -18, fromY: 104, toX: -170, toY: 20, rotate: 8, delay: 0.32, drift: 0 },
+    { node: select(".ribbon-f"), fromX: 22, fromY: 118, toX: 160, toY: 42, rotate: -6, delay: 0.36, drift: 0 },
   ];
 
   const fruits = [
@@ -115,12 +115,14 @@ if (immersiveShell) {
 
     const local = ease(mapRange(progress, config.delay, Math.min(config.delay + 0.42, 1)));
     const wave = Math.sin((progress * Math.PI * 3) + (config.delay * 10)) * (config.drift || 0) * local;
-    const rotate = mix(0, config.rotate || 0, local);
+    const rotate = mix(config.fromRotate || 0, config.rotate || 0, local);
     const scale = mix(options.fromScale || 0.18, options.toScale || 1, local);
     const opacity = local > 0.02 ? Math.min(local * 1.2, 1) : 0;
+    const fromX = config.fromX || 0;
+    const fromY = config.fromY || 0;
 
     config.node.style.opacity = String(opacity);
-    config.node.style.transform = `translate3d(${mix(0, config.toX, local)}px, ${mix(0, config.toY, local) + wave}px, 0) rotate(${rotate}deg) scale(${scale})`;
+    config.node.style.transform = `translate3d(${mix(fromX, config.toX, local)}px, ${mix(fromY, config.toY, local) + wave}px, 0) rotate(${rotate}deg) scale(${scale})`;
   };
 
   const state = {

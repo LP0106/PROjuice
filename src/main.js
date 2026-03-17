@@ -25,6 +25,11 @@ const faqItems = [...document.querySelectorAll(".faq-item")];
 const navLinks = [...document.querySelectorAll(".site-nav a")];
 const sectionNodes = [...document.querySelectorAll("main section[id]")];
 const sectionShellNodes = [...document.querySelectorAll(".section-shell")];
+const revealMeta = [...revealNodes].map((node) => ({
+  node,
+  top: 0,
+  height: 0,
+}));
 const sliderStates = [];
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const supportsFinePointer = window.matchMedia("(pointer: fine)").matches;
@@ -133,6 +138,8 @@ const flavourTargets = {
   canvas: document.querySelector("#flavour-canvas"),
   chips: [...document.querySelectorAll("[data-flavour-target]")],
 };
+
+const clamp = (value, min = 0, max = 1) => Math.min(Math.max(value, min), max);
 
 if (yearNode) {
   yearNode.textContent = new Date().getFullYear();
@@ -512,26 +519,6 @@ if (supportsFinePointer && !prefersReducedMotion) {
 }
 
 if ("IntersectionObserver" in window) {
-  const revealObserver = new IntersectionObserver(
-    (entries, observer) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) {
-          return;
-        }
-
-        entry.target.classList.add("is-visible");
-        entry.target.querySelectorAll("[data-count]").forEach(animateCounter);
-        observer.unobserve(entry.target);
-      });
-    },
-    {
-      threshold: 0.16,
-      rootMargin: "0px 0px -40px 0px",
-    }
-  );
-
-  revealNodes.forEach((node) => revealObserver.observe(node));
-
   const counterObserver = new IntersectionObserver(
     (entries, observer) => {
       entries.forEach((entry) => {
@@ -572,17 +559,25 @@ if ("IntersectionObserver" in window) {
 
   sectionNodes.forEach((section) => navObserver.observe(section));
 } else {
-  revealNodes.forEach((node) => node.classList.add("is-visible"));
   counterNodes.forEach(animateCounter);
 }
 
 let scrollTicking = false;
+let lastSyncedScrollTop = window.scrollY;
 
 const updateSceneParallaxLayout = () => {
   sceneParallaxMeta.forEach((meta) => {
     const rect = meta.node.getBoundingClientRect();
     meta.top = rect.top + window.scrollY;
     meta.half = rect.height / 2;
+  });
+};
+
+const updateRevealLayout = () => {
+  revealMeta.forEach((meta) => {
+    const rect = meta.node.getBoundingClientRect();
+    meta.top = rect.top + window.scrollY;
+    meta.height = rect.height;
   });
 };
 
@@ -596,8 +591,10 @@ const updateSectionShellLayout = () => {
 
 const syncScrollEffects = () => {
   const scrollTop = window.scrollY;
-  const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const viewportHeight = window.innerHeight;
+  const scrollHeight = document.documentElement.scrollHeight - viewportHeight;
   const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+  const scrollDirection = scrollTop > lastSyncedScrollTop ? 1 : scrollTop < lastSyncedScrollTop ? -1 : 0;
 
   if (progressBar) {
     progressBar.style.setProperty("--scroll-progress", `${Math.min(progress, 100)}%`);
@@ -620,24 +617,43 @@ const syncScrollEffects = () => {
   });
 
   sceneParallaxMeta.forEach((meta) => {
-    const distanceFromCenter = (meta.top + meta.half) - (scrollTop + (window.innerHeight / 2));
+    const distanceFromCenter = (meta.top + meta.half) - (scrollTop + (viewportHeight / 2));
     const offset = distanceFromCenter * -meta.speed;
 
     meta.node.style.setProperty("--parallax-offset", `${Math.max(Math.min(offset, 80), -80)}px`);
   });
 
+  revealMeta.forEach((meta) => {
+    const revealProgress = clamp(
+      ((scrollTop + (viewportHeight * 0.82)) - meta.top) / Math.max((meta.height * 0.34) + (viewportHeight * 0.24), 1)
+    );
+
+    meta.node.style.setProperty("--reveal-progress", revealProgress.toFixed(4));
+    meta.node.style.setProperty("--reveal-shift", `${((1 - revealProgress) * 34).toFixed(2)}px`);
+    meta.node.style.setProperty("--reveal-scale", `${(0.982 + (revealProgress * 0.018)).toFixed(4)}`);
+  });
+
   sectionShellMeta.forEach((meta) => {
-    const centerDistance = (meta.top + (meta.height / 2)) - (scrollTop + (window.innerHeight / 2));
-    const normalized = Math.max(
-      0,
-      Math.min(
-        ((scrollTop + (window.innerHeight * 0.72)) - meta.top) / Math.max(meta.height + (window.innerHeight * 0.5), 1),
-        1
-      )
+    const centerDistance = (meta.top + (meta.height / 2)) - (scrollTop + (viewportHeight / 2));
+    const normalized = clamp(
+      ((scrollTop + (viewportHeight * 0.72)) - meta.top) / Math.max(meta.height + (viewportHeight * 0.5), 1)
+    );
+    const sectionProgress = clamp(
+      ((scrollTop + viewportHeight) - meta.top) / Math.max(meta.height + viewportHeight, 1)
+    );
+    const progressOffset = sectionProgress - 0.5;
+    const visibility = clamp(
+      1 - (Math.abs(centerDistance) / Math.max((meta.height * 0.55) + (viewportHeight * 0.55), 1))
     );
     const shift = Math.max(Math.min(centerDistance * -0.055, 34), -34);
     const glowBand = 1 - Math.abs((normalized * 2) - 1);
+    const energy = clamp((visibility * 0.76) + (glowBand * 0.24));
 
+    meta.node.style.setProperty("--section-progress", sectionProgress.toFixed(4));
+    meta.node.style.setProperty("--section-progress-offset", progressOffset.toFixed(4));
+    meta.node.style.setProperty("--section-visibility", visibility.toFixed(4));
+    meta.node.style.setProperty("--section-energy", energy.toFixed(4));
+    meta.node.style.setProperty("--section-direction", String(scrollDirection));
     meta.node.style.setProperty("--section-shift", `${shift.toFixed(2)}px`);
     meta.node.style.setProperty("--section-shift-y", `${(shift * -0.35).toFixed(2)}px`);
     meta.node.style.setProperty("--section-glow-x", `${(18 + (normalized * 56)).toFixed(2)}%`);
@@ -645,6 +661,7 @@ const syncScrollEffects = () => {
     meta.node.style.setProperty("--section-glow-opacity", `${(0.24 + (glowBand * 0.48)).toFixed(3)}`);
   });
 
+  lastSyncedScrollTop = scrollTop;
   scrollTicking = false;
 };
 
@@ -658,12 +675,14 @@ const requestScrollSync = () => {
 window.addEventListener("scroll", requestScrollSync, { passive: true });
 window.addEventListener("resize", () => {
   updateSceneParallaxLayout();
+  updateRevealLayout();
   updateSectionShellLayout();
   sliderStates.forEach(({ syncSliderState }) => syncSliderState());
   requestScrollSync();
 });
 window.addEventListener("load", () => {
   updateSceneParallaxLayout();
+  updateRevealLayout();
   updateSectionShellLayout();
   sliderStates.forEach(({ syncSliderState }) => syncSliderState());
   syncScrollEffects();
@@ -672,6 +691,7 @@ window.addEventListener("load", () => {
 if (document.fonts && document.fonts.ready) {
   document.fonts.ready.then(() => {
     updateSceneParallaxLayout();
+    updateRevealLayout();
     updateSectionShellLayout();
     sliderStates.forEach(({ syncSliderState }) => syncSliderState());
     requestScrollSync();
@@ -679,5 +699,6 @@ if (document.fonts && document.fonts.ready) {
 }
 
 updateSceneParallaxLayout();
+updateRevealLayout();
 updateSectionShellLayout();
 syncScrollEffects();

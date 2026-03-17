@@ -432,6 +432,765 @@ main {
   animation: shellGlowDrift 16s ease-in-out infinite alternate;
 }
 
+.section-atmosphere {
+  position: absolute !important;
+  inset: 0;
+  z-index: 0 !important;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: calc(var(--section-layer-opacity, 0.14) + (var(--section-visibility, 0) * 0.12));
+}
+
+.section-atmosphere::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at var(--section-glow-x, 18%) var(--section-glow-y, 16%), rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0) 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0));
+  opacity: calc(0.08 + (var(--section-energy, 0) * 0.08));
+  pointer-events: none;
+}
+
+.section-atmosphere .prop {
+  position: absolute;
+  display: block;
+  opacity: calc(var(--prop-opacity, 0.18) + (var(--section-visibility, 0) * var(--prop-opacity-boost, 0.05)));
+  transform:
+    translate3d(
+      calc(var(--section-shift, 0px) + (var(--section-progress-offset, 0) * var(--prop-shift-x, 0px))),
+      calc(var(--section-shift-y, 0px) + (var(--section-progress-offset, 0) * var(--prop-shift-y, 0px))),
+      0
+    )
+    rotate(calc(var(--prop-rotate-base, 0deg) + (var(--section-progress-offset, 0) * var(--prop-rotate-range, 0deg))))
+    scale(calc(var(--prop-scale-base, 1) + (var(--section-visibility, 0) * var(--prop-scale-boost, 0))));
+  transform-origin: center center;
+  filter: blur(var(--prop-blur, 0px)) saturate(calc(0.82 + (var(--section-energy, 0) * 0.28)));
+  will-change: transform, opacity, filter;
+  transition: none;
+}
+
+.section-atmosphere .prop::before,
+.section-atmosphere .prop::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.prop-bottle-ghost {
+  width: 12rem;
+  height: 24rem;
+  border-radius: 4.4rem 4.4rem 2.6rem 2.6rem;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.22), rgba(238, 229, 214, 0.08) 42%, rgba(255, 255, 255, 0.02)),
+    linear-gradient(180deg, rgba(255, 185, 94, 0.08), rgba(239, 104, 64, 0.06));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+    inset 1.2rem 0 1rem rgba(255, 255, 255, 0.08),
+    0 2rem 4rem rgba(0, 0, 0, 0.12);
+}
+
+.prop-bottle-ghost::before {
+  inset: 1.2rem auto 1.4rem 0.8rem;
+  width: 20%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0));
+}
+
+.prop-bottle-ghost::after {
+  inset: 6rem 1rem 2.8rem;
+  border-radius: 2rem;
+  background: linear-gradient(180deg, rgba(255, 180, 86, 0.12), rgba(239, 104, 64, 0.04));
+}
+
+.prop-fruit-wedge {
+  width: 8.6rem;
+  height: 6rem;
+  border-radius: 56% 44% 60% 40% / 56% 40% 60% 44%;
+  background:
+    radial-gradient(circle at 34% 28%, rgba(255, 246, 226, 0.42), rgba(255, 246, 226, 0) 30%),
+    radial-gradient(circle at 56% 58%, rgba(255, 193, 94, 0.18), rgba(255, 193, 94, 0) 40%),
+    linear-gradient(145deg, rgba(255, 198, 102, 0.24), rgba(232, 123, 61, 0.16));
+  box-shadow: 0 1.2rem 2.4rem rgba(0, 0, 0, 0.1);
+}
+
+.prop-fruit-wedge::before {
+  inset: 11% 12% 17% 12%;
+  border-radius: inherit;
+  border: 1px solid rgba(255, 245, 222, 0.16);
+}
+
+.prop-fruit-wedge::after {
+  inset: auto 8% 6% 8%;
+  height: 16%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(255, 247, 233, 0.34), rgba(255, 224, 176, 0.1));
+}
+
+.prop-cap-block {
+  width: 6rem;
+  height: 6rem;
+  border-radius: 1.8rem;
+  background:
+    linear-gradient(160deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0.04)),
+    linear-gradient(145deg, rgba(112, 126, 124, 0.34), rgba(36, 48, 46, 0.18));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 1.2rem 2.8rem rgba(0, 0, 0, 0.12);
+}
+
+.prop-cap-block::after {
+  inset: 20%;
+  border-radius: 1.15rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.prop-sheet-stack {
+  width: 11rem;
+  height: 14rem;
+  border-radius: 1.6rem;
+  background:
+    linear-gradient(180deg, rgba(255, 249, 242, 0.16), rgba(229, 218, 201, 0.08)),
+    repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.14) 0 2px, rgba(255, 255, 255, 0) 2px 1.25rem);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 1.4rem 3.2rem rgba(0, 0, 0, 0.12);
+}
+
+.prop-sheet-stack::before {
+  inset: auto -0.8rem -0.8rem 0.8rem;
+  background: linear-gradient(180deg, rgba(255, 249, 242, 0.08), rgba(229, 218, 201, 0.04));
+  z-index: -1;
+}
+
+.prop-note-card {
+  width: 10.5rem;
+  height: 7.4rem;
+  border-radius: 1.3rem;
+  background:
+    linear-gradient(180deg, rgba(255, 250, 243, 0.18), rgba(229, 218, 201, 0.08)),
+    repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0 2px, rgba(255, 255, 255, 0) 2px 1.2rem);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 1.2rem 2.6rem rgba(0, 0, 0, 0.1);
+}
+
+.prop-note-card::before {
+  inset: 1rem 1rem auto;
+  height: 0.9rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(255, 187, 94, 0.16), rgba(255, 255, 255, 0));
+}
+
+.prop-note-card::after {
+  inset: auto 1.1rem 1.1rem;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.prop-clipboard {
+  width: 11.2rem;
+  height: 14.8rem;
+  border-radius: 1.5rem;
+  background:
+    linear-gradient(180deg, rgba(255, 250, 243, 0.14), rgba(229, 218, 201, 0.08)),
+    repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.14) 0 2px, rgba(255, 255, 255, 0) 2px 1.3rem);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 1.5rem 3.1rem rgba(0, 0, 0, 0.12);
+}
+
+.prop-clipboard::before {
+  inset: 0.9rem 2.3rem auto;
+  height: 1.15rem;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(134, 149, 147, 0.36), rgba(71, 86, 83, 0.12));
+}
+
+.prop-clipboard::after {
+  inset: 2.7rem 1rem 1rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.prop-pen {
+  width: 12rem;
+  height: 1rem;
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg, rgba(254, 252, 248, 0.2), rgba(254, 252, 248, 0.04) 16%, rgba(25, 34, 31, 0.44) 16%, rgba(16, 22, 20, 0.16) 86%, rgba(238, 179, 81, 0.2) 100%);
+  box-shadow: 0 0.8rem 1.6rem rgba(0, 0, 0, 0.1);
+}
+
+.prop-pen::after {
+  inset: 0.18rem 0.25rem 0.18rem auto;
+  width: 1.2rem;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255, 215, 138, 0.36), rgba(185, 121, 43, 0.08));
+}
+
+.prop-qr-tile {
+  width: 9rem;
+  height: 9rem;
+  border-radius: 1.4rem;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(22, 36, 31, 0.46), rgba(12, 20, 17, 0.18));
+  background-size: 0.85rem 0.85rem, 0.85rem 0.85rem, auto;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 1.4rem 3rem rgba(0, 0, 0, 0.12);
+}
+
+.prop-lens-reflection {
+  width: 10rem;
+  height: 10rem;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 34% 30%, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0) 30%),
+    radial-gradient(circle at 50% 50%, rgba(32, 56, 48, 0.22), rgba(9, 16, 14, 0.08) 72%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+.prop-phone-frame {
+  width: 8.8rem;
+  height: 17rem;
+  border-radius: 2.2rem;
+  background:
+    radial-gradient(circle at 50% 10%, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0) 30%),
+    linear-gradient(180deg, rgba(23, 33, 30, 0.52), rgba(10, 15, 14, 0.16));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.04),
+    0 1.6rem 3.4rem rgba(0, 0, 0, 0.12);
+}
+
+.prop-phone-frame::before {
+  inset: 0.8rem 0.7rem;
+  border-radius: 1.6rem;
+  background:
+    radial-gradient(circle at 68% 22%, rgba(255, 179, 77, 0.16), rgba(255, 255, 255, 0) 28%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+}
+
+.prop-phone-frame::after {
+  inset: 0.5rem 2.5rem auto;
+  height: 0.45rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.prop-shelf-rail {
+  width: 16rem;
+  height: 2.6rem;
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.04)),
+    linear-gradient(180deg, rgba(255, 179, 77, 0.08), rgba(255, 179, 77, 0));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.prop-label-ribbon {
+  width: 12.8rem;
+  height: 3rem;
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg, rgba(255, 183, 78, 0.18), rgba(239, 104, 64, 0.1)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.prop-label-ribbon::after {
+  inset: 0.65rem 1.2rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.prop-condensation-orb {
+  width: 8rem;
+  height: 8rem;
+  border-radius: 42% 58% 50% 50% / 44% 42% 58% 56%;
+  background:
+    radial-gradient(circle at 34% 30%, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0) 26%),
+    linear-gradient(160deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02) 42%, rgba(15, 24, 21, 0.08));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+.prop-condensation-orb::after {
+  inset: 15% 18% auto auto;
+  width: 28%;
+  height: 28%;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.prop-crate {
+  width: 12rem;
+  height: 8.8rem;
+  border-radius: 1.45rem;
+  background:
+    repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0 0.55rem, rgba(255, 255, 255, 0.02) 0.55rem 1.25rem),
+    linear-gradient(180deg, rgba(37, 52, 47, 0.42), rgba(13, 20, 18, 0.18));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 1.3rem 2.8rem rgba(0, 0, 0, 0.12);
+}
+
+.prop-crate::before {
+  inset: 1rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.prop-binder-clip {
+  width: 4.8rem;
+  height: 5rem;
+  border-radius: 1.1rem;
+  background:
+    linear-gradient(180deg, rgba(146, 158, 156, 0.28), rgba(43, 53, 51, 0.14)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0));
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.1);
+}
+
+.prop-binder-clip::before,
+.prop-binder-clip::after {
+  top: -1rem;
+  width: 1.3rem;
+  height: 2rem;
+  border-radius: 999px 999px 0 0;
+  border: 2px solid rgba(189, 198, 196, 0.26);
+  border-bottom: 0;
+}
+
+.prop-binder-clip::before {
+  left: 0.9rem;
+}
+
+.prop-binder-clip::after {
+  right: 0.9rem;
+}
+
+.prop-price-tag {
+  width: 7rem;
+  height: 4rem;
+  border-radius: 1.2rem 1.2rem 1.2rem 2rem;
+  background:
+    linear-gradient(145deg, rgba(255, 196, 96, 0.18), rgba(239, 104, 64, 0.08)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.1);
+}
+
+.prop-price-tag::before {
+  inset: 1rem auto auto 1rem;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.atmosphere-hero {
+  --section-layer-opacity: 0.17;
+}
+
+.atmosphere-products,
+.atmosphere-about,
+.atmosphere-insights,
+.atmosphere-strategy,
+.atmosphere-immersion,
+.atmosphere-downloads,
+.atmosphere-faq {
+  --section-layer-opacity: 0.13;
+}
+
+.prop-hero-bottle {
+  right: -2.4rem;
+  bottom: -6.4rem;
+  --prop-opacity: 0.14;
+  --prop-shift-x: -70px;
+  --prop-shift-y: -128px;
+  --prop-rotate-base: -8deg;
+  --prop-rotate-range: -12deg;
+  --prop-scale-base: 1.08;
+  --prop-scale-boost: 0.08;
+}
+
+.prop-hero-fruit {
+  left: 56%;
+  top: 8%;
+  --prop-opacity: 0.16;
+  --prop-shift-x: -34px;
+  --prop-shift-y: 28px;
+  --prop-rotate-base: 10deg;
+  --prop-rotate-range: 18deg;
+  --prop-scale-base: 0.96;
+  --prop-scale-boost: 0.06;
+}
+
+.prop-hero-cap {
+  right: 15%;
+  top: 14%;
+  --prop-opacity: 0.11;
+  --prop-shift-x: 30px;
+  --prop-shift-y: -40px;
+  --prop-rotate-base: -10deg;
+  --prop-rotate-range: 14deg;
+  --prop-scale-base: 0.92;
+  --prop-scale-boost: 0.04;
+}
+
+.prop-hero-dew {
+  left: -2rem;
+  bottom: 12%;
+  --prop-opacity: 0.1;
+  --prop-shift-x: 34px;
+  --prop-shift-y: -22px;
+  --prop-rotate-base: -8deg;
+  --prop-rotate-range: 12deg;
+  --prop-scale-base: 1.06;
+  --prop-scale-boost: 0.06;
+}
+
+.prop-hero-label {
+  right: 26%;
+  bottom: 11%;
+  --prop-opacity: 0.1;
+  --prop-shift-x: -24px;
+  --prop-shift-y: 16px;
+  --prop-rotate-base: 8deg;
+  --prop-rotate-range: -12deg;
+  --prop-scale-base: 0.96;
+}
+
+.prop-products-bottle {
+  right: -3rem;
+  bottom: -6rem;
+  --prop-opacity: 0.13;
+  --prop-shift-x: -56px;
+  --prop-shift-y: -112px;
+  --prop-rotate-base: -6deg;
+  --prop-rotate-range: -12deg;
+  --prop-scale-base: 1.02;
+  --prop-scale-boost: 0.08;
+}
+
+.prop-products-fruit {
+  left: 4%;
+  bottom: 14%;
+  --prop-opacity: 0.16;
+  --prop-shift-x: 50px;
+  --prop-shift-y: -26px;
+  --prop-rotate-base: 18deg;
+  --prop-rotate-range: -14deg;
+  --prop-scale-base: 0.98;
+}
+
+.prop-products-ribbon {
+  right: 16%;
+  top: 14%;
+  --prop-opacity: 0.1;
+  --prop-shift-x: -28px;
+  --prop-shift-y: 18px;
+  --prop-rotate-base: 10deg;
+  --prop-rotate-range: -10deg;
+  --prop-scale-base: 0.94;
+}
+
+.prop-products-card {
+  left: 12%;
+  top: 12%;
+  --prop-opacity: 0.1;
+  --prop-shift-x: 26px;
+  --prop-shift-y: 20px;
+  --prop-rotate-base: -8deg;
+  --prop-rotate-range: 12deg;
+  --prop-scale-base: 0.92;
+}
+
+.prop-products-tag {
+  right: 30%;
+  bottom: 12%;
+  --prop-opacity: 0.09;
+  --prop-shift-x: -20px;
+  --prop-shift-y: -18px;
+  --prop-rotate-base: 16deg;
+  --prop-rotate-range: -12deg;
+  --prop-scale-base: 0.9;
+}
+
+.prop-about-bottle {
+  right: -2rem;
+  bottom: -5.6rem;
+  --prop-opacity: 0.12;
+  --prop-shift-x: -42px;
+  --prop-shift-y: -90px;
+  --prop-rotate-base: -6deg;
+  --prop-rotate-range: -10deg;
+  --prop-scale-base: 1;
+}
+
+.prop-about-cap {
+  left: 8%;
+  top: 14%;
+  --prop-opacity: 0.09;
+  --prop-shift-x: 32px;
+  --prop-shift-y: -18px;
+  --prop-rotate-base: -8deg;
+  --prop-rotate-range: 12deg;
+  --prop-scale-base: 0.92;
+}
+
+.prop-about-lens {
+  left: 52%;
+  bottom: 10%;
+  --prop-opacity: 0.08;
+  --prop-shift-x: -18px;
+  --prop-shift-y: -16px;
+  --prop-rotate-base: 0deg;
+  --prop-rotate-range: 8deg;
+  --prop-scale-base: 0.96;
+}
+
+.prop-about-note {
+  left: 10%;
+  bottom: 10%;
+  --prop-opacity: 0.1;
+  --prop-shift-x: 20px;
+  --prop-shift-y: -22px;
+  --prop-rotate-base: -6deg;
+  --prop-rotate-range: 8deg;
+  --prop-scale-base: 0.9;
+}
+
+.prop-insights-sheet {
+  right: 4%;
+  bottom: 5%;
+  --prop-opacity: 0.1;
+  --prop-shift-x: -30px;
+  --prop-shift-y: -36px;
+  --prop-rotate-base: 6deg;
+  --prop-rotate-range: -10deg;
+  --prop-scale-base: 0.94;
+}
+
+.prop-insights-note {
+  left: 9%;
+  top: 16%;
+  --prop-opacity: 0.09;
+  --prop-shift-x: 24px;
+  --prop-shift-y: 18px;
+  --prop-rotate-base: -10deg;
+  --prop-rotate-range: 12deg;
+  --prop-scale-base: 0.92;
+}
+
+.prop-insights-ribbon {
+  left: 11%;
+  bottom: 13%;
+  --prop-opacity: 0.09;
+  --prop-shift-x: 26px;
+  --prop-shift-y: -10px;
+  --prop-rotate-base: 4deg;
+  --prop-rotate-range: -8deg;
+  --prop-scale-base: 0.92;
+}
+
+.prop-insights-pen {
+  right: 22%;
+  top: 18%;
+  --prop-opacity: 0.1;
+  --prop-shift-x: -18px;
+  --prop-shift-y: 20px;
+  --prop-rotate-base: 22deg;
+  --prop-rotate-range: -14deg;
+  --prop-scale-base: 0.94;
+}
+
+.prop-strategy-rail {
+  left: 6%;
+  top: 18%;
+  --prop-opacity: 0.11;
+  --prop-shift-x: 38px;
+  --prop-shift-y: 8px;
+  --prop-rotate-base: -4deg;
+  --prop-rotate-range: 8deg;
+}
+
+.prop-strategy-qr {
+  right: 10%;
+  bottom: 12%;
+  --prop-opacity: 0.11;
+  --prop-shift-x: -32px;
+  --prop-shift-y: -28px;
+  --prop-rotate-base: 10deg;
+  --prop-rotate-range: -12deg;
+  --prop-scale-base: 0.92;
+}
+
+.prop-strategy-bottle {
+  right: -3rem;
+  bottom: -8rem;
+  --prop-opacity: 0.12;
+  --prop-shift-x: -46px;
+  --prop-shift-y: -122px;
+  --prop-rotate-base: -9deg;
+  --prop-rotate-range: -14deg;
+  --prop-scale-base: 1.02;
+}
+
+.prop-strategy-crate {
+  left: 10%;
+  bottom: 8%;
+  --prop-opacity: 0.1;
+  --prop-shift-x: 36px;
+  --prop-shift-y: -18px;
+  --prop-rotate-base: -8deg;
+  --prop-rotate-range: 10deg;
+  --prop-scale-base: 0.94;
+}
+
+.prop-strategy-tag {
+  right: 24%;
+  top: 18%;
+  --prop-opacity: 0.08;
+  --prop-shift-x: -18px;
+  --prop-shift-y: 16px;
+  --prop-rotate-base: 14deg;
+  --prop-rotate-range: -10deg;
+  --prop-scale-base: 0.92;
+}
+
+.prop-immersion-phone {
+  right: 6%;
+  bottom: 8%;
+  --prop-opacity: 0.1;
+  --prop-shift-x: -28px;
+  --prop-shift-y: -34px;
+  --prop-rotate-base: 8deg;
+  --prop-rotate-range: -12deg;
+  --prop-scale-base: 0.92;
+}
+
+.prop-immersion-lens {
+  left: 6%;
+  bottom: 14%;
+  --prop-opacity: 0.08;
+  --prop-shift-x: 24px;
+  --prop-shift-y: -16px;
+  --prop-rotate-base: 0deg;
+  --prop-rotate-range: 10deg;
+  --prop-scale-base: 0.94;
+}
+
+.prop-immersion-ribbon {
+  right: 18%;
+  top: 16%;
+  --prop-opacity: 0.09;
+  --prop-shift-x: -24px;
+  --prop-shift-y: 18px;
+  --prop-rotate-base: 8deg;
+  --prop-rotate-range: -10deg;
+  --prop-scale-base: 0.92;
+}
+
+.prop-immersion-cap {
+  left: 54%;
+  top: 14%;
+  --prop-opacity: 0.08;
+  --prop-shift-x: -12px;
+  --prop-shift-y: 14px;
+  --prop-rotate-base: -10deg;
+  --prop-rotate-range: 12deg;
+  --prop-scale-base: 0.88;
+}
+
+.prop-downloads-sheet {
+  right: 5%;
+  bottom: 4%;
+  --prop-opacity: 0.11;
+  --prop-shift-x: -26px;
+  --prop-shift-y: -24px;
+  --prop-rotate-base: 6deg;
+  --prop-rotate-range: -10deg;
+  --prop-scale-base: 0.94;
+}
+
+.prop-downloads-ribbon {
+  left: 12%;
+  bottom: 12%;
+  --prop-opacity: 0.08;
+  --prop-shift-x: 26px;
+  --prop-shift-y: -12px;
+  --prop-rotate-base: 6deg;
+  --prop-rotate-range: -8deg;
+  --prop-scale-base: 0.92;
+}
+
+.prop-downloads-cap {
+  right: 20%;
+  top: 12%;
+  --prop-opacity: 0.09;
+  --prop-shift-x: -18px;
+  --prop-shift-y: 22px;
+  --prop-rotate-base: 4deg;
+  --prop-rotate-range: -8deg;
+  --prop-scale-base: 0.88;
+}
+
+.prop-downloads-note {
+  left: 8%;
+  top: 16%;
+  --prop-opacity: 0.09;
+  --prop-shift-x: 22px;
+  --prop-shift-y: 20px;
+  --prop-rotate-base: -8deg;
+  --prop-rotate-range: 10deg;
+  --prop-scale-base: 0.92;
+}
+
+.prop-faq-bottle {
+  right: -2rem;
+  bottom: -7rem;
+  --prop-opacity: 0.1;
+  --prop-shift-x: -42px;
+  --prop-shift-y: -108px;
+  --prop-rotate-base: -6deg;
+  --prop-rotate-range: -10deg;
+  --prop-scale-base: 1.02;
+}
+
+.prop-faq-cap {
+  left: 12%;
+  top: 18%;
+  --prop-opacity: 0.08;
+  --prop-shift-x: 22px;
+  --prop-shift-y: 14px;
+  --prop-rotate-base: -8deg;
+  --prop-rotate-range: 10deg;
+  --prop-scale-base: 0.88;
+}
+
+.prop-faq-note {
+  left: 6%;
+  bottom: 12%;
+  --prop-opacity: 0.09;
+  --prop-shift-x: 24px;
+  --prop-shift-y: -12px;
+  --prop-rotate-base: -6deg;
+  --prop-rotate-range: 8deg;
+  --prop-scale-base: 0.9;
+}
+
+.prop-faq-ribbon {
+  right: 22%;
+  top: 14%;
+  --prop-opacity: 0.08;
+  --prop-shift-x: -18px;
+  --prop-shift-y: 16px;
+  --prop-rotate-base: 8deg;
+  --prop-rotate-range: -10deg;
+  --prop-scale-base: 0.9;
+}
+
 .hero-shell {
   display: grid;
   grid-template-columns: minmax(0, 1.02fr) minmax(350px, 0.98fr);
@@ -1739,19 +2498,17 @@ main {
 }
 
 .reveal {
+  --reveal-progress: 1;
+  --reveal-shift: 0px;
+  --reveal-scale: 1;
   opacity: 1;
   transform: none;
 }
 
 .has-js .reveal {
-  opacity: 0;
-  transform: translateY(32px) scale(0.985);
-  transition: opacity 700ms ease, transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.has-js .reveal.is-visible {
-  opacity: 1;
-  transform: translateY(0) scale(1);
+  opacity: calc(0.18 + (var(--reveal-progress, 0) * 0.82));
+  transform: translate3d(0, var(--reveal-shift, 0px), 0) scale(var(--reveal-scale, 1));
+  transition: none;
 }
 
 @keyframes floatOrb {
