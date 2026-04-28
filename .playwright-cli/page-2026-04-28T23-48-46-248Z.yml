@@ -1,0 +1,256 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - link "PJ PROjuice Fruit protein drinks" [ref=e3] [cursor=pointer]:
+      - /url: /
+      - generic [ref=e4]: PJ
+      - generic [ref=e5]:
+        - strong [ref=e6]: PROjuice
+        - generic [ref=e7]: Fruit protein drinks
+    - navigation "Primary navigation" [ref=e8]:
+      - link "Products" [ref=e9] [cursor=pointer]:
+        - /url: "#products"
+      - link "Benefits" [ref=e10] [cursor=pointer]:
+        - /url: "#benefits"
+      - link "Partners" [ref=e11] [cursor=pointer]:
+        - /url: "#partners"
+      - link "Enquire" [ref=e12] [cursor=pointer]:
+        - /url: "#enquire"
+      - link "Admin" [ref=e13] [cursor=pointer]:
+        - /url: /admin
+    - link "Pre-order" [ref=e14] [cursor=pointer]:
+      - /url: "#enquire"
+      - text: Pre-order
+      - img [ref=e15]
+  - main [ref=e17]:
+    - generic [ref=e18]:
+      - generic [ref=e19]:
+        - generic [ref=e20]:
+          - heading "Real fruit energy. Serious protein." [level=1] [ref=e21]
+          - paragraph [ref=e22]: PROjuice is a premium fruit-protein drink platform for students, gym users and busy young professionals, now rebuilt with lead capture, launch analytics and a live admin backend.
+          - generic [ref=e23]:
+            - link "Pre-order or enquire" [ref=e24] [cursor=pointer]:
+              - /url: "#enquire"
+              - text: Pre-order or enquire
+              - img [ref=e25]
+            - link "For campuses and gyms" [ref=e27] [cursor=pointer]:
+              - /url: "#partners"
+          - generic [ref=e28]:
+            - generic [ref=e29]: 20g protein
+            - generic [ref=e30]: 3 launch flavours
+            - generic [ref=e31]: API-backed enquiries
+        - generic [ref=e33]:
+          - generic "PROjuice product range" [ref=e38]:
+            - article [ref=e39]:
+              - generic [ref=e43]:
+                - strong [ref=e44]: PROjuice
+                - generic [ref=e45]: Mango Charge
+            - article [ref=e46]:
+              - generic [ref=e50]:
+                - strong [ref=e51]: PROjuice
+                - generic [ref=e52]: Berry Lift
+            - article [ref=e53]:
+              - generic [ref=e57]:
+                - strong [ref=e58]: PROjuice
+                - generic [ref=e59]: Apple Lime Pulse
+          - generic [ref=e60]:
+            - img [ref=e61]
+            - text: Live flavour motion
+      - generic "Launch flavour summary" [ref=e64]:
+        - article [ref=e65]:
+          - strong [ref=e67]: Mango Charge
+          - generic [ref=e68]: Tropical mango
+        - article [ref=e69]:
+          - strong [ref=e71]: Berry Lift
+          - generic [ref=e72]: Mixed berry
+        - article [ref=e73]:
+          - strong [ref=e75]: Apple Lime Pulse
+          - generic [ref=e76]: Crisp apple and lime
+    - generic [ref=e77]:
+      - generic [ref=e78]:
+        - heading "Choose a flavour and the whole stage reacts." [level=2] [ref=e79]
+        - paragraph [ref=e80]: The range is built as a living product system, with colour, motion and launch role changing around each bottle.
+      - generic [ref=e81]:
+        - tablist "PROjuice flavours" [ref=e82]:
+          - tab "Mango Charge Tropical mango" [selected] [ref=e83] [cursor=pointer]:
+            - generic [ref=e85]:
+              - strong [ref=e86]: Mango Charge
+              - generic [ref=e87]: Tropical mango
+            - img [ref=e88]
+          - tab "Berry Lift Mixed berry" [ref=e90] [cursor=pointer]:
+            - generic [ref=e92]:
+              - strong [ref=e93]: Berry Lift
+              - generic [ref=e94]: Mixed berry
+          - tab "Apple Lime Pulse Crisp apple and lime" [ref=e95] [cursor=pointer]:
+            - generic [ref=e97]:
+              - strong [ref=e98]: Apple Lime Pulse
+              - generic [ref=e99]: Crisp apple and lime
+        - generic [ref=e100]:
+          - generic [ref=e101]:
+            - generic "PROjuice product range" [ref=e106]:
+              - article [ref=e107]:
+                - generic [ref=e111]:
+                  - strong [ref=e112]: PROjuice
+                  - generic [ref=e113]: Mango Charge
+              - article [ref=e114]:
+                - generic [ref=e118]:
+                  - strong [ref=e119]: PROjuice
+                  - generic [ref=e120]: Berry Lift
+              - article [ref=e121]:
+                - generic [ref=e125]:
+                  - strong [ref=e126]: PROjuice
+                  - generic [ref=e127]: Apple Lime Pulse
+            - generic [ref=e128]:
+              - img [ref=e129]
+              - text: Live flavour motion
+          - generic [ref=e132]:
+            - paragraph [ref=e133]: Hero trial driver
+            - heading "Bright tropical energy for morning momentum." [level=3] [ref=e134]
+            - generic [ref=e135]: Mango Charge leads the range with a fruit-first profile, warm shelf impact and the strongest grab-and-go appeal.
+            - generic [ref=e136]:
+              - generic [ref=e137]:
+                - generic [ref=e138]: Juiciness
+                - strong [ref=e139]: 94%
+              - generic [ref=e141]:
+                - generic [ref=e142]: Recovery
+                - strong [ref=e143]: 74%
+              - generic [ref=e145]:
+                - generic [ref=e146]: Brightness
+                - strong [ref=e147]: 90%
+            - link "Enquire about Mango Charge" [ref=e149] [cursor=pointer]:
+              - /url: "#enquire"
+              - text: Enquire about Mango Charge
+              - img [ref=e150]
+    - generic [ref=e152]:
+      - generic [ref=e153]:
+        - heading "Designed to feel alive without making the interface heavy." [level=2] [ref=e154]
+        - paragraph [ref=e155]: The new experience uses layered motion, GPU-friendly transforms and a mobile-first fallback to keep the site smooth.
+      - generic [ref=e156]:
+        - article [ref=e157]:
+          - img [ref=e158]
+          - heading "Real fruit first" [level=3] [ref=e161]
+          - paragraph [ref=e162]: Premium fruit-led taste cues instead of a chalky supplement signal.
+        - article [ref=e163]:
+          - img [ref=e164]
+          - heading "20g protein" [level=3] [ref=e170]
+          - paragraph [ref=e171]: Clear functional value for gym, campus and busy workday routines.
+        - article [ref=e172]:
+          - img [ref=e173]
+          - heading "High-energy launch" [level=3] [ref=e175]
+          - paragraph [ref=e176]: Motion, colour and sampling moments built for social discovery.
+    - generic [ref=e177]:
+      - generic [ref=e178]:
+        - heading "Launch channels with a proper middle layer." [level=2] [ref=e179]
+        - paragraph [ref=e180]: The public site now connects to backend lead capture, while the admin view tracks channel intent, product interest and recent enquiries for the next sales action.
+        - link "Open admin dashboard" [ref=e181] [cursor=pointer]:
+          - /url: /admin
+          - text: Open admin dashboard
+          - img [ref=e182]
+      - generic [ref=e184]:
+        - article [ref=e185]:
+          - generic [ref=e186]: 42%
+          - heading "Campus pop-ups" [level=3] [ref=e187]
+          - paragraph [ref=e188]: Fast tasting loops, content capture and student trial density.
+        - article [ref=e189]:
+          - generic [ref=e190]: 28%
+          - heading "Gym fridges" [level=3] [ref=e191]
+          - paragraph [ref=e192]: Recovery context, 3-pack bundles and repeat purchase triggers.
+        - article [ref=e193]:
+          - generic [ref=e194]: 18%
+          - heading "Independent cafes" [level=3] [ref=e195]
+          - paragraph [ref=e196]: Premium signal, lifestyle counters and daytime discovery.
+        - article [ref=e197]:
+          - generic [ref=e198]: 12%
+          - heading "Social pre-orders" [level=3] [ref=e199]
+          - paragraph [ref=e200]: QR offers, limited drops and direct reorder habits.
+    - generic [ref=e201]:
+      - generic [ref=e202]:
+        - generic [ref=e203]:
+          - img [ref=e204]
+          - heading "Full-stack launch flow" [level=2] [ref=e209]
+          - paragraph [ref=e210]: Product content, form submissions, API validation and dashboard summaries now live in one Next.js application.
+        - generic [ref=e211]:
+          - generic [ref=e212]: Public site
+          - generic [ref=e214]: Lead API
+          - generic [ref=e216]: Local store
+          - generic [ref=e218]: Admin dashboard
+      - generic [ref=e219]:
+        - generic [ref=e220]:
+          - strong [ref=e221]: PROjuice Admin
+          - generic [ref=e222]: Overview
+          - generic [ref=e223]: Leads
+          - generic [ref=e224]: Partners
+        - generic [ref=e226]:
+          - article [ref=e227]:
+            - img [ref=e228]
+            - strong [ref=e233]: 1,248
+            - generic [ref=e234]: Total leads
+          - article [ref=e235]:
+            - img [ref=e236]
+            - strong [ref=e238]: "842"
+            - generic [ref=e239]: Qualified
+          - article [ref=e240]:
+            - img [ref=e241]
+            - strong [ref=e245]: "28"
+            - generic [ref=e246]: Partners
+    - generic [ref=e248]:
+      - generic [ref=e249]:
+        - heading "Capture pre-orders, campus partnerships and stockist interest." [level=2] [ref=e250]
+        - paragraph [ref=e251]: Submissions are validated by the backend and appear in the admin dashboard immediately during local development.
+      - generic [ref=e252]:
+        - generic [ref=e253]:
+          - generic [ref=e254]:
+            - text: Name
+            - textbox "Name" [ref=e255]:
+              - /placeholder: Your name
+          - generic [ref=e256]:
+            - text: Email
+            - textbox "Email" [ref=e257]:
+              - /placeholder: you@example.com
+        - generic [ref=e258]:
+          - generic [ref=e259]:
+            - text: Organisation
+            - textbox "Organisation" [ref=e260]:
+              - /placeholder: Campus, gym or cafe
+          - generic [ref=e261]:
+            - text: Opportunity
+            - combobox "Opportunity" [ref=e262]:
+              - option "Campus partnership" [selected]
+              - option "Gym partnership"
+              - option "Cafe stockist"
+              - option "Bulk order"
+              - option "General enquiry"
+        - generic [ref=e263]:
+          - text: Flavour interest
+          - combobox "Flavour interest" [ref=e264]:
+            - option "Mango Charge" [selected]
+            - option "Berry Lift"
+            - option "Apple Lime Pulse"
+            - option "Mixed range"
+        - generic [ref=e265]:
+          - text: Message
+          - textbox "Message" [ref=e266]:
+            - /placeholder: Tell us what you want to launch, stock or pre-order.
+        - button "Send enquiry" [ref=e267] [cursor=pointer]:
+          - img [ref=e268]
+          - text: Send enquiry
+    - generic [ref=e271]:
+      - generic [ref=e272]:
+        - heading "Reports stay available inside the new platform." [level=2] [ref=e273]
+        - paragraph [ref=e274]: The existing classroom-ready PDF deliverables are now served from the Next.js public asset layer.
+      - generic [ref=e275]:
+        - link "Lean Canvas One-page business model summary for the PROjuice concept." [ref=e276] [cursor=pointer]:
+          - /url: /deliverables/PROjuice-Lean-Canvas-v4.pdf
+          - img [ref=e277]
+          - strong [ref=e280]: Lean Canvas
+          - generic [ref=e281]: One-page business model summary for the PROjuice concept.
+        - link "Marketing Report Full launch strategy, market reasoning and campaign structure." [ref=e282] [cursor=pointer]:
+          - /url: /deliverables/PROjuice-Marketing-Report-v4.pdf
+          - img [ref=e283]
+          - strong [ref=e286]: Marketing Report
+          - generic [ref=e287]: Full launch strategy, market reasoning and campaign structure.
+  - contentinfo [ref=e288]:
+    - strong [ref=e289]: PROjuice
+    - generic [ref=e290]: Fruit protein drinks for active routines.
+    - generic [ref=e291]:
+      - img [ref=e292]
+      - text: Dynamic full-stack launch site
