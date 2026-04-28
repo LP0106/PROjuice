@@ -1,0 +1,402 @@
+- generic [active] [ref=e1]:
+  - region "PROjuice immersive intro" [ref=e3]:
+    - generic [ref=e4]:
+      - link "PJ PROjuice Launch World Scroll to pour through one continuous brand story." [ref=e5] [cursor=pointer]:
+        - /url: "#immersive-intro"
+        - generic [ref=e6]: PJ
+        - generic [ref=e7]:
+          - strong [ref=e8]: PROjuice Launch World
+          - generic [ref=e9]: Scroll to pour through one continuous brand story.
+      - navigation [ref=e10]:
+        - link "Lean Canvas" [ref=e11] [cursor=pointer]:
+          - /url: ./deliverables/PROjuice-Lean-Canvas-v4.pdf?v=4
+        - link "Final Report" [ref=e12] [cursor=pointer]:
+          - /url: ./deliverables/PROjuice-Marketing-Report-v4.pdf?v=4
+    - generic:
+      - generic:
+        - generic:
+          - generic:
+            - paragraph: PROjuice
+            - generic: Mango Charge
+      - generic:
+        - paragraph: Global Scroll Timeline
+        - generic:
+          - strong: 0%
+          - generic: Bottle sealed
+      - generic:
+        - generic: Scroll down to pour forward.
+        - generic: The strategy interface fades in seamlessly and scrubs back live when you scroll up.
+    - generic [ref=e13]:
+      - generic [ref=e14]:
+        - generic:
+          - paragraph: Immersive Brand Cut
+          - heading "One bottle. One gesture. One continuous brand world." [level=1]
+          - paragraph: The opening sequence behaves like a cinematic product film controlled by your scroll, then unfolds directly into the wider launch interface without breaking the mood or asking for an extra click.
+          - generic:
+            - link "See The Brand Story":
+              - /url: "#chapter-flavours"
+          - paragraph: Keep scrolling and the main interface will take over automatically.
+      - generic [ref=e15]:
+        - generic:
+          - paragraph: Phase 01
+          - heading "Pressure builds before the pour breaks open." [level=2]
+          - paragraph: The bottle tilts, the cap lifts and the liquid mass starts to lean outward. Before any ingredient fully escapes, the whole frame feels charged with stored momentum.
+          - list:
+            - listitem: Cap release and bottle torque are scrubbed by scroll.
+            - listitem: Ambient glow intensifies as the pour reaches threshold.
+            - listitem: All motion is reversible without any mode switch.
+      - generic [ref=e16]:
+        - generic:
+          - paragraph: Phase 02
+          - heading "Fruit, liquid and protein leave the bottle as one system." [level=2]
+          - paragraph: The pour is not a flat splash. Mango, berry, lime, protein granules and mist expand at different speeds to make the drink feel physical, layered and premium instead of decorative.
+          - generic:
+            - article:
+              - strong: 20g
+              - text: protein narrative
+            - article:
+              - strong: "3"
+              - text: signature flavour identities
+            - article:
+              - strong: 330ml
+              - text: grab-and-go format
+      - generic [ref=e17]:
+        - generic:
+          - paragraph: Phase 03
+          - heading "The flavour system becomes a theatre for the whole range." [level=2]
+          - paragraph: Mango Charge leads the scene with warm energy, Berry Lift adds deep recovery tone, and Apple Lime Pulse cuts through with a colder clean finish. The stage stays global while the taste story evolves.
+          - generic:
+            - generic: Mango Charge
+            - generic: Berry Lift
+            - generic: Apple Lime Pulse
+      - generic [ref=e18]:
+        - generic:
+          - paragraph: Phase 04
+          - heading "Launch thinking appears inside the aftermath of the pour." [level=2]
+          - paragraph: "Once the splash reaches full spread, the brand logic comes into focus: campus pop-ups for trial, gym fridges for recovery context, cafes for premium signal and the website for repeat bundles."
+          - list:
+            - listitem: Campus and school launch drops
+            - listitem: Gym fridges and sports club recovery moments
+            - listitem: Independent cafes and social bundle offers
+      - generic [ref=e19]:
+        - generic:
+          - paragraph: Final Frame
+          - heading "The opening sequence now folds straight into the strategy interface." [level=2]
+          - paragraph: The immersive pour now acts as the first movement of the same experience. Once you reach the end, the interface opens up automatically and keeps the same pacing, palette and energy.
+          - generic:
+            - link "Open Final Report":
+              - /url: ./deliverables/PROjuice-Marketing-Report-v4.pdf?v=4
+          - paragraph: No extra click needed. Just keep scrolling through the launch world.
+  - generic [ref=e20]:
+    - banner [ref=e21]:
+      - link "PROjuice home" [ref=e22] [cursor=pointer]:
+        - /url: "#top"
+        - generic [ref=e23]: PJ
+        - generic [ref=e24]:
+          - strong [ref=e25]: PROjuice
+          - generic [ref=e26]: Fruit Protein Drinks
+      - navigation [ref=e27]:
+        - link "About" [ref=e28] [cursor=pointer]:
+          - /url: "#about"
+        - link "Products" [ref=e29] [cursor=pointer]:
+          - /url: "#products"
+        - link "Insights" [ref=e30] [cursor=pointer]:
+          - /url: "#insights"
+        - link "Strategy" [ref=e31] [cursor=pointer]:
+          - /url: "#strategy"
+        - link "Downloads" [ref=e32] [cursor=pointer]:
+          - /url: "#downloads"
+        - link "FAQ" [ref=e33] [cursor=pointer]:
+          - /url: "#faq"
+    - main [ref=e34]:
+      - generic [ref=e35]:
+        - generic [ref=e36]:
+          - paragraph [ref=e37]: Cinematic launch system
+          - heading "Real fruit energy. Serious protein." [level=1] [ref=e38]
+          - paragraph [ref=e39]: PROjuice is designed to feel like a premium fruit drink first and a functional protein drink second. The result is brighter flavour, cleaner brand energy and a bottle that belongs in the same visual world across feeds, fridges, tastings and post-workout routines.
+          - generic [ref=e40]:
+            - link "Explore The Range" [ref=e41] [cursor=pointer]:
+              - /url: "#products"
+            - link "Open Final Report" [ref=e42] [cursor=pointer]:
+              - /url: ./deliverables/PROjuice-Marketing-Report-v4.pdf?v=4
+          - generic [ref=e43]:
+            - article [ref=e44]:
+              - generic [ref=e45]: 20g
+              - paragraph [ref=e46]: protein in every bottle
+            - article [ref=e47]:
+              - generic [ref=e48]: 330ml
+              - paragraph [ref=e49]: chilled grab-and-go format
+            - article [ref=e50]:
+              - generic [ref=e51]: "3"
+              - paragraph [ref=e52]: hero launch flavours
+        - generic [ref=e53]:
+          - generic [ref=e57]: Juice-first finish
+          - generic [ref=e58]: Built for recovery
+          - generic [ref=e59]:
+            - generic [ref=e60]: "01"
+            - paragraph [ref=e61]: Taste-led premium positioning
+          - generic [ref=e62]:
+            - generic [ref=e63]: "02"
+            - paragraph [ref=e64]: Scroll-ready packaging and strong fridge stand-out
+          - generic [ref=e68]:
+            - paragraph [ref=e69]: PROjuice
+            - generic [ref=e70]: Mango Charge
+      - generic [ref=e76]:
+        - generic [ref=e77]: 20g protein
+        - generic [ref=e78]: fruit-first flavour
+        - generic [ref=e79]: 330ml chilled bottle
+        - generic [ref=e80]: campus, cafe and gym ready
+        - generic [ref=e81]: launch-ready brand concept
+        - generic [ref=e82]: 20g protein
+        - generic [ref=e83]: fruit-first flavour
+        - generic [ref=e84]: 330ml chilled bottle
+        - generic [ref=e85]: campus, cafe and gym ready
+        - generic [ref=e86]: launch-ready brand concept
+      - generic [ref=e87]:
+        - generic [ref=e88]:
+          - paragraph [ref=e89]: Interactive flavour lab
+          - heading "Pick a bottle and the whole experience shifts with it." [level=2] [ref=e90]
+          - paragraph [ref=e91]: The product range is built as a visual system, not just three names on a list. Switch flavours to explore how each bottle plays a different role in the brand.
+        - generic [ref=e92]:
+          - generic "Flavour selector" [ref=e93]:
+            - button "01 Mango Charge Tropical energy" [pressed] [ref=e94] [cursor=pointer]:
+              - generic [ref=e95]: "01"
+              - strong [ref=e96]: Mango Charge
+              - generic [ref=e97]: Tropical energy
+            - button "02 Berry Lift Recovery favourite" [ref=e98] [cursor=pointer]:
+              - generic [ref=e99]: "02"
+              - strong [ref=e100]: Berry Lift
+              - generic [ref=e101]: Recovery favourite
+            - button "03 Apple Lime Pulse Clean and crisp" [ref=e102] [cursor=pointer]:
+              - generic [ref=e103]: "03"
+              - strong [ref=e104]: Apple Lime Pulse
+              - generic [ref=e105]: Clean and crisp
+          - generic [ref=e106]:
+            - generic [ref=e111]:
+              - paragraph [ref=e112]: PROjuice
+              - generic [ref=e113]: Mango Charge
+            - generic [ref=e114]:
+              - paragraph [ref=e115]: Tropical energy
+              - heading "Mango Charge" [level=3] [ref=e116]
+              - paragraph [ref=e117]: Mango and passionfruit create a sunny, fast-drinking bottle designed for morning momentum and high visual impact.
+              - generic [ref=e118]:
+                - article [ref=e119]:
+                  - generic [ref=e120]: Best moment
+                  - strong [ref=e121]: Morning momentum
+                - article [ref=e122]:
+                  - generic [ref=e123]: Texture profile
+                  - strong [ref=e124]: Smooth and bright
+                - article [ref=e125]:
+                  - generic [ref=e126]: Launch role
+                  - strong [ref=e127]: Hero attention driver
+              - generic [ref=e128]:
+                - generic [ref=e130]: Juiciness
+                - generic [ref=e133]: Recovery feel
+                - generic [ref=e136]: Brightness
+              - list [ref=e138]:
+                - listitem [ref=e139]: Launch flavour designed to win the first taste test.
+                - listitem [ref=e140]: Best for breakfast runs, pre-class energy and day-start routines.
+                - listitem [ref=e141]: Warm palette gives the whole brand a premium hero product anchor.
+      - generic [ref=e142]:
+        - generic [ref=e143]:
+          - paragraph [ref=e144]: About the brand
+          - heading "A premium bottle built to look modern, move fast and feel clean." [level=2] [ref=e145]
+          - paragraph [ref=e146]: PROjuice is not positioned like a bodybuilding shake. It is built for people who care about convenience, flavour, aesthetics and nutrition at the same time. That means the branding has to carry as much weight as the macros.
+          - generic [ref=e147]:
+            - generic [ref=e148]: Freshness first
+            - generic [ref=e149]: Real performance
+            - generic [ref=e150]: Responsible sourcing
+            - generic [ref=e151]: Premium shelf presence
+        - generic [ref=e152]:
+          - article [ref=e153]:
+            - paragraph [ref=e154]: Brand pillars
+            - list [ref=e155]:
+              - listitem [ref=e156]: Cleaner taste than traditional RTD protein drinks
+              - listitem [ref=e157]: Packaging designed for fridges, reels and pop-up counters
+              - listitem [ref=e158]: Lower-waste sourcing story through surplus fruit use
+              - listitem [ref=e159]: Flexible enough for breakfast, snack and recovery moments
+          - article [ref=e160]:
+            - paragraph [ref=e161]: Target buyer
+            - heading "16-30" [level=3] [ref=e162]
+            - paragraph [ref=e163]: Students, gym users and busy professionals who want speed without compromise.
+          - article [ref=e164]:
+            - paragraph [ref=e165]: Price point
+            - heading "NZD 6.50" [level=3] [ref=e166]
+            - paragraph [ref=e167]: Premium enough to feel elevated, accessible enough for repeat purchase.
+          - article [ref=e168]:
+            - paragraph [ref=e169]: Format edge
+            - heading "330ml" [level=3] [ref=e170]
+            - paragraph [ref=e171]: Portable, chilled and visually stronger than a standard shake bottle.
+      - generic [ref=e172]:
+        - generic [ref=e173]:
+          - paragraph [ref=e174]: Pilot insight
+          - heading "The market gap is emotional, practical and sensory at the same time." [level=2] [ref=e175]
+          - paragraph [ref=e176]: "People are not only buying macros. They are buying a feeling: easy mornings, better post-workout habits, cleaner ingredients and a bottle that feels worth picking up."
+        - generic [ref=e177]:
+          - article [ref=e178]:
+            - generic [ref=e179]: 86%
+            - paragraph [ref=e180]: said most protein drinks taste too chalky or artificial.
+          - article [ref=e181]:
+            - generic [ref=e182]: 79%
+            - paragraph [ref=e183]: wanted a faster breakfast or recovery option for busy days.
+          - article [ref=e184]:
+            - generic [ref=e185]: 67%
+            - paragraph [ref=e186]: would buy weekly if the price stayed under NZD 7.
+          - article [ref=e187]:
+            - generic [ref=e188]: "42"
+            - paragraph [ref=e189]: local respondents helped shape the value proposition and launch plan.
+        - generic [ref=e190]:
+          - generic [ref=e191]:
+            - paragraph [ref=e192]: What people dislike now
+            - heading "Heavy shakes, slow smoothies and forgettable shelf brands." [level=3] [ref=e193]
+            - list [ref=e194]:
+              - listitem [ref=e195]: Too thick or too artificial
+              - listitem [ref=e196]: Not enough protein in fresh drinks
+              - listitem [ref=e197]: Not enough freshness in functional drinks
+              - listitem [ref=e198]: Weak visual identity for impulse purchase
+          - generic [ref=e199]:
+            - paragraph [ref=e200]: What PROjuice solves
+            - heading "Fresh fruit character with real protein utility and premium mood." [level=3] [ref=e201]
+            - list [ref=e202]:
+              - listitem [ref=e203]: Juice-first taste profile
+              - listitem [ref=e204]: 20g protein in a chilled bottle
+              - listitem [ref=e205]: Designed for reels, fridges and refills
+              - listitem [ref=e206]: Built for repeat purchase, not one-off novelty
+      - generic [ref=e207]:
+        - generic [ref=e208]:
+          - generic [ref=e209]:
+            - paragraph [ref=e210]: Launch architecture
+            - heading "A multi-touch strategy built around where the customer already moves." [level=2] [ref=e211]
+            - paragraph [ref=e212]: "Instead of chasing every channel at once, PROjuice starts where attention, lifestyle and product fit are strongest: campuses, gym fridges, independent cafes and social-native pre-orders."
+            - generic [ref=e213]:
+              - article [ref=e214]:
+                - generic [ref=e215]: 2,340
+                - paragraph [ref=e216]: bottles targeted by September 30, 2026
+              - article [ref=e217]:
+                - generic [ref=e218]: 35%
+                - paragraph [ref=e219]: repeat purchase goal through bundles and loyalty
+          - generic [ref=e220]:
+            - generic [ref=e221]:
+              - paragraph [ref=e222]: Swipe sideways through the channel sequence
+              - generic [ref=e223]:
+                - button "Prev" [disabled]
+                - button "Next" [ref=e224] [cursor=pointer]
+            - generic [ref=e225]:
+              - article [ref=e226]:
+                - paragraph [ref=e227]: 01 · Awareness
+                - heading "Campus pop-ups and school launch drops" [level=3] [ref=e228]
+                - paragraph [ref=e229]: The fastest way to build belief is still in-person tasting. Pop-ups create visual noise, immediate feedback and content at the same time.
+              - article [ref=e230]:
+                - paragraph [ref=e231]: 02 · Conversion
+                - heading "Gym fridges and sports-club recovery moments" [level=3] [ref=e232]
+                - paragraph [ref=e233]: This is where the protein promise becomes most relevant. PROjuice earns repeat use when it appears right after effort.
+              - article [ref=e234]:
+                - paragraph [ref=e235]: 03 · Premium signal
+                - heading "Independent cafes and lifestyle-led counters" [level=3] [ref=e236]
+                - paragraph [ref=e237]: Cafe placement lifts perceived quality and makes the bottle feel more like a premium drink than a typical supplement.
+              - article [ref=e238]:
+                - paragraph [ref=e239]: 04 · Retention
+                - heading "Social bundles, QR offers and re-order packs" [level=3] [ref=e240]
+                - paragraph [ref=e241]: The website and Instagram layer turn first purchase into a repeat habit through bundles, short-form content and direct reminders.
+            - paragraph [ref=e242]: Drag or swipe left and right to move the whole launch stage one frame at a time.
+        - generic [ref=e243]:
+          - generic [ref=e244]:
+            - generic [ref=e245]:
+              - paragraph [ref=e246]: Interactive roadmap
+              - heading "Slide through the first seven months of launch activity." [level=2] [ref=e247]
+            - generic [ref=e248]:
+              - button "Prev" [disabled]
+              - button "Next" [ref=e249] [cursor=pointer]
+          - generic [ref=e250]:
+            - article [ref=e251]:
+              - generic [ref=e252]: March
+              - heading "Recipe, pricing and first outreach" [level=3] [ref=e253]
+              - paragraph [ref=e254]: Lock the bottle concept, packaging direction and first stockist conversations.
+            - article [ref=e255]:
+              - generic [ref=e256]: April
+              - heading "Launch week presence" [level=3] [ref=e257]
+              - paragraph [ref=e258]: Run tasting events, capture content and prove first purchase demand.
+            - article [ref=e259]:
+              - generic [ref=e260]: May
+              - heading "Gym placement" [level=3] [ref=e261]
+              - paragraph [ref=e262]: Move the product into a recovery setting and push the 3-pack offer.
+            - article [ref=e263]:
+              - generic [ref=e264]: June
+              - heading "Cafe and UGC expansion" [level=3] [ref=e265]
+              - paragraph [ref=e266]: Add premium counters and seed more customer-generated content.
+            - article [ref=e267]:
+              - generic [ref=e268]: July
+              - heading "Seasonal flavour moment" [level=3] [ref=e269]
+              - paragraph [ref=e270]: Introduce a winter variation or special drop to deepen brand memory.
+            - article [ref=e271]:
+              - generic [ref=e272]: August
+              - heading "Loyalty and stockist depth" [level=3] [ref=e273]
+              - paragraph [ref=e274]: Push retention through reorder habits, bundles and stronger shelf visibility.
+            - article [ref=e275]:
+              - generic [ref=e276]: September
+              - heading "Scale decision point" [level=3] [ref=e277]
+              - paragraph [ref=e278]: Review sell-through, channel performance and next-stage growth options.
+      - generic [ref=e279]:
+        - generic [ref=e280]:
+          - paragraph [ref=e281]: Brand atmosphere
+          - heading "Made to feel photogenic, premium and light on its feet." [level=2] [ref=e282]
+          - paragraph [ref=e283]: This concept works because the look and the story reinforce the product promise. Bright colour, clean type, animated movement and bottle-first presentation all help PROjuice feel more advanced than a standard student project page.
+        - generic [ref=e284]:
+          - article [ref=e285]:
+            - paragraph [ref=e286]: Packaging
+            - heading "Recyclable and shelf-strong" [level=3] [ref=e287]
+            - paragraph [ref=e288]: Bright coded flavours, clean typography and a bottle silhouette built for fridge impact.
+          - article [ref=e289]:
+            - paragraph [ref=e290]: Sourcing
+            - heading "Lower-waste fruit story" [level=3] [ref=e291]
+            - paragraph [ref=e292]: Use surplus or cosmetically imperfect fruit where possible to build a credible sustainability angle.
+          - article [ref=e293]:
+            - paragraph [ref=e294]: Content
+            - heading "Motion-first social strategy" [level=3] [ref=e295]
+            - paragraph [ref=e296]: Short-form video, tasting clips and bottle glamour shots drive reach better than static posters alone.
+      - generic [ref=e297]:
+        - generic [ref=e298]:
+          - paragraph [ref=e299]: Ready-to-use files
+          - heading "Everything needed for the project is linked from the homepage." [level=2] [ref=e300]
+          - paragraph [ref=e301]: Download the refined PDFs directly from the site. The same brand language now carries across the website, Lean Canvas and report.
+        - generic [ref=e302]:
+          - article [ref=e303]:
+            - paragraph [ref=e304]: PDF deliverable
+            - heading "PROjuice Lean Canvas" [level=3] [ref=e305]
+            - paragraph [ref=e306]: One-page business model summary formatted to match the YES Lean Canvas categories.
+            - link "Download Lean Canvas" [ref=e307] [cursor=pointer]:
+              - /url: ./deliverables/PROjuice-Lean-Canvas-v4.pdf?v=4
+          - article [ref=e308]:
+            - paragraph [ref=e309]: PDF deliverable
+            - heading "PROjuice Marketing Report" [level=3] [ref=e310]
+            - paragraph [ref=e311]: Full report aligned to the 17-point classroom structure, with corrected page flow and cleaner layout.
+            - link "Download Final Report" [ref=e312] [cursor=pointer]:
+              - /url: ./deliverables/PROjuice-Marketing-Report-v4.pdf?v=4
+      - generic [ref=e313]:
+        - generic [ref=e314]:
+          - paragraph [ref=e315]: FAQ
+          - heading "Open the details that matter most to the concept." [level=2] [ref=e316]
+        - generic [ref=e317]:
+          - article [ref=e318]:
+            - button "Who is PROjuice designed for?" [expanded] [ref=e319] [cursor=pointer]:
+              - generic [ref=e320]: Who is PROjuice designed for?
+            - paragraph [ref=e322]: Students, gym users and busy professionals who want something fresher than a typical protein shake but more functional than a standard juice or smoothie.
+          - article [ref=e323]:
+            - button "What makes the concept feel premium?" [ref=e324] [cursor=pointer]:
+              - generic [ref=e325]: What makes the concept feel premium?
+            - paragraph [ref=e327]: Premium here means cleaner visual identity, stronger taste positioning, considered packaging and a launch strategy that fits higher-value channels like gyms and independent cafes.
+          - article [ref=e328]:
+            - button "How would the product gain repeat purchase?" [ref=e329] [cursor=pointer]:
+              - generic [ref=e330]: How would the product gain repeat purchase?
+            - paragraph [ref=e332]: Through bundle pricing, fridge visibility, QR offers, loyalty prompts and consistent placement in moments where convenience and recovery matter most.
+          - article [ref=e333]:
+            - button "Why put so much emphasis on interaction and motion?" [ref=e334] [cursor=pointer]:
+              - generic [ref=e335]: Why put so much emphasis on interaction and motion?
+            - paragraph [ref=e337]: Because the website is acting like a brand experience, not just a text document. Motion helps the concept feel closer to a real premium launch page.
+    - contentinfo [ref=e338]:
+      - generic [ref=e339]:
+        - strong [ref=e340]: PROjuice
+        - paragraph [ref=e341]: Fruit protein drinks for active routines.
+      - generic [ref=e342]:
+        - paragraph [ref=e343]: Built as a complete class-ready business concept.
+        - paragraph [ref=e344]: 2026 Interactive brand site, Lean Canvas and final report package.

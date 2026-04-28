@@ -3,8 +3,8 @@
   "private": true,
   "version": "0.1.0",
   "scripts": {
-    "dev": "python3 -m http.server 4173",
-    "build": "rm -rf dist && mkdir -p dist/src dist/deliverables && cp index.html dist && cp src/styles.css src/main.js src/immersive.css src/immersive.js dist/src && cp deliverables/PROjuice-Lean-Canvas-v4.pdf deliverables/PROjuice-Marketing-Report-v4.pdf dist/deliverables",
-    "preview": "cd dist && python3 -m http.server 4173"
+    "dev": "next dev -p 4173",
+    "build": "next build",
+    "start": "next start -p 4173"
   }
 }
