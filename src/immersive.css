@@ -224,10 +224,18 @@ body.performance-lite .mist-cloud {
   display: none;
 }
 
+body.performance-lite .stage-halo {
+  filter: blur(8px);
+}
+
+body.performance-lite .stage-halo-c,
+body.performance-lite .scene-prompt {
+  display: none;
+}
+
 .immersive-shell.is-overlay-hidden .experience-backdrop,
 .immersive-shell.is-overlay-hidden .experience-header,
 .immersive-shell.is-overlay-hidden .experience-stage {
-  visibility: hidden;
   pointer-events: none;
 }
 

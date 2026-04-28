@@ -40,13 +40,25 @@ const sliderStates = [];
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const supportsFinePointer = window.matchMedia("(pointer: fine)").matches;
 const lowMotionViewportQuery = window.matchMedia("(max-width: 1180px)");
+const performanceLiteQuery = window.matchMedia("(max-width: 920px), (pointer: coarse)");
 let lowMotionViewport = lowMotionViewportQuery.matches;
-const lowPowerDevice = (navigator.hardwareConcurrency || 8) <= 8 || (navigator.deviceMemory && navigator.deviceMemory <= 8);
+let performanceLiteViewport = performanceLiteQuery.matches;
 const sectionShellMeta = sectionShellNodes.map((node) => ({
   node,
   top: 0,
   height: 0,
 }));
+let headerHeight = 0;
+
+const isPerformanceLite = () => performanceLiteViewport;
+const canUseSmoothUiMotion = () => !prefersReducedMotion && !isPerformanceLite();
+const setStyleValue = (node, property, value) => {
+  if (node && node.style.getPropertyValue(property) !== value) {
+    node.style.setProperty(property, value);
+  }
+};
+
+body.classList.toggle("performance-lite", isPerformanceLite());
 
 const flavourData = {
   mango: {
@@ -149,6 +161,9 @@ const flavourTargets = {
 };
 
 const clamp = (value, min = 0, max = 1) => Math.min(Math.max(value, min), max);
+const updateHeaderMetrics = () => {
+  headerHeight = header ? header.getBoundingClientRect().height : 0;
+};
 
 if (yearNode) {
   yearNode.textContent = new Date().getFullYear();
@@ -363,7 +378,7 @@ sliderRoots.forEach((sliderRoot) => {
   const scrollTrack = (direction) => {
     track.scrollBy({
       left: resolveStep() * direction,
-      behavior: "smooth",
+      behavior: canUseSmoothUiMotion() ? "smooth" : "auto",
     });
   };
 
@@ -582,21 +597,20 @@ const updateSectionShellLayout = () => {
   });
 };
 
-const syncCurrentNav = (_scrollTop, viewportHeight) => {
+const syncCurrentNav = (scrollTop, viewportHeight) => {
   if (!navLinks.length || !navigableSectionMeta.length) {
     return;
   }
 
-  const headerHeight = header ? header.getBoundingClientRect().height : 0;
-  const anchorY = headerHeight + Math.min(viewportHeight * 0.16, 132);
+  const anchorY = scrollTop + headerHeight + Math.min(viewportHeight * 0.16, 132);
   let currentId = null;
 
   navigableSectionMeta.forEach((meta) => {
-    const rect = meta.node.getBoundingClientRect();
+    const sectionBottom = meta.top + meta.height;
 
-    if (anchorY >= rect.top && anchorY < rect.bottom) {
+    if (anchorY >= meta.top && anchorY < sectionBottom) {
       currentId = meta.id;
-    } else if (rect.top <= anchorY) {
+    } else if (meta.top <= anchorY) {
       currentId = meta.id;
     }
   });
@@ -612,13 +626,12 @@ const syncScrollEffects = () => {
   const scrollHeight = document.documentElement.scrollHeight - viewportHeight;
   const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
   const scrollDirection = scrollTop > lastSyncedScrollTop ? 1 : scrollTop < lastSyncedScrollTop ? -1 : 0;
-  const headerHeight = header ? header.getBoundingClientRect().height : 0;
   const revealStartLine = viewportHeight;
   const revealEndLine = Math.max(headerHeight + 40, viewportHeight * 0.52);
   const revealTravel = Math.max(revealStartLine - revealEndLine, 1);
 
   if (progressBar) {
-    progressBar.style.setProperty("--scroll-progress", `${Math.min(progress, 100)}%`);
+    setStyleValue(progressBar, "--scroll-progress", `${Math.min(progress, 100)}%`);
   }
 
   if (header) {
@@ -628,70 +641,92 @@ const syncScrollEffects = () => {
   syncCurrentNav(scrollTop, viewportHeight);
 
   frostParallaxNodes.forEach((node) => {
+    if (isPerformanceLite()) {
+      setStyleValue(node, "--parallax-offset", "0px");
+      return;
+    }
+
     const speed = Number(node.dataset.parallax || "0.08");
     const offset = scrollTop * speed * -0.25;
-    node.style.setProperty("--parallax-offset", `${Math.max(Math.min(offset, 80), -80)}px`);
+    setStyleValue(node, "--parallax-offset", `${Math.max(Math.min(offset, 80), -80)}px`);
   });
 
   sceneParallaxMeta.forEach((meta) => {
+    if (isPerformanceLite()) {
+      setStyleValue(meta.node, "--parallax-offset", "0px");
+      return;
+    }
+
     const distanceFromCenter = (meta.top + meta.half) - (scrollTop + (viewportHeight / 2));
     const offset = distanceFromCenter * -meta.speed;
 
-    meta.node.style.setProperty("--parallax-offset", `${Math.max(Math.min(offset, 80), -80)}px`);
+    setStyleValue(meta.node, "--parallax-offset", `${Math.max(Math.min(offset, 80), -80)}px`);
   });
 
   revealMeta.forEach((meta) => {
     if (lowMotionViewport) {
-      meta.node.style.setProperty("--reveal-progress", "1");
-      meta.node.style.setProperty("--reveal-shift", "0px");
-      meta.node.style.setProperty("--reveal-scale", "1");
+      setStyleValue(meta.node, "--reveal-progress", "1");
+      setStyleValue(meta.node, "--reveal-shift", "0px");
+      setStyleValue(meta.node, "--reveal-scale", "1");
       return;
     }
 
-    const rect = meta.node.getBoundingClientRect();
-    const revealProgress = clamp((revealStartLine - rect.top) / revealTravel);
+    const topInViewport = meta.top - scrollTop;
+    const bottomInViewport = topInViewport + meta.height;
 
-    meta.node.style.setProperty("--reveal-progress", revealProgress.toFixed(4));
-    meta.node.style.setProperty("--reveal-shift", `${((1 - revealProgress) * 26).toFixed(2)}px`);
-    meta.node.style.setProperty("--reveal-scale", `${(0.982 + (revealProgress * 0.018)).toFixed(4)}`);
+    if (topInViewport > viewportHeight + 240 || bottomInViewport < -240) {
+      return;
+    }
+
+    const revealProgress = clamp((revealStartLine - topInViewport) / revealTravel);
+
+    setStyleValue(meta.node, "--reveal-progress", revealProgress.toFixed(4));
+    setStyleValue(meta.node, "--reveal-shift", `${((1 - revealProgress) * 26).toFixed(2)}px`);
+    setStyleValue(meta.node, "--reveal-scale", `${(0.982 + (revealProgress * 0.018)).toFixed(4)}`);
   });
 
   sectionShellMeta.forEach((meta) => {
     if (lowMotionViewport) {
-      meta.node.style.setProperty("--section-progress", "0.5");
-      meta.node.style.setProperty("--section-progress-offset", "0");
-      meta.node.style.setProperty("--section-visibility", "0.7");
-      meta.node.style.setProperty("--section-energy", "0.45");
-      meta.node.style.setProperty("--section-direction", "0");
-      meta.node.style.setProperty("--section-shift", "0px");
-      meta.node.style.setProperty("--section-shift-y", "0px");
-      meta.node.style.setProperty("--section-glow-x", "46%");
-      meta.node.style.setProperty("--section-glow-y", "34%");
-      meta.node.style.setProperty("--section-glow-opacity", "0.28");
+      setStyleValue(meta.node, "--section-progress", "0.5");
+      setStyleValue(meta.node, "--section-progress-offset", "0");
+      setStyleValue(meta.node, "--section-visibility", "0.7");
+      setStyleValue(meta.node, "--section-energy", "0.45");
+      setStyleValue(meta.node, "--section-direction", "0");
+      setStyleValue(meta.node, "--section-shift", "0px");
+      setStyleValue(meta.node, "--section-shift-y", "0px");
+      setStyleValue(meta.node, "--section-glow-x", "46%");
+      setStyleValue(meta.node, "--section-glow-y", "34%");
+      setStyleValue(meta.node, "--section-glow-opacity", "0.28");
       return;
     }
 
-    const rect = meta.node.getBoundingClientRect();
-    const sectionHeight = Math.max(rect.height, 1);
-    const centerDistance = (rect.top + (sectionHeight / 2)) - (viewportHeight / 2);
-    const normalized = clamp((revealStartLine - rect.top) / Math.max(sectionHeight + (viewportHeight * 0.18), 1));
-    const sectionProgress = clamp((revealStartLine - rect.top) / Math.max(sectionHeight + (viewportHeight * 0.08), 1));
+    const sectionHeight = Math.max(meta.height, 1);
+    const topInViewport = meta.top - scrollTop;
+    const bottomInViewport = topInViewport + sectionHeight;
+
+    if (topInViewport > viewportHeight + 280 || bottomInViewport < -280) {
+      return;
+    }
+
+    const centerDistance = (topInViewport + (sectionHeight / 2)) - (viewportHeight / 2);
+    const normalized = clamp((revealStartLine - topInViewport) / Math.max(sectionHeight + (viewportHeight * 0.18), 1));
+    const sectionProgress = clamp((revealStartLine - topInViewport) / Math.max(sectionHeight + (viewportHeight * 0.08), 1));
     const progressOffset = sectionProgress - 0.5;
-    const visibility = clamp((revealStartLine - rect.top) / revealTravel);
+    const visibility = clamp((revealStartLine - topInViewport) / revealTravel);
     const shift = Math.max(Math.min(centerDistance * -0.055, 34), -34);
     const glowBand = 1 - Math.abs((normalized * 2) - 1);
     const energy = clamp((visibility * 0.76) + (glowBand * 0.24));
 
-    meta.node.style.setProperty("--section-progress", sectionProgress.toFixed(4));
-    meta.node.style.setProperty("--section-progress-offset", progressOffset.toFixed(4));
-    meta.node.style.setProperty("--section-visibility", visibility.toFixed(4));
-    meta.node.style.setProperty("--section-energy", energy.toFixed(4));
-    meta.node.style.setProperty("--section-direction", String(scrollDirection));
-    meta.node.style.setProperty("--section-shift", `${shift.toFixed(2)}px`);
-    meta.node.style.setProperty("--section-shift-y", `${(shift * -0.35).toFixed(2)}px`);
-    meta.node.style.setProperty("--section-glow-x", `${(18 + (normalized * 56)).toFixed(2)}%`);
-    meta.node.style.setProperty("--section-glow-y", `${(12 + (glowBand * 40)).toFixed(2)}%`);
-    meta.node.style.setProperty("--section-glow-opacity", `${(0.24 + (glowBand * 0.48)).toFixed(3)}`);
+    setStyleValue(meta.node, "--section-progress", sectionProgress.toFixed(4));
+    setStyleValue(meta.node, "--section-progress-offset", progressOffset.toFixed(4));
+    setStyleValue(meta.node, "--section-visibility", visibility.toFixed(4));
+    setStyleValue(meta.node, "--section-energy", energy.toFixed(4));
+    setStyleValue(meta.node, "--section-direction", String(scrollDirection));
+    setStyleValue(meta.node, "--section-shift", `${shift.toFixed(2)}px`);
+    setStyleValue(meta.node, "--section-shift-y", `${(shift * -0.35).toFixed(2)}px`);
+    setStyleValue(meta.node, "--section-glow-x", `${(18 + (normalized * 56)).toFixed(2)}%`);
+    setStyleValue(meta.node, "--section-glow-y", `${(12 + (glowBand * 40)).toFixed(2)}%`);
+    setStyleValue(meta.node, "--section-glow-opacity", `${(0.24 + (glowBand * 0.48)).toFixed(3)}`);
   });
 
   lastSyncedScrollTop = scrollTop;
@@ -707,35 +742,33 @@ const requestScrollSync = () => {
 
 const syncViewportMode = () => {
   lowMotionViewport = lowMotionViewportQuery.matches;
-  body.classList.toggle("performance-lite", lowMotionViewport || lowPowerDevice);
+  performanceLiteViewport = performanceLiteQuery.matches;
+  body.classList.toggle("performance-lite", isPerformanceLite());
+};
+
+const syncLayoutMetrics = () => {
+  updateHeaderMetrics();
+  updateSceneParallaxLayout();
+  updateRevealLayout();
+  updateNavigableSectionLayout();
+  updateSectionShellLayout();
+  sliderStates.forEach(({ syncSliderState }) => syncSliderState());
 };
 
 window.addEventListener("scroll", requestScrollSync, { passive: true });
 window.addEventListener("resize", () => {
   syncViewportMode();
-  updateSceneParallaxLayout();
-  updateRevealLayout();
-  updateNavigableSectionLayout();
-  updateSectionShellLayout();
-  sliderStates.forEach(({ syncSliderState }) => syncSliderState());
+  syncLayoutMetrics();
   requestScrollSync();
 });
 window.addEventListener("load", () => {
-  updateSceneParallaxLayout();
-  updateRevealLayout();
-  updateNavigableSectionLayout();
-  updateSectionShellLayout();
-  sliderStates.forEach(({ syncSliderState }) => syncSliderState());
+  syncLayoutMetrics();
   syncScrollEffects();
 });
 
 if (document.fonts && document.fonts.ready) {
   document.fonts.ready.then(() => {
-    updateSceneParallaxLayout();
-    updateRevealLayout();
-    updateNavigableSectionLayout();
-    updateSectionShellLayout();
-    sliderStates.forEach(({ syncSliderState }) => syncSliderState());
+    syncLayoutMetrics();
     requestScrollSync();
   });
 }
@@ -743,13 +776,18 @@ if (document.fonts && document.fonts.ready) {
 if (lowMotionViewportQuery.addEventListener) {
   lowMotionViewportQuery.addEventListener("change", () => {
     syncViewportMode();
+    syncLayoutMetrics();
+    requestScrollSync();
+  });
+}
+
+if (performanceLiteQuery.addEventListener) {
+  performanceLiteQuery.addEventListener("change", () => {
+    syncViewportMode();
     requestScrollSync();
   });
 }
 
 syncViewportMode();
-updateSceneParallaxLayout();
-updateRevealLayout();
-updateNavigableSectionLayout();
-updateSectionShellLayout();
+syncLayoutMetrics();
 syncScrollEffects();

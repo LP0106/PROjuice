@@ -6,7 +6,7 @@ if (immersiveShell) {
   const select = (selector) => immersiveShell.querySelector(selector);
   const selectAll = (selector) => [...immersiveShell.querySelectorAll(selector)];
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const performanceLiteQuery = window.matchMedia("(max-width: 1180px)");
+  const performanceLiteQuery = window.matchMedia("(max-width: 920px), (pointer: coarse)");
   let performanceLite = performanceLiteQuery.matches;
   const handoffTarget = immersiveShell.dataset.handoffTarget
     ? document.querySelector(immersiveShell.dataset.handoffTarget)
@@ -92,6 +92,16 @@ if (immersiveShell) {
 
   const clamp = (value, min = 0, max = 1) => Math.min(Math.max(value, min), max);
   const mix = (start, end, amount) => start + (end - start) * amount;
+  const setStyleValue = (node, property, value) => {
+    if (node && node.style.getPropertyValue(property) !== value) {
+      node.style.setProperty(property, value);
+    }
+  };
+  const setInlineStyle = (node, property, value) => {
+    if (node && node.style[property] !== value) {
+      node.style[property] = value;
+    }
+  };
 
   const mapRange = (value, start, end) => {
     if (end === start) {
@@ -121,8 +131,12 @@ if (immersiveShell) {
     const fromX = config.fromX || 0;
     const fromY = config.fromY || 0;
 
-    config.node.style.opacity = String(opacity);
-    config.node.style.transform = `translate3d(${mix(fromX, config.toX, local)}px, ${mix(fromY, config.toY, local) + wave}px, 0) rotate(${rotate}deg) scale3d(${scaleX}, ${scaleY}, 1)`;
+    setInlineStyle(config.node, "opacity", String(opacity));
+    setInlineStyle(
+      config.node,
+      "transform",
+      `translate3d(${mix(fromX, config.toX, local)}px, ${mix(fromY, config.toY, local) + wave}px, 0) rotate(${rotate}deg) scale3d(${scaleX}, ${scaleY}, 1)`
+    );
   };
 
   const state = {
@@ -174,11 +188,11 @@ if (immersiveShell) {
 
   const syncPerformanceMode = () => {
     performanceLite = performanceLiteQuery.matches;
-    activeMists = performanceLite ? mists.slice(0, 2) : mists;
-    activeFruits = performanceLite ? fruits.filter((_, index) => index % 2 === 0) : fruits;
-    activeProteins = performanceLite ? proteins.filter((_, index) => index % 3 === 0) : proteins;
-    activeShards = performanceLite ? shards.filter((_, index) => index % 2 === 0) : shards;
-    activeBubbles = performanceLite ? bubbles.filter((_, index) => index % 2 === 0) : bubbles;
+    activeMists = performanceLite ? [] : mists;
+    activeFruits = performanceLite ? fruits.filter((_, index) => index % 3 === 0) : fruits;
+    activeProteins = performanceLite ? proteins.filter((_, index) => index % 4 === 0) : proteins;
+    activeShards = performanceLite ? shards.filter((_, index) => index % 3 === 0) : shards;
+    activeBubbles = performanceLite ? bubbles.filter((_, index) => index % 3 === 0) : bubbles;
     activeMistSet = new Set(activeMists);
     activeFruitSet = new Set(activeFruits);
     activeProteinSet = new Set(activeProteins);
@@ -190,6 +204,8 @@ if (immersiveShell) {
     setBurstVisibility(proteins, activeProteinSet);
     setBurstVisibility(shards, activeShardSet);
     setBurstVisibility(bubbles, activeBubbleSet);
+    state.lastProgress = -1;
+    state.lastOverlay = -1;
   };
 
   const updateLayout = () => {
@@ -237,20 +253,20 @@ if (immersiveShell) {
     const opacity = (1 - overlayProgress).toFixed(4);
 
     if (backdrop) {
-      backdrop.style.opacity = opacity;
+      setInlineStyle(backdrop, "opacity", opacity);
     }
 
     if (experienceHeader) {
-      experienceHeader.style.opacity = opacity;
+      setInlineStyle(experienceHeader, "opacity", opacity);
     }
 
     if (stage) {
-      stage.style.opacity = opacity;
-      stage.style.setProperty("--stage-overlay-scale", mix(1, 1.035, overlayProgress).toFixed(4));
-      stage.style.setProperty("--stage-overlay-y", `${mix(0, -18, overlayProgress).toFixed(2)}px`);
+      setInlineStyle(stage, "opacity", opacity);
+      setStyleValue(stage, "--stage-overlay-scale", mix(1, 1.035, overlayProgress).toFixed(4));
+      setStyleValue(stage, "--stage-overlay-y", `${mix(0, -18, overlayProgress).toFixed(2)}px`);
     }
 
-    immersiveShell.classList.toggle("is-overlay-hidden", overlayProgress > 0.995);
+    immersiveShell.classList.toggle("is-overlay-hidden", overlayProgress >= 1);
   };
 
   const updateSceneLabels = (progress, overlayProgress) => {
@@ -261,7 +277,7 @@ if (immersiveShell) {
     const percent = Math.round(progress * 100);
     if (percent !== state.lastPercent) {
       progressLabel.textContent = `${percent}%`;
-      meterFill.style.width = `${percent}%`;
+      setInlineStyle(meterFill, "width", `${percent}%`);
       state.lastPercent = percent;
     }
 
@@ -296,38 +312,38 @@ if (immersiveShell) {
     const release = ease(mapRange(progress, 0.18, 0.72));
     const settle = ease(mapRange(progress, 0.72, 1));
 
-    bottle.style.setProperty("--bottle-y", `${mix(-50, -56, tip)}%`);
-    bottle.style.setProperty("--bottle-rotate", `${mix(0, -28, tip) + mix(0, 8, settle) * 0.25}deg`);
-    bottle.style.setProperty("--bottle-scale", `${mix(1, 1.045, release)}`);
+    setStyleValue(bottle, "--bottle-y", `${mix(-50, -56, tip)}%`);
+    setStyleValue(bottle, "--bottle-rotate", `${mix(0, -28, tip) + mix(0, 8, settle) * 0.25}deg`);
+    setStyleValue(bottle, "--bottle-scale", `${mix(1, 1.045, release)}`);
 
-    cap.style.setProperty("--cap-x", `${mix(0, -72, tip)}px`);
-    cap.style.setProperty("--cap-y", `${mix(0, -108, tip)}px`);
-    cap.style.setProperty("--cap-rotate", `${mix(0, -120, tip)}deg`);
+    setStyleValue(cap, "--cap-x", `${mix(0, -72, tip)}px`);
+    setStyleValue(cap, "--cap-y", `${mix(0, -108, tip)}px`);
+    setStyleValue(cap, "--cap-rotate", `${mix(0, -120, tip)}deg`);
 
-    liquid.style.setProperty("--liquid-fill", `${mix(1, 0.22, release)}`);
-    liquid.style.setProperty("--liquid-opacity", `${mix(1, 0.68, release)}`);
+    setStyleValue(liquid, "--liquid-fill", `${mix(1, 0.22, release)}`);
+    setStyleValue(liquid, "--liquid-opacity", `${mix(1, 0.68, release)}`);
   };
 
   const updateBackground = (progress) => {
     if (haloA) {
-      haloA.style.transform = `translate(-50%, -50%) scale(${mix(0.82, 1.18, progress)})`;
-      haloA.style.opacity = String(mix(0.64, 1, progress));
+      setInlineStyle(haloA, "transform", `translate(-50%, -50%) scale(${mix(0.82, 1.18, progress)})`);
+      setInlineStyle(haloA, "opacity", String(mix(0.64, 1, progress)));
     }
 
     if (haloB) {
-      haloB.style.transform = `translate(-50%, -50%) scale(${mix(0.9, 1.3, progress)})`;
-      haloB.style.opacity = String(mix(0.45, 0.9, progress));
+      setInlineStyle(haloB, "transform", `translate(-50%, -50%) scale(${mix(0.9, 1.3, progress)})`);
+      setInlineStyle(haloB, "opacity", String(mix(0.45, 0.9, progress)));
     }
 
     if (haloC) {
-      haloC.style.transform = `translate(-50%, -50%) scale(${mix(0.76, 1.24, progress)})`;
-      haloC.style.opacity = String(mix(0.3, 0.72, progress));
+      setInlineStyle(haloC, "transform", `translate(-50%, -50%) scale(${mix(0.76, 1.24, progress)})`);
+      setInlineStyle(haloC, "opacity", String(mix(0.3, 0.72, progress)));
     }
 
     rings.forEach((ring, index) => {
       const base = 1 + progress * (0.16 + index * 0.1);
-      ring.style.transform = `translate(-50%, -50%) scale(${base})`;
-      ring.style.opacity = String(mix(0.24, 0.56, progress) - index * 0.08);
+      setInlineStyle(ring, "transform", `translate(-50%, -50%) scale(${base})`);
+      setInlineStyle(ring, "opacity", String(mix(0.24, 0.56, progress) - index * 0.08));
     });
   };
 
@@ -342,8 +358,8 @@ if (immersiveShell) {
         ? mix(48, 0, eased)
         : mix(-48, 0, eased);
 
-      card.style.opacity = String(mix(0.14, 1, eased));
-      card.style.transform = `translate3d(${horizontalOffset}px, ${mix(28, 0, eased)}px, 0) scale(${mix(0.955, 1, eased)})`;
+      setInlineStyle(card, "opacity", String(mix(0.14, 1, eased)));
+      setInlineStyle(card, "transform", `translate3d(${horizontalOffset}px, ${mix(28, 0, eased)}px, 0) scale(${mix(0.955, 1, eased)})`);
       card.classList.toggle("is-active", visibility > 0.3);
     });
   };
@@ -392,8 +408,8 @@ if (immersiveShell) {
       });
     });
 
-    immersiveShell.style.setProperty("--scene-progress", progress.toFixed(4));
-    root.style.setProperty("--scene-progress", progress.toFixed(4));
+    setStyleValue(immersiveShell, "--scene-progress", progress.toFixed(4));
+    setStyleValue(root, "--scene-progress", progress.toFixed(4));
   };
 
   const maybeAutoHandoff = (metrics) => {
@@ -413,7 +429,7 @@ if (immersiveShell) {
       state.autoHandoffLocked = true;
       window.scrollTo({
         top: metrics.targetTop,
-        behavior: prefersReducedMotion || remainingDistance < 96 ? "auto" : "smooth",
+        behavior: prefersReducedMotion || performanceLite || remainingDistance < 96 ? "auto" : "smooth",
       });
     }
   };
@@ -422,10 +438,12 @@ if (immersiveShell) {
     state.frameRequested = false;
 
     const metrics = getMetrics();
+    const sceneThreshold = performanceLite ? 0.0016 : 0.0004;
+    const overlayThreshold = performanceLite ? 0.002 : 0.001;
 
     if (
-      Math.abs(metrics.sceneProgress - state.lastProgress) > 0.0004 ||
-      Math.abs(metrics.overlayProgress - state.lastOverlay) > 0.001
+      Math.abs(metrics.sceneProgress - state.lastProgress) > sceneThreshold ||
+      Math.abs(metrics.overlayProgress - state.lastOverlay) > overlayThreshold
     ) {
       renderScene(metrics.sceneProgress, metrics.overlayProgress);
       state.lastProgress = metrics.sceneProgress;
