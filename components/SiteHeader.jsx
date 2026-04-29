@@ -6,6 +6,7 @@ import { ArrowRight, Menu, X } from "lucide-react";
 
 const navItems = [
   ["Products", "#products"],
+  ["Live API", "#backend"],
   ["Benefits", "#benefits"],
   ["Partners", "#partners"],
   ["Enquire", "#enquire"],

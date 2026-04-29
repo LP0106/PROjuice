@@ -37,6 +37,7 @@ export default function LeadForm({ products }) {
       }
 
       setForm(initialForm);
+      window.dispatchEvent(new CustomEvent("projuice:lead-created", { detail: payload.lead }));
       setState({ status: "success", message: "Enquiry saved. The admin dashboard now has the new lead." });
     } catch (error) {
       setState({ status: "error", message: error.message });

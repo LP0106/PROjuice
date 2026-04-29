@@ -11,6 +11,7 @@ import {
   Users,
   Zap
 } from "lucide-react";
+import BackendBridge from "@/components/BackendBridge";
 import FlavorShowcase from "@/components/FlavorShowcase";
 import HeroMotion from "@/components/HeroMotion";
 import LeadForm from "@/components/LeadForm";
@@ -86,6 +87,8 @@ export default function HomePage() {
         </section>
 
         <FlavorShowcase products={products} />
+
+        <BackendBridge />
 
         <section id="benefits" className="section benefits-section fx-reveal">
           <div className="section-heading">
