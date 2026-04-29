@@ -110,6 +110,8 @@ export default function BackendBridge() {
       section.style.setProperty("--bridge-progress", progress.toFixed(3));
       section.style.setProperty("--bridge-tilt", reducedMotion ? "0deg" : `${(progress - 0.5) * 8}deg`);
       section.style.setProperty("--bridge-shift", reducedMotion ? "0px" : `${(progress - 0.5) * -90}px`);
+      section.style.setProperty("--bridge-spin", reducedMotion ? "0deg" : `${progress * 90}deg`);
+      section.style.setProperty("--bridge-spin-reverse", reducedMotion ? "0deg" : `${progress * -90}deg`);
       setActiveStep((current) => (current === nextStep ? current : nextStep));
     };
 
