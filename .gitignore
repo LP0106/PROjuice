@@ -6,5 +6,6 @@ coverage
 .tmp-previews
 .pycache-tmp
 .next
+.playwright-cli
 .data
 npm-debug.log*

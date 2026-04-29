@@ -34,12 +34,12 @@ function Sparkline({ values }) {
   );
 }
 
-export default function AdminDashboard() {
+export default function AdminDashboard({ initialSummary = null, initialDemoMode = false }) {
   const [pass, setPass] = useState("");
-  const [summary, setSummary] = useState(null);
+  const [summary, setSummary] = useState(initialSummary);
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [demoMode, setDemoMode] = useState(false);
+  const [loading, setLoading] = useState(!initialSummary);
+  const [demoMode, setDemoMode] = useState(initialDemoMode);
 
   const loadSummary = async (nextPass = pass) => {
     setLoading(true);
@@ -69,6 +69,10 @@ export default function AdminDashboard() {
   };
 
   useEffect(() => {
+    if (initialSummary) {
+      return;
+    }
+
     const stored = window.localStorage.getItem("projuice-admin-pass") || "";
     setPass(stored);
     loadSummary(stored);
@@ -124,7 +128,13 @@ export default function AdminDashboard() {
             <ShieldCheck size={24} />
             <h2>Admin access</h2>
             <p>Enter the passcode from `PROJUICE_ADMIN_PASS`. If no passcode is configured, the dashboard opens in demo mode.</p>
-            <input value={pass} onChange={(event) => setPass(event.target.value)} placeholder="Admin passcode" type="password" />
+            <input
+              value={pass}
+              onChange={(event) => setPass(event.target.value)}
+              placeholder="Admin passcode"
+              type="password"
+              autoComplete="new-password"
+            />
             <button className="primary-button" type="submit" disabled={loading}>
               Load dashboard
             </button>
@@ -159,7 +169,7 @@ export default function AdminDashboard() {
                 <Sparkline values={summary.trend} />
               </article>
 
-              <article className="admin-panel">
+              <article className="admin-panel" id="partners">
                 <div className="panel-head">
                   <h2>Channel mix</h2>
                   <span>Launch focus</span>
