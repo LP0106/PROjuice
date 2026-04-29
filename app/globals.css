@@ -1273,8 +1273,8 @@ main {
   stroke-linecap: round;
   stroke-linejoin: round;
   vector-effect: non-scaling-stroke;
-  stroke-dasharray: 240;
-  stroke-dashoffset: 240;
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
   animation: drawLine 1.2s ease both;
 }
 
