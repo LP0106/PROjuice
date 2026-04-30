@@ -7,10 +7,11 @@ import {
   BarChart3,
   Building2,
   CalendarDays,
+  CheckCircle2,
   Inbox,
   Package,
   ShieldCheck,
-  Users
+  Trash2
 } from "lucide-react";
 
 function Sparkline({ values }) {
@@ -40,6 +41,12 @@ export default function AdminDashboard({ initialSummary = null, initialDemoMode 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(!initialSummary);
   const [demoMode, setDemoMode] = useState(initialDemoMode);
+  const [actionId, setActionId] = useState("");
+
+  const adminHeaders = (nextPass = pass, json = false) => ({
+    ...(json ? { "Content-Type": "application/json" } : {}),
+    ...(nextPass ? { "x-admin-pass": nextPass } : {})
+  });
 
   const loadSummary = async (nextPass = pass) => {
     setLoading(true);
@@ -47,7 +54,7 @@ export default function AdminDashboard({ initialSummary = null, initialDemoMode 
 
     try {
       const response = await fetch("/api/admin/summary", {
-        headers: nextPass ? { "x-admin-pass": nextPass } : {}
+        headers: adminHeaders(nextPass)
       });
       const payload = await response.json();
 
@@ -65,6 +72,53 @@ export default function AdminDashboard({ initialSummary = null, initialDemoMode 
       setError(requestError.message);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const updateLead = async (leadId, status) => {
+    setActionId(`${leadId}:${status}`);
+    setError("");
+
+    try {
+      const response = await fetch(`/api/admin/leads/${encodeURIComponent(leadId)}`, {
+        method: "PATCH",
+        headers: adminHeaders(pass, true),
+        body: JSON.stringify({ status })
+      });
+      const payload = await response.json();
+
+      if (!response.ok) {
+        throw new Error(payload.error || "Unable to update lead.");
+      }
+
+      await loadSummary(pass);
+    } catch (requestError) {
+      setError(requestError.message);
+    } finally {
+      setActionId("");
+    }
+  };
+
+  const removeLead = async (leadId) => {
+    setActionId(`${leadId}:delete`);
+    setError("");
+
+    try {
+      const response = await fetch(`/api/admin/leads/${encodeURIComponent(leadId)}`, {
+        method: "DELETE",
+        headers: adminHeaders(pass)
+      });
+      const payload = await response.json();
+
+      if (!response.ok) {
+        throw new Error(payload.error || "Unable to delete lead.");
+      }
+
+      await loadSummary(pass);
+    } catch (requestError) {
+      setError(requestError.message);
+    } finally {
+      setActionId("");
     }
   };
 
@@ -203,15 +257,51 @@ export default function AdminDashboard({ initialSummary = null, initialDemoMode 
               <article className="admin-panel leads-panel" id="leads">
                 <div className="panel-head">
                   <h2>Recent enquiries</h2>
-                  <span>{summary.leads.length} visible</span>
+                  <button className="admin-small-button" type="button" onClick={() => loadSummary(pass)} disabled={loading}>
+                    Refresh
+                  </button>
                 </div>
+                {error && <p className="admin-error">{error}</p>}
                 <div className="lead-table">
                   {summary.leads.map((lead) => (
                     <div className="lead-row" key={lead.id}>
-                      <strong>{lead.organisation || lead.name}</strong>
+                      <strong>
+                        {lead.organisation || lead.name}
+                        <small>{lead.email}</small>
+                      </strong>
                       <span>{lead.segment}</span>
                       <span>{lead.flavour}</span>
                       <em>{lead.status}</em>
+                      <div className="lead-actions" aria-label={`Actions for ${lead.organisation || lead.name}`}>
+                        {lead.status !== "Contacted" && (
+                          <button
+                            type="button"
+                            onClick={() => updateLead(lead.id, "Contacted")}
+                            disabled={Boolean(actionId)}
+                          >
+                            Contacted
+                          </button>
+                        )}
+                        {lead.status !== "Qualified" && (
+                          <button
+                            type="button"
+                            onClick={() => updateLead(lead.id, "Qualified")}
+                            disabled={Boolean(actionId)}
+                          >
+                            <CheckCircle2 size={14} />
+                            Qualify
+                          </button>
+                        )}
+                        <button
+                          className="danger"
+                          type="button"
+                          onClick={() => removeLead(lead.id)}
+                          disabled={Boolean(actionId)}
+                          aria-label={`Delete ${lead.organisation || lead.name}`}
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      </div>
                     </div>
                   ))}
                 </div>

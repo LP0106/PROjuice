@@ -1726,13 +1726,26 @@ main {
 }
 
 .lead-row {
-  grid-template-columns: minmax(180px, 1fr) minmax(140px, 0.7fr) minmax(140px, 0.7fr) auto;
+  grid-template-columns: minmax(190px, 1fr) minmax(130px, 0.6fr) minmax(130px, 0.6fr) auto minmax(210px, auto);
 }
 
+.lead-row strong small,
 .lead-row span,
 .lead-row em {
   color: var(--muted);
   font-style: normal;
+}
+
+.lead-row strong {
+  display: grid;
+  gap: 4px;
+}
+
+.lead-row strong small {
+  overflow: hidden;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-overflow: ellipsis;
 }
 
 .lead-row em {
@@ -1743,6 +1756,53 @@ main {
   color: var(--green);
   font-weight: 900;
   font-size: 0.8rem;
+}
+
+.lead-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 7px;
+}
+
+.lead-actions button,
+.admin-small-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 34px;
+  padding: 0 10px;
+  border: 1px solid rgba(6, 60, 42, 0.14);
+  border-radius: 8px;
+  color: var(--green);
+  background: rgba(255, 255, 255, 0.82);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.lead-actions button:hover,
+.admin-small-button:hover {
+  background: var(--green-soft);
+}
+
+.lead-actions button:disabled,
+.admin-small-button:disabled {
+  cursor: wait;
+  opacity: 0.62;
+}
+
+.lead-actions .danger {
+  width: 36px;
+  padding: 0;
+  color: #9b2947;
+  background: #fff5f7;
+}
+
+.admin-error {
+  margin: -4px 0 12px;
+  color: #a7304f;
+  font-weight: 900;
 }
 
 @keyframes stageBreath {
@@ -2168,8 +2228,10 @@ main {
     grid-template-columns: 1fr;
   }
 
-  .lead-row em {
+  .lead-row em,
+  .lead-actions {
     justify-self: start;
+    justify-content: flex-start;
   }
 }
 
